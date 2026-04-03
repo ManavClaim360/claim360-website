@@ -1,0 +1,2830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claim360 – India's Premier Investment Recovery Firm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A2540;--navy-deep:#061829;--navy-mid:#0d3362;--navy-light:#1c4f8a;
+  --gold:#C9A24A;--gold-light:#e8c878;--gold-pale:#f9f1dc;--gold-dark:#a07b2a;
+  --cream:#FDFBF7;--bg:#F5F6F8;--bg2:#eef0f4;--white:#ffffff;
+  --text:#0f1923;--muted:#5a6675;--light:#9aa5b4;--border:rgba(10,37,64,.1);
+  --border-mid:rgba(10,37,64,.15);
+  --r:8px;--r-lg:14px;--r-xl:20px;--r-2xl:28px;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --transition:.22s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);color:var(--text);background:var(--white);overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+button{cursor:pointer;font-family:var(--font-body);border:none;background:none}
+input,textarea,select{font-family:var(--font-body)}
+ul{list-style:none}
+
+/* ═══════════════════════════════════════════
+   PAGE SYSTEM
+═══════════════════════════════════════════ */
+.page{display:none}
+.page.active{display:block}
+#page-dashboard.active{display:flex}
+
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.container{max-width:1200px;margin:0 auto;padding:0 40px}
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════════ */
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dark);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:20px;height:1.5px;background:var(--gold)}
+.section-title{font-family:var(--font-display);font-size:clamp(28px,3.2vw,46px);color:var(--navy);line-height:1.12;letter-spacing:-.02em;margin:12px 0 18px}
+.section-sub{font-size:16px;color:var(--muted);line-height:1.75;max-width:560px}
+.centered{text-align:center}
+.centered .section-sub{margin:0 auto}
+.centered .eyebrow{justify-content:center}
+.centered .eyebrow::before{display:none}
+.italic{font-style:italic}
+
+/* ═══════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border-radius:var(--r);font-size:14px;font-weight:600;font-family:var(--font-body);transition:all var(--transition);cursor:pointer;border:1.5px solid transparent;white-space:nowrap}
+.btn-primary{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.btn-primary:hover{background:var(--navy-deep);transform:translateY(-1px);box-shadow:0 8px 28px rgba(10,37,64,.28)}
+.btn-gold{background:var(--gold);color:var(--navy-deep);border-color:var(--gold)}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:0 8px 28px rgba(201,162,74,.32)}
+.btn-outline{background:transparent;color:var(--navy);border-color:var(--navy)}
+.btn-outline:hover{background:var(--navy);color:var(--white)}
+.btn-outline-white{background:transparent;color:var(--white);border-color:rgba(255,255,255,.45)}
+.btn-outline-white:hover{background:var(--white);color:var(--navy)}
+.btn-sm{padding:9px 18px;font-size:13px}
+.btn-lg{padding:16px 34px;font-size:16px}
+.btn-full{width:100%}
+.arrow-btn{background:none;border:none;font-size:14px;font-weight:600;color:var(--navy);display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:gap var(--transition)}
+.arrow-btn:hover{gap:10px;color:var(--gold-dark)}
+
+/* ═══════════════════════════════════════════
+   FORMS
+═══════════════════════════════════════════ */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase}
+.form-input{width:100%;padding:12px 15px;border:1.5px solid var(--border-mid);border-radius:var(--r);font-size:14px;color:var(--text);background:var(--bg);outline:none;transition:all var(--transition)}
+.form-input:focus{border-color:var(--navy);background:var(--white);box-shadow:0 0 0 3px rgba(10,37,64,.07)}
+.form-input::placeholder{color:var(--light)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-hint{font-size:12px;color:var(--light);margin-top:4px}
+
+/* ═══════════════════════════════════════════
+   ANNOUNCEMENT BAR
+═══════════════════════════════════════════ */
+#announce-bar{background:var(--navy);color:var(--white);position:relative;z-index:1001;overflow:hidden}
+.announce-inner{display:flex;align-items:center;justify-content:center;gap:0;height:40px;position:relative}
+.announce-track{display:flex;align-items:center;gap:52px;animation:ticker 22s linear infinite}
+.announce-track:hover{animation-play-state:paused}
+.announce-item{display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:13px;font-weight:400;color:rgba(255,255,255,.85)}
+.announce-item strong{color:var(--gold-light);font-weight:600}
+.announce-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;opacity:.6}
+.announce-cta{display:inline-flex;align-items:center;gap:5px;background:rgba(201,162,74,.2);border:1px solid rgba(201,162,74,.35);color:var(--gold-light);padding:2px 10px;border-radius:100px;font-size:11px;font-weight:600;margin-left:8px;cursor:pointer;transition:background .2s}
+.announce-cta:hover{background:rgba(201,162,74,.35)}
+.announce-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.4);font-size:16px;border-radius:50%;transition:all .2s}
+.announce-close:hover{background:rgba(255,255,255,.1);color:var(--white)}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════ */
+#navbar{position:sticky;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow .3s}
+#navbar.scrolled{box-shadow:0 4px 24px rgba(10,37,64,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:68px;gap:32px}
+.logo{display:flex;align-items:center;gap:11px;cursor:pointer;flex-shrink:0}
+.logo-mark{width:36px;height:36px;background:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:18px;height:18px}
+.logo-name{font-family:var(--font-display);font-size:20px;color:var(--navy);letter-spacing:-.02em}
+.logo-name span{color:var(--gold)}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-link{font-size:14px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:6px;transition:all .18s;position:relative;cursor:pointer;white-space:nowrap}
+.nav-link:hover{color:var(--navy);background:var(--bg)}
+.nav-link.active{color:var(--navy);font-weight:600}
+.nav-dropdown{position:relative}
+.nav-dropdown:hover .dropdown-menu{opacity:1;visibility:visible;transform:translateY(0)}
+.dropdown-menu{position:absolute;top:calc(100% + 8px);left:0;background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:0 12px 40px rgba(10,37,64,.12);padding:8px;min-width:220px;opacity:0;visibility:hidden;transform:translateY(-6px);transition:all .2s;z-index:999}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:7px;font-size:14px;color:var(--muted);cursor:pointer;transition:all .15s}
+.dropdown-item:hover{background:var(--bg);color:var(--navy)}
+.dropdown-item-icon{width:28px;height:28px;background:var(--bg);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nav-login{font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;padding:6px 12px;border-radius:6px;transition:background .18s}
+.nav-login:hover{background:var(--bg)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.hamburger span{width:22px;height:2px;background:var(--navy);border-radius:2px;transition:all .3s}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:var(--white);z-index:999;padding:80px 24px 32px;flex-direction:column;overflow-y:auto}
+.mobile-menu.open{display:flex}
+.mobile-close{position:absolute;top:20px;right:20px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:50%;font-size:18px;cursor:pointer}
+.mobile-links{display:flex;flex-direction:column;gap:2px;flex:1}
+.mobile-link{font-size:16px;font-weight:500;color:var(--navy);padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.mobile-btns{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#section-hero{background:var(--cream);padding:80px 0 0;overflow:hidden;position:relative}
+.hero-bg-pattern{position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(10,37,64,.04) 1px,transparent 0);background-size:32px 32px;pointer-events:none}
+.hero-bg-glow{position:absolute;top:-200px;right:-100px;width:700px;height:700px;background:radial-gradient(circle,rgba(201,162,74,.07) 0%,transparent 65%);pointer-events:none}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+.hero-left{padding-bottom:80px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(10,37,64,.06);border:1px solid rgba(10,37,64,.1);border-radius:100px;padding:5px 14px 5px 8px;margin-bottom:28px}
+.hero-badge-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,162,74,.5)}50%{box-shadow:0 0 0 6px rgba(201,162,74,0)}}
+.hero-badge-text{font-size:12px;font-weight:600;color:var(--navy);letter-spacing:.03em}
+.hero-h1{font-family:var(--font-display);font-size:clamp(38px,4.8vw,66px);color:var(--navy);line-height:1.07;letter-spacing:-.03em;margin-bottom:22px}
+.hero-h1 em{font-style:italic;color:var(--gold-dark)}
+.hero-sub{font-size:17px;color:var(--muted);line-height:1.78;margin-bottom:36px;max-width:460px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:52px}
+.trust-strip{display:flex;gap:36px;padding-top:36px;border-top:1px solid var(--border)}
+.trust-item{}
+.trust-num{font-family:var(--font-display);font-size:34px;color:var(--navy);line-height:1;margin-bottom:4px}
+.trust-num span{color:var(--gold)}
+.trust-lbl{font-size:12px;color:var(--muted);font-weight:500}
+.hero-right{position:relative;padding:40px 0 0;align-self:flex-end}
+.hero-visual-card{background:var(--white);border-radius:var(--r-2xl);border:1px solid var(--border-mid);padding:28px;box-shadow:0 24px 64px rgba(10,37,64,.12);position:relative;z-index:2}
+.hero-visual-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-bottom:4px}
+.hero-visual-title{font-family:var(--font-display);font-size:18px;color:var(--navy);margin-bottom:24px}
+.recovery-bars{display:flex;align-items:flex-end;gap:8px;height:120px;margin-bottom:8px}
+.rb{flex:1;border-radius:4px 4px 0 0;position:relative;transition:all .3s}
+.rb:hover{filter:brightness(1.1)}
+.rb::after{content:attr(data-label);position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--light);white-space:nowrap}
+.rb:nth-child(1){background:#dce8f5;height:38%}
+.rb:nth-child(2){background:#b3cde8;height:55%}
+.rb:nth-child(3){background:#8ab2db;height:48%}
+.rb:nth-child(4){background:var(--navy-light);height:72%}
+.rb:nth-child(5){background:var(--navy-mid);height:62%}
+.rb:nth-child(6){background:var(--navy);height:90%}
+.rb-labels-row{height:24px}
+.hero-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.hero-stat{background:var(--bg);border-radius:var(--r-lg);padding:14px 16px}
+.hero-stat-val{font-family:var(--font-display);font-size:22px;color:var(--navy);margin-bottom:2px}
+.hero-stat-lbl{font-size:11px;color:var(--light);font-weight:500}
+.hero-stat-change{display:inline-flex;align-items:center;gap:3px;background:#dcfce7;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;margin-top:4px}
+.hero-float-1{position:absolute;top:-20px;right:-24px;background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:12px 16px;box-shadow:0 8px 32px rgba(10,37,64,.1);z-index:3;min-width:140px}
+.hero-float-2{position:absolute;bottom:32px;left:-28px;background:var(--navy);border-radius:var(--r-lg);padding:12px 16px;box-shadow:0 8px 32px rgba(10,37,64,.18);z-index:3}
+.float-label{font-size:10px;color:var(--light);margin-bottom:3px}
+.float-val{font-size:15px;font-weight:600;color:var(--navy)}
+.float-val-white{font-size:14px;font-weight:600;color:var(--white)}
+.float-sub-white{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px}
+
+/* ═══════════════════════════════════════════
+   LOGOS / TRUST BAR
+═══════════════════════════════════════════ */
+#section-logos{padding:32px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--white)}
+.logos-inner{display:flex;align-items:center;gap:0;overflow:hidden}
+.logos-label{font-size:12px;font-weight:600;color:var(--light);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;padding-right:32px;border-right:1px solid var(--border);margin-right:32px;flex-shrink:0}
+.logos-track{display:flex;gap:40px;align-items:center;animation:logos-scroll 20s linear infinite}
+.logos-track:hover{animation-play-state:paused}
+.logo-item{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--light);white-space:nowrap;opacity:.7;transition:opacity .2s}
+.logo-item:hover{opacity:1}
+.logo-item-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);opacity:.5}
+@keyframes logos-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════ */
+#section-services{padding:96px 0;background:var(--white)}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.svc-card{background:var(--bg);border-radius:var(--r-xl);padding:32px 28px;border:1px solid var(--border);transition:all .28s;cursor:pointer;position:relative;overflow:hidden;group:true}
+.svc-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:var(--navy);transition:height .3s ease;z-index:0}
+.svc-card:hover::before{height:3px}
+.svc-card:hover{background:var(--white);box-shadow:0 16px 48px rgba(10,37,64,.1);transform:translateY(-4px);border-color:var(--border-mid)}
+.svc-icon{width:52px;height:52px;background:var(--navy);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;position:relative;z-index:1}
+.svc-title{font-family:var(--font-display);font-size:19px;color:var(--navy);margin-bottom:10px;position:relative;z-index:1}
+.svc-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;position:relative;z-index:1}
+.svc-link{font-size:13px;font-weight:600;color:var(--navy);display:inline-flex;align-items:center;gap:5px;position:relative;z-index:1;transition:gap .2s;cursor:pointer}
+.svc-card:hover .svc-link{gap:9px;color:var(--gold-dark)}
+
+/* ═══════════════════════════════════════════
+   WHY CHOOSE US
+═══════════════════════════════════════════ */
+#section-why{padding:96px 0;background:var(--navy);position:relative;overflow:hidden}
+#section-why::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(201,162,74,.08) 0%,transparent 65%);pointer-events:none}
+.why-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:1}
+.why-left .eyebrow{color:var(--gold)}
+.why-left .eyebrow::before{background:var(--gold)}
+.why-left .section-title{color:var(--white)}
+.why-left .section-sub{color:rgba(255,255,255,.55);max-width:420px}
+.why-table{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-xl);overflow:hidden;margin-top:40px}
+.why-thead{display:grid;grid-template-columns:2fr 1fr 1fr;background:rgba(255,255,255,.06);padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.why-th{font-size:12px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase}
+.why-th:not(:first-child){text-align:center}
+.why-row{display:grid;grid-template-columns:2fr 1fr 1fr;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06);align-items:center;transition:background .2s}
+.why-row:last-child{border-bottom:none}
+.why-row:hover{background:rgba(255,255,255,.03)}
+.why-feature{font-size:14px;color:rgba(255,255,255,.75)}
+.why-check{text-align:center;font-size:16px}
+.check-yes{color:var(--gold-light)}
+.check-no{color:rgba(255,255,255,.2)}
+
+/* ═══════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════ */
+#section-process{padding:96px 0;background:var(--cream)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:64px;position:relative}
+.process-steps::before{content:'';position:absolute;top:44px;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--border-mid),transparent);z-index:0}
+.p-step{text-align:center;padding:0 10px;position:relative;z-index:1}
+.p-icon-wrap{width:88px;height:88px;margin:0 auto 24px;position:relative}
+.p-icon{width:88px;height:88px;border-radius:50%;background:var(--white);border:1.5px solid var(--border-mid);display:flex;align-items:center;justify-content:center;font-size:28px;transition:all .3s;box-shadow:0 4px 16px rgba(10,37,64,.06)}
+.p-step:hover .p-icon{background:var(--navy);border-color:var(--navy);box-shadow:0 8px 32px rgba(10,37,64,.2)}
+.p-num{position:absolute;top:-4px;right:-4px;width:24px;height:24px;background:var(--gold);border-radius:50%;font-size:10px;font-weight:700;color:var(--navy-deep);display:flex;align-items:center;justify-content:center;border:2px solid var(--cream);font-family:var(--font-display)}
+.p-title{font-family:var(--font-display);font-size:17px;color:var(--navy);margin-bottom:8px}
+.p-desc{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ═══════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════ */
+#section-stats{padding:72px 0;background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stat-block{text-align:center;padding:20px 24px;border-right:1px solid var(--border)}
+.stat-block:last-child{border-right:none}
+.stat-num{font-family:var(--font-display);font-size:clamp(36px,4vw,56px);color:var(--navy);line-height:1;margin-bottom:8px}
+.stat-num .accent{color:var(--gold)}
+.stat-lbl{font-size:14px;color:var(--muted)}
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════ */
+#section-testimonials{padding:96px 0;background:var(--bg)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px}
+.testi-card{background:var(--white);border-radius:var(--r-xl);padding:32px;border:1px solid var(--border);transition:all .25s;display:flex;flex-direction:column}
+.testi-card:hover{box-shadow:0 16px 48px rgba(10,37,64,.09);transform:translateY(-3px)}
+.testi-stars{display:flex;gap:3px;margin-bottom:16px}
+.star{color:var(--gold);font-size:14px}
+.testi-quote{font-family:var(--font-display);font-size:15px;color:var(--text);line-height:1.72;font-style:italic;flex:1;margin-bottom:20px}
+.testi-result{display:inline-flex;align-items:center;gap:6px;background:var(--gold-pale);border-radius:var(--r);padding:7px 12px;font-size:12px;font-weight:600;color:var(--gold-dark);margin-bottom:22px;border:1px solid rgba(201,162,74,.2)}
+.testi-person{display:flex;align-items:center;gap:12px;padding-top:20px;border-top:1px solid var(--border)}
+.testi-avatar{width:44px;height:44px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-weight:700;font-size:14px;font-family:var(--font-display);flex-shrink:0}
+.testi-name{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px}
+.testi-loc{font-size:12px;color:var(--light)}
+
+/* ═══════════════════════════════════════════
+   CASE STUDIES
+═══════════════════════════════════════════ */
+#section-cases{padding:96px 0;background:var(--white)}
+.cases-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:56px}
+.case-card{background:var(--bg);border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border);transition:all .25s;cursor:pointer}
+.case-card:hover{box-shadow:0 16px 48px rgba(10,37,64,.09);transform:translateY(-3px);border-color:var(--border-mid)}
+.case-header{background:var(--navy);padding:24px 28px;position:relative;overflow:hidden}
+.case-header::after{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:rgba(201,162,74,.08);border-radius:50%}
+.case-tag{display:inline-block;background:rgba(201,162,74,.2);color:var(--gold-light);font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px;margin-bottom:10px;border:1px solid rgba(201,162,74,.25)}
+.case-amount{font-family:var(--font-display);font-size:36px;color:var(--white);line-height:1;margin-bottom:6px}
+.case-type{font-size:13px;color:rgba(255,255,255,.55)}
+.case-body{padding:24px 28px}
+.case-story{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.case-meta{display:flex;gap:20px;padding-top:18px;border-top:1px solid var(--border)}
+.case-meta-item{display:flex;flex-direction:column;gap:2px}
+.case-meta-label{font-size:10px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:.07em}
+.case-meta-val{font-size:13px;font-weight:600;color:var(--navy)}
+
+/* ═══════════════════════════════════════════
+   BLOG
+═══════════════════════════════════════════ */
+#section-blog{padding:96px 0;background:var(--cream)}
+.blog-filter{display:flex;gap:8px;flex-wrap:wrap;margin:36px 0 40px}
+.filter-btn{padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;border:1.5px solid var(--border-mid);color:var(--muted);cursor:pointer;transition:all .18s;background:var(--white)}
+.filter-btn:hover,.filter-btn.active{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.blog-featured{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:20px}
+.blog-card{background:var(--white);border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border);transition:all .25s;cursor:pointer}
+.blog-card:hover{box-shadow:0 16px 48px rgba(10,37,64,.09);transform:translateY(-3px)}
+.blog-card.featured{display:flex;flex-direction:column}
+.blog-img{background:var(--navy);height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.blog-img.tall{height:260px}
+.blog-img-icon{font-size:48px;opacity:.18}
+.blog-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(10,37,64,.5))}
+.blog-cat{position:absolute;top:14px;left:14px;background:var(--gold);color:var(--navy-deep);font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:.05em}
+.blog-body{padding:22px 24px;flex:1;display:flex;flex-direction:column}
+.blog-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--light);margin-bottom:10px}
+.blog-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--light)}
+.blog-title{font-family:var(--font-display);font-size:17px;color:var(--navy);line-height:1.35;margin-bottom:10px;flex:1}
+.blog-card.featured .blog-title{font-size:21px}
+.blog-excerpt{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:16px}
+.blog-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border);margin-top:auto}
+.blog-author{font-size:12px;font-weight:600;color:var(--navy)}
+.blog-read-time{font-size:12px;color:var(--light)}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.blog-all-link{text-align:center;margin-top:40px}
+
+/* ═══════════════════════════════════════════
+   FAQ
+═══════════════════════════════════════════ */
+#section-faq{padding:96px 0;background:var(--white)}
+.faq-inner{display:grid;grid-template-columns:1fr 1.6fr;gap:80px;align-items:start}
+.faq-cats{display:flex;flex-direction:column;gap:6px;margin-top:32px;position:sticky;top:100px}
+.faq-cat-btn{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--r);font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .18s;border:1px solid transparent}
+.faq-cat-btn.active,.faq-cat-btn:hover{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.faq-cat-icon{font-size:16px}
+.faq-list{display:flex;flex-direction:column;gap:10px;margin-top:32px}
+.faq-item{border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;background:var(--bg);transition:border-color .2s}
+.faq-item.open{border-color:var(--navy);background:var(--white)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;font-size:15px;font-weight:500;color:var(--navy);gap:16px}
+.faq-icon{width:26px;height:26px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .25s;flex-shrink:0;color:var(--muted)}
+.faq-item.open .faq-icon{background:var(--navy);color:var(--white);transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;font-size:14px;color:var(--muted);line-height:1.7}
+.faq-item.open .faq-a{max-height:300px}
+.faq-a-inner{padding:0 20px 18px}
+
+/* ═══════════════════════════════════════════
+   PRESS
+═══════════════════════════════════════════ */
+#section-press{padding:96px 0;background:var(--bg)}
+.press-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.press-card{background:var(--white);border-radius:var(--r-xl);padding:28px;border:1px solid var(--border);transition:all .25s;display:flex;flex-direction:column;gap:16px;cursor:pointer}
+.press-card:hover{box-shadow:0 12px 40px rgba(10,37,64,.08);transform:translateY(-3px)}
+.press-date{font-size:11px;font-weight:600;color:var(--light);letter-spacing:.07em;text-transform:uppercase}
+.press-type-tag{display:inline-block;font-size:10px;font-weight:600;padding:3px 10px;border-radius:100px;letter-spacing:.04em}
+.pt-release{background:rgba(10,37,64,.07);color:var(--navy)}
+.pt-media{background:var(--gold-pale);color:var(--gold-dark);border:1px solid rgba(201,162,74,.2)}
+.press-title{font-family:var(--font-display);font-size:16px;color:var(--navy);line-height:1.38}
+.press-excerpt{font-size:13px;color:var(--muted);line-height:1.65;flex:1}
+.press-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);font-size:12px}
+.press-source{font-weight:600;color:var(--navy)}
+.press-download{display:flex;align-items:center;gap:4px;color:var(--gold-dark);font-weight:600;font-size:12px;cursor:pointer}
+.media-coverage{margin-top:56px;text-align:center}
+.media-cov-label{font-size:12px;font-weight:600;color:var(--light);letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px}
+.media-logos{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;align-items:center}
+.media-logo-item{font-size:15px;font-weight:700;color:var(--light);letter-spacing:-.02em;opacity:.55;transition:opacity .2s;cursor:pointer}
+.media-logo-item:hover{opacity:1;color:var(--navy)}
+
+/* ═══════════════════════════════════════════
+   NEWSLETTER
+═══════════════════════════════════════════ */
+#section-newsletter{padding:72px 0;background:var(--gold-pale);border-top:1px solid rgba(201,162,74,.2);border-bottom:1px solid rgba(201,162,74,.2)}
+.newsletter-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.newsletter-left .section-title{font-size:clamp(24px,2.8vw,36px)}
+.newsletter-perks{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.newsletter-perk{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+.perk-check{width:20px;height:20px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--white)}
+.newsletter-form{display:flex;gap:10px}
+.newsletter-form .form-input{flex:1}
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+#section-contact{padding:96px 0;background:var(--white)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.contact-info{}
+.contact-details{display:flex;flex-direction:column;gap:20px;margin:32px 0}
+.contact-detail{display:flex;gap:14px;align-items:flex-start}
+.contact-icon{width:44px;height:44px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.contact-detail-label{font-size:11px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
+.contact-detail-val{font-size:15px;font-weight:500;color:var(--navy)}
+.contact-form-card{background:var(--bg);border-radius:var(--r-2xl);padding:36px;border:1px solid var(--border)}
+.form-step-title{font-family:var(--font-display);font-size:22px;color:var(--navy);margin-bottom:6px}
+.form-step-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+.step-indicator{display:flex;gap:6px;margin-bottom:28px}
+.step-dot{height:3px;border-radius:2px;background:var(--border);transition:all .3s;flex:1}
+.step-dot.active{background:var(--navy)}
+.step-dot.done{background:var(--gold)}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+#section-footer{background:var(--navy-deep);padding:72px 0 28px;border-top:3px solid var(--gold)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1.2fr;gap:40px;margin-bottom:52px}
+.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-logo-name{font-family:var(--font-display);font-size:20px;color:var(--white)}
+.footer-logo-name span{color:var(--gold)}
+.footer-tagline{font-size:13px;color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:22px}
+.footer-social{display:flex;gap:8px}
+.social-btn{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s}
+.social-btn:hover{background:var(--gold);color:var(--navy-deep);border-color:var(--gold)}
+.footer-col-title{font-size:11px;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.45);cursor:pointer;transition:color .18s}
+.footer-links a:hover{color:var(--gold-light)}
+.footer-contact-list{display:flex;flex-direction:column;gap:10px}
+.footer-contact-row{display:flex;gap:9px;align-items:flex-start}
+.fc-icon{font-size:13px;color:rgba(255,255,255,.3);margin-top:1px;flex-shrink:0}
+.fc-text{font-size:13px;color:rgba(255,255,255,.45);line-height:1.5}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;flex-direction:column;gap:12px}
+.footer-disclaimer{font-size:11px;color:rgba(255,255,255,.25);line-height:1.7}
+.footer-bottom-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.25)}
+.footer-office-tags{display:flex;gap:6px}
+.office-tag{font-size:10px;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.08)}
+
+/* ═══════════════════════════════════════════
+   LOGIN
+═══════════════════════════════════════════ */
+#page-login{min-height:100vh;display:flex}
+.login-left{flex:1;background:var(--navy);display:flex;flex-direction:column;justify-content:center;padding:60px;position:relative;overflow:hidden}
+.login-left::before{content:'';position:absolute;top:-150px;right:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(201,162,74,.1) 0%,transparent 65%);pointer-events:none}
+.login-brand{display:flex;align-items:center;gap:12px;margin-bottom:52px;position:relative;z-index:1}
+.login-brand-mark{width:42px;height:42px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.login-brand-name{font-family:var(--font-display);font-size:22px;color:var(--white)}
+.login-brand-name span{color:var(--gold-light)}
+.login-left-title{font-family:var(--font-display);font-size:clamp(26px,3vw,40px);color:var(--white);line-height:1.15;margin-bottom:14px;position:relative;z-index:1}
+.login-left-sub{font-size:15px;color:rgba(255,255,255,.5);line-height:1.75;max-width:360px;margin-bottom:48px;position:relative;z-index:1}
+.login-trust{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
+.login-trust-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border-radius:var(--r);padding:12px 16px;border:1px solid rgba(255,255,255,.09)}
+.login-trust-icon{font-size:18px}
+.login-trust-text{font-size:13px;color:rgba(255,255,255,.65);font-weight:400}
+.login-right{width:520px;display:flex;align-items:center;justify-content:center;background:var(--cream);padding:40px;overflow-y:auto}
+.login-card{width:100%;max-width:420px;background:var(--white);border-radius:var(--r-2xl);padding:44px;box-shadow:0 24px 64px rgba(10,37,64,.12);border:1px solid var(--border)}
+.login-card-title{font-family:var(--font-display);font-size:24px;color:var(--navy);margin-bottom:6px}
+.login-card-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
+.method-tabs{display:flex;background:var(--bg);border-radius:var(--r);padding:4px;margin-bottom:28px}
+.m-tab{flex:1;padding:9px 6px;text-align:center;font-size:12px;font-weight:600;color:var(--muted);border-radius:7px;cursor:pointer;transition:all .2s}
+.m-tab.active{background:var(--white);color:var(--navy);box-shadow:0 2px 8px rgba(10,37,64,.08)}
+.login-flow{display:none}
+.login-flow.active{display:block}
+.otp-boxes{display:flex;gap:8px;margin:14px 0}
+.otp-box{flex:1;height:52px;border:1.5px solid var(--border-mid);border-radius:var(--r);text-align:center;font-size:22px;font-weight:700;color:var(--navy);font-family:var(--font-display);outline:none;background:var(--bg);transition:all .2s}
+.otp-box:focus{border-color:var(--navy);background:var(--white)}
+.login-link{font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:opacity .2s}
+.login-link:hover{opacity:.6}
+.input-with-btn{display:flex;gap:8px}
+.input-with-btn .form-input{flex:1}
+.login-footer-row{display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:8px}
+
+/* ═══════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════ */
+#page-dashboard{background:var(--bg)}
+.dash-layout{display:flex;width:100%;min-height:100vh}
+.dash-sidebar{width:240px;background:var(--navy-deep);display:flex;flex-direction:column;flex-shrink:0;height:100vh;position:sticky;top:0}
+.sidebar-logo-area{display:flex;align-items:center;gap:10px;padding:20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo-mark{width:32px;height:32px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sidebar-logo-mark svg{width:16px;height:16px}
+.sidebar-logo-name{font-family:var(--font-display);font-size:16px;color:var(--white)}
+.sidebar-logo-name span{color:var(--gold-light)}
+.sidebar-nav{flex:1;padding:14px 10px;overflow-y:auto}
+.sidebar-section-lbl{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:16px 10px 7px}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:400;color:rgba(255,255,255,.55);cursor:pointer;transition:all .18s;margin-bottom:2px}
+.sidebar-item:hover{background:rgba(255,255,255,.07);color:var(--white)}
+.sidebar-item.active{background:rgba(255,255,255,.1);color:var(--white)}
+.sidebar-item-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sidebar-bottom{padding:10px 10px 18px;border-top:1px solid rgba(255,255,255,.07)}
+.dash-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.dash-topbar{background:var(--white);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;position:sticky;top:0;z-index:10}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-title{font-family:var(--font-display);font-size:17px;color:var(--navy)}
+.topbar-crumb{font-size:13px;color:var(--light)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-chip{display:flex;align-items:center;gap:5px;padding:5px 12px;background:rgba(34,197,94,.08);border-radius:100px;font-size:12px;font-weight:500;color:#15803d;border:1px solid rgba(34,197,94,.15)}
+.dash-avatar{width:36px;height:36px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-weight:700;font-size:12px;font-family:var(--font-display)}
+.dash-content{padding:24px 28px;flex:1;overflow-y:auto}
+.dash-view{display:none}
+.dash-view.active{display:block}
+.dash-section-title{font-size:10px;font-weight:600;color:var(--light);letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi-card{background:var(--white);border-radius:var(--r-lg);padding:20px;border:1px solid var(--border)}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.kpi-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.ki-blue{background:rgba(10,37,64,.07)}
+.ki-green{background:rgba(34,197,94,.09)}
+.ki-gold{background:rgba(201,162,74,.12)}
+.ki-purple{background:rgba(139,92,246,.09)}
+.kpi-change{font-size:11px;font-weight:600;padding:3px 8px;border-radius:100px}
+.up{background:#dcfce7;color:#15803d}
+.dn{background:#fee2e2;color:#dc2626}
+.kpi-val{font-family:var(--font-display);font-size:24px;color:var(--navy);line-height:1;margin-bottom:4px}
+.kpi-lbl{font-size:13px;color:var(--muted)}
+.d-card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;margin-bottom:20px}
+.d-card-header{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.d-card-title{font-family:var(--font-display);font-size:15px;color:var(--navy)}
+.d-card-action{font-size:13px;font-weight:500;color:var(--navy);cursor:pointer;opacity:.45;transition:opacity .2s}
+.d-card-action:hover{opacity:1}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 18px;text-align:left;font-size:10px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:.1em;background:var(--bg);border-bottom:1px solid var(--border)}
+td{padding:13px 18px;font-size:13px;color:var(--text);border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafbfd}
+.pill{display:inline-flex;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;white-space:nowrap}
+.pill-new{background:#dbeafe;color:#1d4ed8}
+.pill-progress{background:#fef3c7;color:#b45309}
+.pill-done{background:#dcfce7;color:#15803d}
+.pill-legal{background:#ede9fe;color:#7c3aed}
+.pill-eval{background:#f0f9ff;color:#0369a1}
+.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.c-card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--border);padding:20px}
+.c-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.c-card-title{font-family:var(--font-display);font-size:15px;color:var(--navy)}
+.c-edit-btn{font-size:11px;font-weight:600;color:var(--navy);padding:4px 10px;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .2s}
+.c-edit-btn:hover{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.c-preview{font-size:13px;color:var(--muted);line-height:1.65;background:var(--bg);border-radius:8px;padding:11px;border:1px solid var(--border)}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:1100px){
+  .container{padding:0 28px}
+  .footer-grid{grid-template-columns:1.5fr 1fr 1fr;gap:32px}
+  .footer-grid>div:nth-child(5){grid-column:1/-1}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-inner{gap:40px}
+}
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .contact-grid,.why-inner,.newsletter-inner,.cases-grid,.blog-featured,.faq-inner{grid-template-columns:1fr;gap:40px}
+  .testi-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-block{border-right:none;border-bottom:1px solid var(--border);padding:24px}
+  .stats-grid>.stat-block:nth-child(2n){border-right:none}
+  .process-steps{grid-template-columns:repeat(2,1fr)}
+  .process-steps::before{display:none}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  #page-login{flex-direction:column}
+  .login-left{padding:36px;flex:0 0 auto}
+  .login-right{width:100%;padding:32px 20px}
+  .blog-grid{grid-template-columns:repeat(2,1fr)}
+  .press-grid{grid-template-columns:repeat(2,1fr)}
+  .cases-grid{grid-template-columns:1fr}
+  .why-table{margin-top:24px}
+  .content-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .container{padding:0 20px}
+  #section-hero,#section-services,#section-process,#section-testimonials,#section-contact,#section-cases,#section-blog,#section-press,#section-faq,#section-why{padding:60px 0}
+  .nav-links,.nav-right{display:none}
+  .hamburger{display:flex}
+  .hero-btns{flex-direction:column}
+  .hero-btns .btn{width:100%;justify-content:center}
+  .trust-strip{flex-wrap:wrap;gap:24px}
+  .services-grid,.press-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:24px}
+  .form-row{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .blog-featured,.blog-grid{grid-template-columns:1fr}
+  .newsletter-form{flex-direction:column}
+  .footer-bottom-row{flex-direction:column;gap:8px;text-align:center}
+  .login-trust{display:none}
+  .faq-cats{position:static;flex-direction:row;flex-wrap:wrap}
+}
+@media(max-width:480px){
+  .stats-grid,.kpi-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .announce-track{animation:none}
+  .process-steps{grid-template-columns:1fr}
+}
+
+/* ═══════════════════════════════════════════
+   LEGAL PAGES (Privacy & Terms)
+═══════════════════════════════════════════ */
+#page-privacy,#page-terms{background:var(--bg)}
+#page-privacy.active,#page-terms.active{display:block}
+.legal-hero{background:var(--navy);padding:100px 0 60px;position:relative;overflow:hidden}
+.legal-hero::before{content:'';position:absolute;top:-150px;right:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(201,162,74,.08) 0%,transparent 65%);pointer-events:none}
+.legal-hero-inner{position:relative;z-index:1}
+.legal-eyebrow{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:10px;margin-bottom:16px}
+.legal-eyebrow::before{content:'';width:20px;height:1.5px;background:var(--gold)}
+.legal-hero h1{font-family:var(--font-display);font-size:clamp(30px,4vw,52px);color:var(--white);line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.legal-hero-meta{display:flex;gap:24px;flex-wrap:wrap;margin-top:18px}
+.legal-meta-item{display:flex;align-items:center;gap:7px;font-size:13px;color:rgba(255,255,255,.5)}
+.legal-meta-icon{font-size:14px}
+.legal-body{padding:64px 0 96px}
+.legal-layout{display:grid;grid-template-columns:240px 1fr;gap:56px;align-items:start}
+.legal-toc{position:sticky;top:90px;background:var(--white);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;box-shadow:0 4px 20px rgba(10,37,64,.06)}
+.legal-toc-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--light);margin-bottom:16px}
+.legal-toc-list{display:flex;flex-direction:column;gap:2px}
+.legal-toc-item{font-size:13px;color:var(--muted);padding:8px 12px;border-radius:var(--r);cursor:pointer;transition:all .18s;border-left:2px solid transparent;line-height:1.4}
+.legal-toc-item:hover{color:var(--navy);background:var(--bg)}
+.legal-toc-item.active{color:var(--navy);background:rgba(10,37,64,.05);border-left-color:var(--gold);font-weight:500}
+.legal-content{}
+.legal-section{margin-bottom:48px;scroll-margin-top:90px}
+.legal-section-num{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+.legal-section h2{font-family:var(--font-display);font-size:clamp(20px,2.5vw,28px);color:var(--navy);margin-bottom:16px;line-height:1.2}
+.legal-section p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:14px}
+.legal-section p:last-child{margin-bottom:0}
+.legal-section ul,.legal-section ol{padding-left:0;margin:14px 0;display:flex;flex-direction:column;gap:10px}
+.legal-section li{font-size:15px;color:var(--muted);line-height:1.75;padding-left:24px;position:relative}
+.legal-section li::before{content:'—';position:absolute;left:0;color:var(--gold);font-weight:600}
+.legal-section ol{counter-reset:ol-counter}
+.legal-section ol li{counter-increment:ol-counter}
+.legal-section ol li::before{content:counter(ol-counter)'.';color:var(--gold-dark);font-weight:700;font-size:12px}
+.legal-callout{background:var(--gold-pale);border:1px solid rgba(201,162,74,.25);border-left:3px solid var(--gold);border-radius:0 var(--r-lg) var(--r-lg) 0;padding:18px 20px;margin:24px 0}
+.legal-callout p{font-size:14px;color:var(--navy);font-weight:500;margin:0;line-height:1.65}
+.legal-callout strong{color:var(--gold-dark)}
+.legal-divider{height:1px;background:var(--border);margin:48px 0}
+.legal-contact-card{background:var(--navy);border-radius:var(--r-xl);padding:32px;margin-top:48px}
+.legal-contact-card h3{font-family:var(--font-display);font-size:22px;color:var(--white);margin-bottom:10px}
+.legal-contact-card p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:20px}
+.legal-contact-details{display:flex;flex-direction:column;gap:10px}
+.legal-contact-row{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,.7)}
+.legal-contact-icon{font-size:16px}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE FIXES & ENHANCEMENTS
+═══════════════════════════════════════════ */
+/* Announcement bar responsive */
+@media(max-width:640px){
+  .announce-item{font-size:12px}
+  .announce-cta{display:none}
+  #announce-bar .container{padding:0 12px}
+}
+
+/* Nav responsive fine-tuning */
+@media(max-width:768px){
+  .logo-name{font-size:18px}
+  #navbar .container{padding:0 16px}
+  .nav-inner{height:60px}
+  .mobile-menu{padding:70px 20px 28px}
+  .mobile-link{font-size:15px;padding:13px 0}
+}
+
+/* Hero responsive */
+@media(max-width:768px){
+  #section-hero{padding:56px 0 0}
+  .hero-left{padding-bottom:56px}
+  .hero-h1{font-size:clamp(32px,8vw,44px)}
+  .hero-sub{font-size:15px}
+  .hero-badge{margin-bottom:20px}
+  .trust-strip{gap:20px;padding-top:24px}
+  .trust-num{font-size:26px}
+}
+@media(max-width:480px){
+  #section-hero{padding:48px 0 0}
+  .hero-h1{font-size:32px}
+  .hero-btns .btn{font-size:14px;padding:13px 20px}
+  .trust-strip{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .trust-item{border:none!important;padding:0!important;margin:0!important}
+}
+
+/* Services responsive */
+@media(max-width:640px){
+  .services-grid{grid-template-columns:1fr;gap:14px}
+  .svc-card{padding:24px 20px}
+}
+
+/* Why section responsive */
+@media(max-width:768px){
+  #section-why{padding:60px 0}
+  .why-row{padding:12px 14px}
+  .why-thead{padding:10px 14px}
+  .why-th,.why-feature{font-size:13px}
+}
+@media(max-width:480px){
+  .why-thead{grid-template-columns:1.8fr 1fr 1fr}
+  .why-row{grid-template-columns:1.8fr 1fr 1fr}
+  .why-feature{font-size:12px}
+}
+
+/* Process responsive */
+@media(max-width:640px){
+  .process-steps{grid-template-columns:1fr;gap:32px}
+  .p-icon-wrap{width:72px;height:72px}
+  .p-icon{width:72px;height:72px;font-size:24px}
+}
+
+/* Stats responsive */
+@media(max-width:640px){
+  #section-stats{padding:48px 0}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat-num{font-size:36px}
+}
+@media(max-width:380px){
+  .stats-grid{grid-template-columns:1fr}
+}
+
+/* Testimonials */
+@media(max-width:640px){
+  .testi-grid{grid-template-columns:1fr}
+  .testi-card{padding:24px}
+}
+
+/* Cases */
+@media(max-width:640px){
+  .case-amount{font-size:28px}
+  .case-meta{flex-wrap:wrap;gap:14px}
+  .case-header{padding:20px}
+  .case-body{padding:20px}
+}
+
+/* Blog */
+@media(max-width:640px){
+  .blog-filter{gap:6px}
+  .filter-btn{padding:7px 14px;font-size:12px}
+  .blog-body{padding:16px 18px}
+  .blog-title{font-size:15px}
+}
+@media(max-width:480px){
+  .blog-featured{grid-template-columns:1fr}
+  .blog-grid{grid-template-columns:1fr}
+}
+
+/* FAQ */
+@media(max-width:768px){
+  .faq-inner{grid-template-columns:1fr;gap:28px}
+  .faq-cats{position:static;flex-direction:row;flex-wrap:wrap;margin-top:20px}
+  .faq-cat-btn{font-size:13px;padding:9px 13px;flex:0 0 auto}
+  .faq-list{margin-top:20px}
+}
+@media(max-width:480px){
+  .faq-q{font-size:14px;padding:15px 16px}
+  .faq-a-inner{padding:0 16px 14px}
+}
+
+/* Press */
+@media(max-width:640px){
+  .press-grid{grid-template-columns:1fr}
+  .media-logos{gap:18px}
+  .media-logo-item{font-size:13px}
+}
+
+/* Newsletter */
+@media(max-width:768px){
+  .newsletter-inner{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:480px){
+  #section-newsletter{padding:48px 0}
+  .newsletter-perks{gap:8px}
+}
+
+/* Contact */
+@media(max-width:640px){
+  .contact-form-card{padding:24px 20px}
+  .step-indicator{margin-bottom:20px}
+}
+@media(max-width:480px){
+  .contact-details{gap:14px}
+  .contact-icon{width:38px;height:38px;font-size:15px}
+}
+
+/* Footer */
+@media(max-width:900px){
+  .footer-grid{grid-template-columns:1fr 1fr 1fr;gap:32px}
+  .footer-grid>div:first-child{grid-column:1/-1}
+}
+@media(max-width:640px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:24px}
+  .footer-grid>div:first-child{grid-column:1/-1}
+  #section-footer{padding:48px 0 24px}
+}
+@media(max-width:400px){
+  .footer-grid{grid-template-columns:1fr}
+  .footer-legal-links{flex-direction:column;gap:8px;align-items:center}
+}
+
+/* Legal pages responsive */
+@media(max-width:900px){
+  .legal-layout{grid-template-columns:1fr;gap:32px}
+  .legal-toc{position:static;display:flex;flex-direction:column}
+  .legal-toc-list{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .legal-toc-item{border-left:none!important;border-bottom:2px solid transparent;border-radius:var(--r);font-size:12px;padding:6px 10px}
+  .legal-toc-item.active{border-bottom-color:var(--gold);background:rgba(10,37,64,.05)}
+}
+@media(max-width:768px){
+  .legal-hero{padding:80px 0 44px}
+  .legal-body{padding:40px 0 64px}
+  .legal-section{margin-bottom:36px}
+  .legal-contact-card{padding:24px}
+}
+@media(max-width:480px){
+  .legal-hero{padding:72px 0 36px}
+  .legal-hero-meta{gap:14px}
+  .legal-section h2{font-size:20px}
+  .legal-section p,.legal-section li{font-size:14px}
+  .legal-toc{padding:16px}
+}
+
+/* Dashboard responsive */
+@media(max-width:768px){
+  .dash-sidebar{display:none}
+  .dash-topbar{padding:0 16px;height:54px}
+  .dash-content{padding:16px}
+  .kpi-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .kpi-val{font-size:20px}
+  td,th{padding:10px 12px;font-size:12px}
+}
+@media(max-width:480px){
+  .kpi-grid{grid-template-columns:1fr}
+  .content-grid{grid-template-columns:1fr}
+}
+
+/* Login page responsive */
+@media(max-width:400px){
+  .login-card{padding:28px 20px}
+  .otp-box{height:44px;font-size:18px}
+}
+
+/* General touch targets */
+@media(max-width:768px){
+  .btn{min-height:44px}
+  .form-input{min-height:44px}
+  .nav-link{min-height:44px;display:flex;align-items:center}
+}
+
+/* Overflow safety */
+html,body{max-width:100%;overflow-x:hidden}
+.container{width:100%}
+img,svg,video,canvas,iframe{max-width:100%}
+table{word-break:break-word}
+
+/* ═══════════════════════════════════════════
+   COMPREHENSIVE MOBILE RESPONSIVENESS PATCH
+═══════════════════════════════════════════ */
+
+/* ── Legal navbar mobile ── */
+.legal-nav-right{display:flex;gap:10px;align-items:center}
+.legal-nav-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--navy);padding:8px 14px;border-radius:var(--r);border:1.5px solid var(--border-mid);cursor:pointer;transition:all .18s;white-space:nowrap}
+.legal-nav-back:hover{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.legal-nav-peer{font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;padding:8px 12px;border-radius:var(--r);transition:background .18s;white-space:nowrap}
+.legal-nav-peer:hover{background:var(--bg)}
+@media(max-width:560px){
+  .legal-nav-peer{display:none}
+  .legal-nav-right{gap:8px}
+  .legal-nav-back{font-size:13px;padding:8px 12px}
+}
+@media(max-width:400px){
+  .legal-nav-back span{display:none}
+}
+
+/* ── Hero section: prevent text overflow ── */
+@media(max-width:360px){
+  .hero-h1{font-size:28px}
+  .hero-badge-text{font-size:10px}
+  .section-title{font-size:24px}
+}
+
+/* ── Nav dropdown: prevent overflow on small screens ── */
+@media(max-width:768px){
+  .dropdown-menu{display:none!important}
+}
+
+/* ── Services grid fine-tune ── */
+@media(max-width:360px){
+  .svc-card{padding:20px 16px}
+  .svc-title{font-size:16px}
+}
+
+/* ── Trust strip: 2-col on very small ── */
+@media(max-width:360px){
+  .trust-strip{grid-template-columns:1fr 1fr!important}
+  .trust-num{font-size:24px}
+}
+
+/* ── Process steps single col ── */
+@media(max-width:480px){
+  .p-step{padding:0}
+}
+
+/* ── Stats: single col on very small ── */
+@media(max-width:360px){
+  .stat-block{padding:18px 16px}
+}
+
+/* ── Why table: horizontal scroll on tiny screens ── */
+@media(max-width:360px){
+  .why-table{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .why-thead,.why-row{min-width:280px}
+}
+
+/* ── Blog cards on tiny screens ── */
+@media(max-width:360px){
+  .blog-body{padding:14px 16px}
+  .blog-title{font-size:14px}
+  .filter-btn{font-size:11px;padding:6px 11px}
+}
+
+/* ── Testimonial card touch ── */
+@media(max-width:360px){
+  .testi-card{padding:20px 16px}
+  .testi-quote{font-size:14px}
+}
+
+/* ── Case cards ── */
+@media(max-width:360px){
+  .case-amount{font-size:24px}
+  .case-meta{gap:10px}
+  .case-meta-val{font-size:12px}
+}
+
+/* ── FAQ mobile ── */
+@media(max-width:360px){
+  .faq-cat-btn{font-size:12px;padding:7px 10px}
+  .faq-q{font-size:13px;padding:14px 14px}
+}
+
+/* ── Press mobile ── */
+@media(max-width:360px){
+  .press-card{padding:20px 16px}
+  .press-title{font-size:14px}
+}
+
+/* ── Newsletter form mobile ── */
+@media(max-width:360px){
+  #section-newsletter{padding:40px 0}
+  .newsletter-perks{gap:6px}
+  .newsletter-perk{font-size:13px}
+}
+
+/* ── Contact form mobile ── */
+@media(max-width:360px){
+  .contact-form-card{padding:20px 16px}
+  .form-step-title{font-size:18px}
+  .btn-lg,.btn-full{font-size:14px;padding:13px 18px}
+}
+
+/* ── Footer: very small screens ── */
+@media(max-width:360px){
+  .footer-grid{grid-template-columns:1fr!important}
+  #section-footer{padding:40px 0 20px}
+  .footer-legal-links{flex-direction:column!important;gap:10px!important;align-items:flex-start!important}
+}
+
+/* ── Legal pages mobile fine-tune ── */
+@media(max-width:560px){
+  .legal-hero{padding:76px 0 40px}
+  .legal-hero h1{font-size:clamp(26px,7vw,38px)}
+  .legal-hero p{font-size:14px}
+  .legal-body{padding:32px 0 56px}
+  .legal-section{margin-bottom:28px}
+  .legal-section h2{font-size:18px}
+  .legal-section p,.legal-section li{font-size:14px;line-height:1.72}
+  .legal-contact-card{padding:20px}
+  .legal-callout{padding:14px 16px}
+}
+@media(max-width:360px){
+  .legal-toc-item{font-size:11px;padding:5px 8px}
+  .legal-hero h1{font-size:24px}
+  .legal-meta-item{font-size:12px}
+}
+
+/* ── Login card mobile ── */
+@media(max-width:360px){
+  .login-card{padding:24px 16px}
+  .otp-box{height:40px;font-size:16px}
+  .m-tab{font-size:11px;padding:8px 4px}
+}
+
+/* ── Dashboard mobile: show sidebar as bottom bar ── */
+@media(max-width:768px){
+  .dash-layout{flex-direction:column}
+  .dash-sidebar{width:100%;height:auto;flex-direction:row;position:sticky;bottom:0;top:auto;z-index:100;order:2}
+  .sidebar-logo-area{display:none}
+  .sidebar-nav{display:flex;flex-direction:row;padding:4px 6px;overflow-x:auto;gap:2px}
+  .sidebar-section-lbl{display:none}
+  .sidebar-item{flex-direction:column;gap:3px;padding:8px 12px;font-size:10px;min-width:60px;border-radius:8px;white-space:nowrap;text-align:center}
+  .sidebar-item-icon{font-size:18px;width:auto}
+  .sidebar-bottom{display:none}
+  .dash-main{order:1;overflow:visible}
+  .dash-content{overflow:visible}
+}
+@media(max-width:480px){
+  .sidebar-nav{gap:0}
+  .sidebar-item{padding:8px 8px;font-size:9px;min-width:52px}
+}
+
+/* ── Table overflow: horizontal scroll on mobile ── */
+@media(max-width:640px){
+  .d-card{overflow-x:auto}
+  table{min-width:480px}
+}
+@media(max-width:480px){
+  table{min-width:360px}
+  td,th{padding:9px 10px;font-size:11px}
+}
+
+/* ── Kpi grid responsive ── */
+@media(max-width:360px){
+  .kpi-grid{grid-template-columns:1fr!important}
+  .kpi-val{font-size:22px}
+}
+
+/* ── General: no horizontal scroll ever ── */
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+html{overflow-x:hidden;max-width:100vw}
+body{overflow-x:hidden;width:100%}
+.container{width:100%;max-width:1200px}
+img,video,iframe,svg,canvas{max-width:100%;height:auto}
+
+/* ── Touch targets: 44px minimum for all interactive elements ── */
+@media(max-width:768px){
+  .btn,.form-input,select.form-input,.otp-box,.nav-link,.mobile-link,.sidebar-item,.faq-q,.filter-btn,.faq-cat-btn,.legal-toc-item,.arrow-btn{min-height:44px}
+  .announce-close{min-width:44px;min-height:44px}
+  .hamburger{min-width:44px;min-height:44px;justify-content:center;align-items:center}
+}
+
+/* ── Footer legal links: proper spacing ── */
+.footer-legal-links span{display:inline-block}
+@media(max-width:640px){
+  .footer-bottom-row{flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .footer-legal-links{justify-content:center!important}
+  .footer-office-tags{justify-content:center}
+}
+
+/* ── Announcement bar: smaller height on mobile ── */
+@media(max-width:480px){
+  #announce-bar .announce-inner{height:36px}
+  .announce-item{font-size:11px;gap:6px}
+  .announce-close{right:8px}
+}
+
+/* ── Prevent long words from breaking layout ── */
+.svc-desc,.testi-quote,.blog-excerpt,.case-story,.press-excerpt,.legal-section p,.legal-section li,.section-sub,.p-desc{overflow-wrap:break-word;word-wrap:break-word;word-break:break-word;hyphens:auto}
+
+/* ── Ensure page switching works ── */
+#page-privacy.active,#page-terms.active{display:block!important}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     PAGE: WEBSITE
+═══════════════════════════════════════ -->
+<div id="page-website" class="page active">
+
+<!-- ANNOUNCEMENT BAR -->
+<div id="announce-bar">
+  <div class="container">
+    <div class="announce-inner">
+      <div class="announce-track" id="announce-track">
+        <div class="announce-item"><span class="announce-dot"></span> <strong>Free Consultation Week:</strong> Book your IEPF case review before 30 April — No fees, no obligation <span class="announce-cta" onclick="scrollToContact()">Book Now →</span></div>
+        <div class="announce-item"><span class="announce-dot"></span> <strong>NRI Special:</strong> Recover Indian investments without visiting India &mdash; 100% remote service <span class="announce-cta" onclick="scrollToContact()">Learn More →</span></div>
+        <div class="announce-item"><span class="announce-dot"></span> <strong>New:</strong> ₹18.4 Crore recovered in Q3 FY2024–25 for 48 clients across 6 countries <span class="announce-cta" onclick="scrollToContact()">View Details →</span></div>
+        <!-- duplicate for seamless loop -->
+        <div class="announce-item"><span class="announce-dot"></span> <strong>Free Consultation Week:</strong> Book your IEPF case review before 30 April — No fees, no obligation <span class="announce-cta" onclick="scrollToContact()">Book Now →</span></div>
+        <div class="announce-item"><span class="announce-dot"></span> <strong>NRI Special:</strong> Recover Indian investments without visiting India &mdash; 100% remote service <span class="announce-cta" onclick="scrollToContact()">Learn More →</span></div>
+        <div class="announce-item"><span class="announce-dot"></span> <strong>New:</strong> ₹18.4 Crore recovered in Q3 FY2024–25 for 48 clients across 6 countries <span class="announce-cta" onclick="scrollToContact()">View Details →</span></div>
+      </div>
+      <div class="announce-close" onclick="closeAnnounceBar()" title="Dismiss">×</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <div class="logo" onclick="showPage('page-website')">
+        <div class="logo-mark">
+          <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 12.5A5.5 5.5 0 1114.5 9 5.506 5.506 0 019 14.5z" fill="#C9A24A"/><path d="M9 6.5A2.5 2.5 0 1111.5 9 2.503 2.503 0 019 6.5z" fill="#C9A24A"/></svg>
+        </div>
+        <div class="logo-name">Claim<span>360</span></div>
+      </div>
+      <nav class="nav-links">
+        <div class="nav-dropdown">
+          <div class="nav-link">Services ▾</div>
+          <div class="dropdown-menu">
+            <div class="dropdown-item" onclick="scrollToSection('section-services')"><div class="dropdown-item-icon">📈</div>Investment Recovery</div>
+            <div class="dropdown-item" onclick="scrollToSection('section-services')"><div class="dropdown-item-icon">🏛️</div>IEPF Claims</div>
+            <div class="dropdown-item" onclick="scrollToSection('section-services')"><div class="dropdown-item-icon">🌍</div>NRI Services</div>
+            <div class="dropdown-item" onclick="scrollToSection('section-services')"><div class="dropdown-item-icon">📋</div>Physical Shares</div>
+            <div class="dropdown-item" onclick="scrollToSection('section-services')"><div class="dropdown-item-icon">⚖️</div>Compliance & Legal</div>
+          </div>
+        </div>
+        <div class="nav-link" onclick="scrollToSection('section-process')">How It Works</div>
+        <div class="nav-link" onclick="scrollToSection('section-cases')">Case Studies</div>
+        <div class="nav-link" onclick="scrollToSection('section-blog')">Blog</div>
+        <div class="nav-link" onclick="scrollToSection('section-press')">Press</div>
+        <div class="nav-link" onclick="scrollToSection('section-contact')">Contact</div>
+      </nav>
+      <div class="nav-right">
+        <span class="nav-login" onclick="showPage('page-login')">Client Login</span>
+        <button class="btn btn-primary btn-sm" onclick="scrollToContact()">Free Consultation</button>
+      </div>
+      <div class="hamburger" onclick="toggleMobileMenu()" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-close" onclick="toggleMobileMenu()">×</div>
+  <div class="mobile-links">
+    <div class="mobile-link" onclick="scrollToSection('section-services');toggleMobileMenu()">Services</div>
+    <div class="mobile-link" onclick="scrollToSection('section-process');toggleMobileMenu()">How It Works</div>
+    <div class="mobile-link" onclick="scrollToSection('section-cases');toggleMobileMenu()">Case Studies</div>
+    <div class="mobile-link" onclick="scrollToSection('section-blog');toggleMobileMenu()">Blog</div>
+    <div class="mobile-link" onclick="scrollToSection('section-press');toggleMobileMenu()">Press</div>
+    <div class="mobile-link" onclick="scrollToSection('section-contact');toggleMobileMenu()">Contact</div>
+  </div>
+  <div class="mobile-btns">
+    <button class="btn btn-outline btn-full" onclick="showPage('page-login');toggleMobileMenu()">Client Login</button>
+    <button class="btn btn-primary btn-full" onclick="scrollToContact();toggleMobileMenu()">Free Consultation →</button>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="section-hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-bg-glow"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <div class="hero-badge-dot"></div>
+          <span class="hero-badge-text">Trusted Since 2016 · Operating in 6 Countries</span>
+        </div>
+        <h1 class="hero-h1">Recover What's<br>Rightfully<br><em>Yours.</em></h1>
+        <p class="hero-sub">India's premier investment recovery firm — guiding clients through forgotten shares, IEPF claims, and complex legal recoveries with complete discretion and proven expertise.</p>
+        <div class="hero-btns">
+          <button class="btn btn-primary btn-lg" onclick="scrollToContact()">Start Free Recovery Evaluation →</button>
+          <button class="btn btn-outline btn-lg" onclick="scrollToSection('section-process')">See How It Works</button>
+        </div>
+        <div class="trust-strip">
+          <div class="trust-item"><div class="trust-num">₹105<span>Cr+</span></div><div class="trust-lbl">Recovered</div></div>
+          <div class="trust-item"><div class="trust-num">320<span>+</span></div><div class="trust-lbl">Clients Served</div></div>
+          <div class="trust-item"><div class="trust-num">7<span>+</span></div><div class="trust-lbl">Years Experience</div></div>
+          <div class="trust-item"><div class="trust-num">99<span>%</span></div><div class="trust-lbl">Success Rate</div></div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-float-1">
+          <div class="float-label">Active Cases</div>
+          <div class="float-val">142 Cases Live</div>
+        </div>
+        <div class="hero-visual-card">
+          <div class="hero-visual-label">Recovery Overview</div>
+          <div class="hero-visual-title">FY 2024–25 Performance</div>
+          <div class="recovery-bars">
+            <div class="rb" data-label="Jul"></div>
+            <div class="rb" data-label="Aug"></div>
+            <div class="rb" data-label="Sep"></div>
+            <div class="rb" data-label="Oct"></div>
+            <div class="rb" data-label="Nov"></div>
+            <div class="rb" data-label="Dec"></div>
+          </div>
+          <div class="rb-labels-row"></div>
+          <div class="hero-stats-grid">
+            <div class="hero-stat"><div class="hero-stat-val">₹18.4Cr</div><div class="hero-stat-lbl">Total Recovered</div><div class="hero-stat-change">↑ 23% YoY</div></div>
+            <div class="hero-stat"><div class="hero-stat-val">48</div><div class="hero-stat-lbl">Cases Closed</div><div class="hero-stat-change">↑ 8 cases</div></div>
+          </div>
+        </div>
+        <div class="hero-float-2">
+          <div class="float-sub-white">Countries Served</div>
+          <div class="float-val-white">🇮🇳 🇬🇧 🇺🇸 🇨🇦 🇦🇺 🇦🇪</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS BAR -->
+<div id="section-logos">
+  <div class="container">
+    <div class="logos-inner">
+      <div class="logos-label">Trusted By</div>
+      <div class="logos-track" id="logos-track">
+        <div class="logo-item"><span class="logo-item-dot"></span> SEBI Registered</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> IEPF Authorised</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> BSE Listed Advisor</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> NSDL Empanelled</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> CDSL Authorised</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> RTA Network Member</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> MCA Registered</div>
+        <!-- duplicate -->
+        <div class="logo-item"><span class="logo-item-dot"></span> SEBI Registered</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> IEPF Authorised</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> BSE Listed Advisor</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> NSDL Empanelled</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> CDSL Authorised</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> RTA Network Member</div>
+        <div class="logo-item"><span class="logo-item-dot"></span> MCA Registered</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="section-services">
+  <div class="container">
+    <div class="centered">
+      <div class="eyebrow">What We Do</div>
+      <h2 class="section-title">Comprehensive Recovery<br><em>Services</em></h2>
+      <p class="section-sub">From forgotten shares to complex IEPF claims — end-to-end support across every dimension of investment recovery.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card"><div class="svc-icon">📈</div><div class="svc-title">Investment Recovery</div><div class="svc-desc">Trace and recover dormant shares, dividends, and securities — including inheritance cases where clients didn't know assets existed.</div><div class="svc-link">Explore Service →</div></div>
+      <div class="svc-card"><div class="svc-icon">🏛️</div><div class="svc-title">IEPF Recovery</div><div class="svc-desc">Expert claim filing with the Investor Education and Protection Fund for dividends and shares transferred to government custody.</div><div class="svc-link">Explore Service →</div></div>
+      <div class="svc-card"><div class="svc-icon">🌍</div><div class="svc-title">NRI Services</div><div class="svc-desc">Full support for NRIs, OCI holders, and PIOs managing Indian investments from abroad — no India visit required.</div><div class="svc-link">Explore Service →</div></div>
+      <div class="svc-card"><div class="svc-icon">📋</div><div class="svc-title">Physical Share Management</div><div class="svc-desc">Dematerialization of old physical certificates and resolution of split or bonus share entitlements with full RTA coordination.</div><div class="svc-link">Explore Service →</div></div>
+      <div class="svc-card"><div class="svc-icon">⚖️</div><div class="svc-title">Compliance & Legal</div><div class="svc-desc">End-to-end legal documentation — wills, succession certificates, affidavits, and court filings handled with expertise.</div><div class="svc-link">Explore Service →</div></div>
+      <div class="svc-card"><div class="svc-icon">🔄</div><div class="svc-title">Share Transfer</div><div class="svc-desc">Smooth transfer of inherited or gifted shares with full regulatory compliance, even across international jurisdictions.</div><div class="svc-link">Explore Service →</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="section-why">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-left">
+        <div class="eyebrow">Why Claim360</div>
+        <h2 class="section-title">The Difference<br>Is Clear</h2>
+        <p class="section-sub">We don't just file paperwork — we own the entire process, from documentation to final credit, so you never have to follow up.</p>
+      </div>
+      <div>
+        <div class="why-table">
+          <div class="why-thead">
+            <div class="why-th">Feature</div>
+            <div class="why-th">Claim360</div>
+            <div class="why-th">Others</div>
+          </div>
+          <div class="why-row"><div class="why-feature">No upfront fees</div><div class="why-check"><span class="check-yes">✦</span></div><div class="why-check"><span class="check-no">○</span></div></div>
+          <div class="why-row"><div class="why-feature">NRI — no India visit needed</div><div class="why-check"><span class="check-yes">✦</span></div><div class="why-check"><span class="check-no">○</span></div></div>
+          <div class="why-row"><div class="why-feature">IEPF + physical shares</div><div class="why-check"><span class="check-yes">✦</span></div><div class="why-check"><span class="check-no">○</span></div></div>
+          <div class="why-row"><div class="why-feature">Inheritance & succession cases</div><div class="why-check"><span class="check-yes">✦</span></div><div class="why-check"><span class="check-no">○</span></div></div>
+          <div class="why-row"><div class="why-feature">Real-time case portal access</div><div class="why-check"><span class="check-yes">✦</span></div><div class="why-check"><span class="check-no">○</span></div></div>
+          <div class="why-row"><div class="why-feature">99% documented success rate</div><div class="why-check"><span class="check-yes">✦</span></div><div class="why-check"><span class="check-no">○</span></div></div>
+          <div class="why-row"><div class="why-feature">Dedicated case manager</div><div class="why-check"><span class="check-yes">✦</span></div><div class="why-check"><span class="check-no">○</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="section-process">
+  <div class="container">
+    <div class="centered">
+      <div class="eyebrow">How It Works</div>
+      <h2 class="section-title">Simple, Transparent,<br><em>End-to-End</em></h2>
+      <p class="section-sub">We take you from initial evaluation to recovery with complete visibility at every stage.</p>
+    </div>
+    <div class="process-steps">
+      <div class="p-step">
+        <div class="p-icon-wrap"><div class="p-icon">🔍</div><div class="p-num">1</div></div>
+        <div class="p-title">Case Evaluation</div>
+        <div class="p-desc">We analyse your portfolio to identify dormant assets, unclaimed dividends, and all recovery opportunities — at no cost to you.</div>
+      </div>
+      <div class="p-step">
+        <div class="p-icon-wrap"><div class="p-icon">📂</div><div class="p-num">2</div></div>
+        <div class="p-title">Documentation</div>
+        <div class="p-desc">We prepare and verify all required legal and financial documents — even without OCI or PAN for NRI cases.</div>
+      </div>
+      <div class="p-step">
+        <div class="p-icon-wrap"><div class="p-icon">⚖️</div><div class="p-num">3</div></div>
+        <div class="p-title">Legal Processing</div>
+        <div class="p-desc">Our team files with IEPF, SEBI, RTAs, and courts — coordinating the full regulatory process on your behalf.</div>
+      </div>
+      <div class="p-step">
+        <div class="p-icon-wrap"><div class="p-icon">✅</div><div class="p-num">4</div></div>
+        <div class="p-title">Recovery</div>
+        <div class="p-desc">Assets are credited to your demat or bank account. You receive a full recovery report and all documentation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="section-stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-block"><div class="stat-num" data-target="105">0<span class="accent">Cr+</span></div><div class="stat-lbl">Crores Recovered (₹)</div></div>
+      <div class="stat-block"><div class="stat-num" data-target="320">0<span class="accent">+</span></div><div class="stat-lbl">Clients Served Globally</div></div>
+      <div class="stat-block"><div class="stat-num" data-target="6">0</div><div class="stat-lbl">Countries Covered</div></div>
+      <div class="stat-block"><div class="stat-num" data-target="99">0<span class="accent">%</span></div><div class="stat-lbl">Recovery Success Rate</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="section-testimonials">
+  <div class="container">
+    <div class="centered">
+      <div class="eyebrow">Client Stories</div>
+      <h2 class="section-title">Trusted Across<br><em>The Globe</em></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <div class="testi-quote">"I was so pleasantly surprised by the job done. They recovered very valuable stocks which we did not know we owned. Their service was outstanding and highly dependable."</div>
+        <div class="testi-result">✦ ₹42 Lakhs Recovered</div>
+        <div class="testi-person"><div class="testi-avatar">KA</div><div><div class="testi-name">KJ Alphons IAS (Rtd.)</div><div class="testi-loc">Former MP & Minister of Tourism · New Delhi</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <div class="testi-quote">"Very professional and efficient — even though my late mother's investment had been rejected by another provider and I was thousands of miles away in the USA."</div>
+        <div class="testi-result">✦ ₹28 Lakhs Recovered</div>
+        <div class="testi-person"><div class="testi-avatar">SR</div><div><div class="testi-name">Sanjay M. Raigaga</div><div class="testi-loc">Texas, USA</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <div class="testi-quote">"The team handled everything — documentation, IEPF filing — without me needing to travel to India. An absolutely seamless experience from start to finish."</div>
+        <div class="testi-result">✦ ₹61 Lakhs Recovered</div>
+        <div class="testi-person"><div class="testi-avatar">PM</div><div><div class="testi-name">Priya Menon</div><div class="testi-loc">London, United Kingdom</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="section-cases">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px">
+      <div>
+        <div class="eyebrow">Case Studies</div>
+        <h2 class="section-title">Real Recoveries,<br><em>Real Results</em></h2>
+      </div>
+      <button class="arrow-btn" onclick="scrollToContact()">View All Cases →</button>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-tag">IEPF Recovery</div>
+          <div class="case-amount">₹61 Lakhs</div>
+          <div class="case-type">Recovered for NRI client in London</div>
+        </div>
+        <div class="case-body">
+          <div class="case-story">Mrs. Menon's late father had purchased shares in the 1980s that had accumulated dividends for over 20 years. The shares and dividends had been transferred to the IEPF. Claim360 recovered all assets within 8 months — without her travelling to India.</div>
+          <div class="case-meta">
+            <div class="case-meta-item"><div class="case-meta-label">Timeline</div><div class="case-meta-val">8 months</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">Jurisdiction</div><div class="case-meta-val">India + UK</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">Service</div><div class="case-meta-val">IEPF + NRI</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">Year</div><div class="case-meta-val">2024</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-header">
+          <div class="case-tag">Investment Recovery</div>
+          <div class="case-amount">₹42 Lakhs</div>
+          <div class="case-type">Recovered for former MP — shares unknown to client</div>
+        </div>
+        <div class="case-body">
+          <div class="case-story">KJ Alphons had inherited shares from a family member but was entirely unaware they existed. Claim360 traced the securities, completed dematerialization, and transferred all holdings to his demat account within 5 months.</div>
+          <div class="case-meta">
+            <div class="case-meta-item"><div class="case-meta-label">Timeline</div><div class="case-meta-val">5 months</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">Jurisdiction</div><div class="case-meta-val">India</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">Service</div><div class="case-meta-val">Recovery + Demat</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">Year</div><div class="case-meta-val">2023</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="section-blog">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px">
+      <div>
+        <div class="eyebrow">Knowledge Centre</div>
+        <h2 class="section-title">Guides, Updates<br>&amp; <em>Insights</em></h2>
+      </div>
+      <button class="arrow-btn">View All Articles →</button>
+    </div>
+    <div class="blog-filter">
+      <button class="filter-btn active" onclick="filterBlog(this,'all')">All Topics</button>
+      <button class="filter-btn" onclick="filterBlog(this,'iepf')">IEPF Guides</button>
+      <button class="filter-btn" onclick="filterBlog(this,'nri')">NRI Resources</button>
+      <button class="filter-btn" onclick="filterBlog(this,'legal')">Legal Updates</button>
+      <button class="filter-btn" onclick="filterBlog(this,'shares')">Share Recovery</button>
+      <button class="filter-btn" onclick="filterBlog(this,'stories')">Success Stories</button>
+    </div>
+    <div class="blog-featured">
+      <div class="blog-card featured" data-cat="iepf">
+        <div class="blog-img tall">
+          <div class="blog-img-icon">📑</div>
+          <div class="blog-img-overlay"></div>
+          <div class="blog-cat">IEPF Guides</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta"><span>March 28, 2025</span><span class="blog-meta-dot"></span><span>8 min read</span></div>
+          <div class="blog-title">The Complete 2025 Guide to Claiming Your Shares from the IEPF — Step by Step</div>
+          <div class="blog-excerpt">If your shares or dividends have been lying unclaimed for 7 years or more, the company may have already transferred them to the Investor Education and Protection Fund. Here's exactly how to get them back.</div>
+          <div class="blog-footer">
+            <span class="blog-author">Claim360 Team</span>
+            <span class="blog-read-time">8 min read</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div class="blog-card" data-cat="nri">
+          <div class="blog-img"><div class="blog-img-icon">🌍</div><div class="blog-img-overlay"></div><div class="blog-cat">NRI Resources</div></div>
+          <div class="blog-body">
+            <div class="blog-meta"><span>March 18, 2025</span><span class="blog-meta-dot"></span><span>5 min read</span></div>
+            <div class="blog-title">NRI Guide: How to Recover Indian Shares Without Visiting India</div>
+            <div class="blog-excerpt">A step-by-step walkthrough for overseas Indians managing inherited portfolios.</div>
+            <div class="blog-footer"><span class="blog-author">Claim360 Team</span><span class="blog-read-time">5 min read</span></div>
+          </div>
+        </div>
+        <div class="blog-card" data-cat="legal">
+          <div class="blog-img"><div class="blog-img-icon">⚖️</div><div class="blog-img-overlay"></div><div class="blog-cat">Legal Updates</div></div>
+          <div class="blog-body">
+            <div class="blog-meta"><span>March 10, 2025</span><span class="blog-meta-dot"></span><span>4 min read</span></div>
+            <div class="blog-title">SEBI's New 2025 Guidelines on Transmission of Shares — What You Need to Know</div>
+            <div class="blog-excerpt">Recent regulatory changes have simplified transmission for small holdings. Here's a summary.</div>
+            <div class="blog-footer"><span class="blog-author">Legal Team</span><span class="blog-read-time">4 min read</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="blog-grid" id="blog-grid">
+      <div class="blog-card" data-cat="shares">
+        <div class="blog-img" style="height:150px"><div class="blog-img-icon" style="font-size:36px">📜</div><div class="blog-img-overlay"></div><div class="blog-cat">Share Recovery</div></div>
+        <div class="blog-body">
+          <div class="blog-meta"><span>Feb 28, 2025</span><span class="blog-meta-dot"></span><span>6 min read</span></div>
+          <div class="blog-title">Old Physical Share Certificates: Are They Still Valid?</div>
+          <div class="blog-excerpt">Many Indians hold paper share certificates from the pre-demat era. We explain what they're worth and how to convert them.</div>
+          <div class="blog-footer"><span class="blog-author">Claim360 Team</span><span class="blog-read-time">6 min</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-cat="stories">
+        <div class="blog-img" style="height:150px"><div class="blog-img-icon" style="font-size:36px">🏆</div><div class="blog-img-overlay"></div><div class="blog-cat">Success Stories</div></div>
+        <div class="blog-body">
+          <div class="blog-meta"><span>Feb 15, 2025</span><span class="blog-meta-dot"></span><span>3 min read</span></div>
+          <div class="blog-title">How a Family in Texas Recovered ₹28L from Their Late Mother's Portfolio</div>
+          <div class="blog-excerpt">A recovery that had been rejected by another firm — resolved remotely in 6 months.</div>
+          <div class="blog-footer"><span class="blog-author">Case Team</span><span class="blog-read-time">3 min</span></div>
+        </div>
+      </div>
+      <div class="blog-card" data-cat="iepf">
+        <div class="blog-img" style="height:150px"><div class="blog-img-icon" style="font-size:36px">🏛️</div><div class="blog-img-overlay"></div><div class="blog-cat">IEPF Guides</div></div>
+        <div class="blog-body">
+          <div class="blog-meta"><span>Jan 30, 2025</span><span class="blog-meta-dot"></span><span>7 min read</span></div>
+          <div class="blog-title">IEPF-5 Form: Common Mistakes That Cause Rejection and How to Avoid Them</div>
+          <div class="blog-excerpt">The IEPF-5 is the most misunderstood form in Indian investment law. Here's what most claimants get wrong.</div>
+          <div class="blog-footer"><span class="blog-author">Claim360 Team</span><span class="blog-read-time">7 min</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="section-faq">
+  <div class="container">
+    <div class="faq-inner">
+      <div>
+        <div class="eyebrow">FAQ</div>
+        <h2 class="section-title">Common<br><em>Questions</em></h2>
+        <p class="section-sub" style="margin-bottom:0">Everything you need to know before starting your recovery.</p>
+        <div class="faq-cats">
+          <div class="faq-cat-btn active" onclick="setFaqCat(this,'general')"><span class="faq-cat-icon">💬</span> General</div>
+          <div class="faq-cat-btn" onclick="setFaqCat(this,'iepf')"><span class="faq-cat-icon">🏛️</span> IEPF</div>
+          <div class="faq-cat-btn" onclick="setFaqCat(this,'nri')"><span class="faq-cat-icon">🌍</span> NRI</div>
+          <div class="faq-cat-btn" onclick="setFaqCat(this,'fees')"><span class="faq-cat-icon">💰</span> Fees</div>
+          <div class="faq-cat-btn" onclick="setFaqCat(this,'timeline')"><span class="faq-cat-icon">⏱️</span> Timeline</div>
+        </div>
+      </div>
+      <div>
+        <div class="faq-list" id="faq-list">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRESS -->
+<section id="section-press">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px">
+      <div>
+        <div class="eyebrow">Media Centre</div>
+        <h2 class="section-title">Press &amp;<br><em>News</em></h2>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="scrollToContact()">Press Enquiries →</button>
+    </div>
+    <div class="press-grid">
+      <div class="press-card">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="press-date">April 2, 2025</div><span class="press-type-tag pt-release">Press Release</span></div>
+        <div class="press-title">Claim360 Surpasses ₹100 Crore in Cumulative Investment Recoveries</div>
+        <div class="press-excerpt">360 Degrees Management Services Pvt. Ltd. today announced it has crossed the ₹100 crore milestone in cumulative client investment recoveries, serving over 320 clients across six countries since inception in 2016.</div>
+        <div class="press-footer"><span class="press-source">Claim360 · Mumbai</span><span class="press-download">⬇ Download PDF</span></div>
+      </div>
+      <div class="press-card">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="press-date">January 15, 2025</div><span class="press-type-tag pt-media">Media Coverage</span></div>
+        <div class="press-title">Economic Times: NRI Investment Recovery Firms See Record Demand in 2024</div>
+        <div class="press-excerpt">Claim360 was featured in a special Economic Times report on the growing demand for IEPF recovery services from the NRI community, with the firm cited as a top provider for overseas clients.</div>
+        <div class="press-footer"><span class="press-source">Economic Times</span><span class="press-download">⬇ Read Article</span></div>
+      </div>
+      <div class="press-card">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="press-date">October 8, 2024</div><span class="press-type-tag pt-release">Press Release</span></div>
+        <div class="press-title">Claim360 Expands London Operations to Serve Growing UK-India NRI Clientele</div>
+        <div class="press-excerpt">Following strong demand from UK-based NRIs, Claim360 has established a dedicated London advisory desk staffed by qualified investment recovery specialists with India-UK cross-border expertise.</div>
+        <div class="press-footer"><span class="press-source">Claim360 · London</span><span class="press-download">⬇ Download PDF</span></div>
+      </div>
+      <div class="press-card">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="press-date">July 22, 2024</div><span class="press-type-tag pt-media">Media Coverage</span></div>
+        <div class="press-title">Business Standard: IEPF Claims Surge 40% as Awareness Grows Among Heirs</div>
+        <div class="press-excerpt">Claim360's co-founder was quoted in Business Standard's analysis of the IEPF claims surge, discussing the key documentation mistakes that lead to rejections and how professional advisors bridge the gap.</div>
+        <div class="press-footer"><span class="press-source">Business Standard</span><span class="press-download">⬇ Read Article</span></div>
+      </div>
+      <div class="press-card">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="press-date">March 14, 2024</div><span class="press-type-tag pt-release">Press Release</span></div>
+        <div class="press-title">Claim360 Partners with Leading RTAs to Streamline Physical Share Conversion</div>
+        <div class="press-excerpt">New partnerships with India's top Registrar and Transfer Agents will reduce average dematerialization timelines by up to 35%, the company announced today.</div>
+        <div class="press-footer"><span class="press-source">Claim360 · New Delhi</span><span class="press-download">⬇ Download PDF</span></div>
+      </div>
+      <div class="press-card">
+        <div style="display:flex;justify-content:space-between;align-items:center"><div class="press-date">November 5, 2023</div><span class="press-type-tag pt-media">Media Coverage</span></div>
+        <div class="press-title">Mint: How Claim360 is Recovering Crores in Forgotten Investments for NRIs</div>
+        <div class="press-excerpt">A detailed profile in Mint magazine covering Claim360's end-to-end recovery model, client outcomes, and the regulatory landscape for IEPF claimants.</div>
+        <div class="press-footer"><span class="press-source">Mint</span><span class="press-download">⬇ Read Article</span></div>
+      </div>
+    </div>
+    <div class="media-coverage">
+      <div class="media-cov-label">As Featured In</div>
+      <div class="media-logos">
+        <div class="media-logo-item">Economic Times</div>
+        <div class="media-logo-item">Business Standard</div>
+        <div class="media-logo-item">Mint</div>
+        <div class="media-logo-item">NDTV Profit</div>
+        <div class="media-logo-item">MoneyControl</div>
+        <div class="media-logo-item">Financial Express</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="section-newsletter">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div class="newsletter-left">
+        <div class="eyebrow">Stay Informed</div>
+        <h2 class="section-title">Get Our Free<br>IEPF Recovery Guide</h2>
+        <div class="newsletter-perks">
+          <div class="newsletter-perk"><div class="perk-check">✓</div>Free 12-page IEPF claim checklist</div>
+          <div class="newsletter-perk"><div class="perk-check">✓</div>Monthly regulatory updates from SEBI</div>
+          <div class="newsletter-perk"><div class="perk-check">✓</div>Real recovery case studies</div>
+          <div class="newsletter-perk"><div class="perk-check">✓</div>No spam — unsubscribe anytime</div>
+        </div>
+      </div>
+      <div>
+        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" placeholder="Rajesh Kumar"></div>
+        <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="rajesh@example.com"></div>
+        <button class="btn btn-primary btn-full" style="padding:15px" onclick="alert('Thank you! Check your inbox for the free IEPF Guide.')">Send Me the Free Guide →</button>
+        <p style="font-size:11px;color:var(--light);text-align:center;margin-top:10px">🔒 Zero spam. Unsubscribe at any time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="section-contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="eyebrow">Get Started</div>
+        <h2 class="section-title">Start Your Recovery<br><em>Today</em></h2>
+        <p class="section-sub">Speak with our experts for a free, confidential case evaluation. No commitment required — just answers.</p>
+        <div class="contact-details">
+          <div class="contact-detail"><div class="contact-icon">📞</div><div><div class="contact-detail-label">Phone / WhatsApp</div><div class="contact-detail-val">+91 99101 74035</div></div></div>
+          <div class="contact-detail"><div class="contact-icon">✉️</div><div><div class="contact-detail-label">Email</div><div class="contact-detail-val">info@claim360.in</div></div></div>
+          <div class="contact-detail"><div class="contact-icon">🏢</div><div><div class="contact-detail-label">Offices</div><div class="contact-detail-val">Mumbai · New Delhi · London</div></div></div>
+          <div class="contact-detail"><div class="contact-icon">🕒</div><div><div class="contact-detail-label">Response Time</div><div class="contact-detail-val">Within 24 hours</div></div></div>
+        </div>
+      </div>
+      <div class="contact-form-card">
+        <div class="step-indicator" id="stepIndicator">
+          <div class="step-dot active"></div>
+          <div class="step-dot"></div>
+          <div class="step-dot"></div>
+        </div>
+        <!-- Step 1 -->
+        <div id="contact-step-1">
+          <div class="form-step-title">Tell us about yourself</div>
+          <div class="form-step-sub">Step 1 of 3 — Basic details</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" placeholder="Rajesh Kumar"></div>
+            <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" placeholder="+91 98765 43210"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="rajesh@example.com"></div>
+          <div class="form-group"><label class="form-label">You are a</label>
+            <select class="form-input">
+              <option value="">Select…</option>
+              <option>Indian Resident</option>
+              <option>NRI / OCI / PIO</option>
+              <option>Legal Heir / Nominee</option>
+              <option>Company / Institution</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-full" style="padding:14px" onclick="contactStep(2)">Next: Service Details →</button>
+        </div>
+        <!-- Step 2 -->
+        <div id="contact-step-2" style="display:none">
+          <div class="form-step-title">What do you need?</div>
+          <div class="form-step-sub">Step 2 of 3 — Service & case details</div>
+          <div class="form-group"><label class="form-label">Service Needed</label>
+            <select class="form-input">
+              <option value="">Select a service…</option>
+              <option>IEPF Recovery</option>
+              <option>Investment / Share Recovery</option>
+              <option>NRI Services</option>
+              <option>Physical Share Demat</option>
+              <option>Compliance & Legal</option>
+              <option>Share Transfer</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Approximate Value</label>
+            <select class="form-input">
+              <option value="">Estimated value…</option>
+              <option>Under ₹5 Lakhs</option>
+              <option>₹5 – 25 Lakhs</option>
+              <option>₹25 – 1 Crore</option>
+              <option>Above ₹1 Crore</option>
+              <option>Not sure</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Brief Description</label><textarea class="form-input" rows="3" style="resize:none" placeholder="e.g. Inherited shares from late father, unsure if dividends are pending…"></textarea></div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-outline" style="padding:14px;flex:1" onclick="contactStep(1)">← Back</button>
+            <button class="btn btn-primary" style="padding:14px;flex:2" onclick="contactStep(3)">Next: Confirm →</button>
+          </div>
+        </div>
+        <!-- Step 3 -->
+        <div id="contact-step-3" style="display:none">
+          <div style="text-align:center;padding:20px 0">
+            <div style="font-size:52px;margin-bottom:16px">✅</div>
+            <div class="form-step-title" style="text-align:center">Ready to submit!</div>
+            <div class="form-step-sub" style="text-align:center;margin-bottom:28px">Step 3 of 3 — Confirm & send</div>
+            <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:28px">Our team will contact you within 24 hours with an initial assessment. This evaluation is completely free and confidential.</p>
+            <button class="btn btn-gold btn-full" style="padding:16px;font-size:16px" onclick="submitContact()">Submit for Free Evaluation →</button>
+            <button class="btn btn-outline btn-full" style="padding:12px;margin-top:10px" onclick="contactStep(2)">← Edit Details</button>
+          </div>
+          <p style="font-size:11px;color:var(--light);text-align:center;margin-top:12px">🔒 100% confidential. No obligation whatsoever.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="section-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark" style="width:32px;height:32px">
+            <svg viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 12.5A5.5 5.5 0 1114.5 9 5.506 5.506 0 019 14.5z" fill="#C9A24A"/><path d="M9 6.5A2.5 2.5 0 1111.5 9 2.503 2.503 0 019 6.5z" fill="#C9A24A"/></svg>
+          </div>
+          <div class="footer-logo-name">Claim<span>360</span></div>
+        </div>
+        <p class="footer-tagline">360 Degrees Management Services Pvt. Ltd. — India's trusted partner for investment recovery, IEPF claims, and NRI financial services since 2016.</p>
+        <div class="footer-social">
+          <div class="social-btn">in</div>
+          <div class="social-btn">𝕏</div>
+          <div class="social-btn">📘</div>
+          <div class="social-btn">▶</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-links">
+          <a onclick="scrollToSection('section-why')">About Us</a>
+          <a onclick="scrollToSection('section-testimonials')">Our Team</a>
+          <a onclick="scrollToSection('section-cases')">Our Story</a>
+          <a>Careers</a>
+          <a onclick="scrollToSection('section-contact')">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+          <a onclick="scrollToSection('section-services')">Investment Recovery</a>
+          <a onclick="scrollToSection('section-services')">IEPF Claims</a>
+          <a onclick="scrollToSection('section-services')">NRI Services</a>
+          <a onclick="scrollToSection('section-services')">Physical Shares</a>
+          <a onclick="scrollToSection('section-services')">Legal Support</a>
+          <a onclick="scrollToSection('section-services')">Share Transfer</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <div class="footer-links">
+          <a onclick="scrollToSection('section-blog')">Blog / Guides</a>
+          <a onclick="scrollToSection('section-press')">Press &amp; Media</a>
+          <a onclick="scrollToSection('section-faq')">FAQ</a>
+          <a onclick="scrollToSection('section-cases')">Case Studies</a>
+          <a onclick="scrollToSection('section-newsletter')">Free IEPF Guide</a>
+          <a onclick="showPage('page-privacy')" style="color:rgba(255,255,255,.45);margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.08)">Privacy Policy</a>
+          <a onclick="showPage('page-terms')">Terms &amp; Conditions</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-contact-list">
+          <div class="footer-contact-row"><span class="fc-icon">📞</span><span class="fc-text">+91 99101 74035</span></div>
+          <div class="footer-contact-row"><span class="fc-icon">✉️</span><span class="fc-text">info@claim360.in</span></div>
+          <div class="footer-contact-row"><span class="fc-icon">🏢</span><span class="fc-text">Mumbai · New Delhi · London</span></div>
+        </div>
+        <button class="btn btn-outline-white btn-sm" style="margin-top:18px;font-size:12px" onclick="scrollToContact()">Book Consultation</button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-disclaimer">Claim360 (360 Degrees Management Services Pvt. Ltd.) is a registered advisory firm. Investment recovery services are subject to applicable SEBI, IEPF, and MCA regulations. Past recovery outcomes do not guarantee future results. All services are subject to individual case merit and applicable law. SEBI Reg. No. (if applicable). CIN: UXXXXX. This website is for informational purposes only and does not constitute legal or financial advice.</div>
+      <div class="footer-bottom-row">
+        <div class="footer-copy">© 2025 360 Degrees Management Services Pvt. Ltd. All rights reserved.</div>
+        <div class="footer-legal-links" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center">
+          <span onclick="showPage('page-privacy')" style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer;transition:color .18s;white-space:nowrap" onmouseover="this.style.color='#e8c878'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Privacy Policy</span>
+          <span style="font-size:12px;color:rgba(255,255,255,.15)">·</span>
+          <span onclick="showPage('page-terms')" style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer;transition:color .18s;white-space:nowrap" onmouseover="this.style.color='#e8c878'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Terms & Conditions</span>
+          <span style="font-size:12px;color:rgba(255,255,255,.15)">·</span>
+          <span style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap">Cookie Policy</span>
+        </div>
+        <div class="footer-office-tags">
+          <div class="office-tag">Mumbai</div>
+          <div class="office-tag">New Delhi</div>
+          <div class="office-tag">London</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /page-website -->
+
+<!-- ═══════════════════════════════════════
+     PAGE: LOGIN
+═══════════════════════════════════════ -->
+<div id="page-login" class="page">
+<div style="min-height:100vh;display:flex">
+  <div class="login-left">
+    <div class="login-brand">
+      <div class="login-brand-mark">
+        <svg viewBox="0 0 18 18" fill="none" width="22" height="22"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 12.5A5.5 5.5 0 1114.5 9 5.506 5.506 0 019 14.5z" fill="#0A2540"/><path d="M9 6.5A2.5 2.5 0 1111.5 9 2.503 2.503 0 019 6.5z" fill="#0A2540"/></svg>
+      </div>
+      <div class="login-brand-name">Claim<span>360</span></div>
+    </div>
+    <h2 class="login-left-title">Your Recovery<br>Portal Awaits</h2>
+    <p class="login-left-sub">Securely access your case status, documents, and recovery updates — all in one place.</p>
+    <div class="login-trust">
+      <div class="login-trust-item"><span class="login-trust-icon">🔐</span><span class="login-trust-text">Bank-grade 256-bit SSL encryption</span></div>
+      <div class="login-trust-item"><span class="login-trust-icon">📁</span><span class="login-trust-text">Real-time case tracking & documents</span></div>
+      <div class="login-trust-item"><span class="login-trust-icon">🌍</span><span class="login-trust-text">Accessible from anywhere in the world</span></div>
+      <div class="login-trust-item"><span class="login-trust-icon">🛡️</span><span class="login-trust-text">DPDP Act compliant data protection</span></div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-card">
+      <div class="login-flow active" id="flow-main">
+        <div class="login-card-title">Welcome Back</div>
+        <div class="login-card-sub">Sign in to your recovery portal</div>
+        <div class="method-tabs" id="mainTabs">
+          <div class="m-tab active" onclick="switchLoginTab(this,'tab-pass','mainTabs')">Password</div>
+          <div class="m-tab" onclick="switchLoginTab(this,'tab-emailotp','mainTabs')">Email OTP</div>
+          <div class="m-tab" onclick="switchLoginTab(this,'tab-phoneotp','mainTabs')">Phone OTP</div>
+        </div>
+        <div id="tab-pass">
+          <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="you@example.com"></div>
+          <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••••"></div>
+          <div style="text-align:right;margin-bottom:22px"><span class="login-link" onclick="switchFlow('flow-forgot')">Forgot password?</span></div>
+          <button class="btn btn-primary btn-full" style="padding:14px" onclick="showPage('page-dashboard')">Sign In →</button>
+        </div>
+        <div id="tab-emailotp" style="display:none">
+          <div class="form-group"><label class="form-label">Email Address</label><div class="input-with-btn"><input class="form-input" type="email" placeholder="you@example.com"><button class="btn btn-primary btn-sm" onclick="revealOtp('emailOtpSection','emailTimer')">Send OTP</button></div></div>
+          <div id="emailOtpSection" style="display:none">
+            <label class="form-label">Enter OTP</label>
+            <div class="otp-boxes">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px"><span style="font-size:12px;color:var(--light)">Expires in <span id="emailTimer">02:00</span></span><span class="login-link" onclick="revealOtp('emailOtpSection','emailTimer')">Resend</span></div>
+            <button class="btn btn-primary btn-full" style="padding:14px" onclick="showPage('page-dashboard')">Verify & Sign In →</button>
+          </div>
+        </div>
+        <div id="tab-phoneotp" style="display:none">
+          <div class="form-group"><label class="form-label">Phone Number</label><div class="input-with-btn"><input class="form-input" type="tel" placeholder="+91 99101 74035"><button class="btn btn-primary btn-sm" onclick="revealOtp('phoneOtpSection','phoneTimer')">Send OTP</button></div></div>
+          <div id="phoneOtpSection" style="display:none">
+            <label class="form-label">Enter OTP</label>
+            <div class="otp-boxes">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+              <input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)">
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px"><span style="font-size:12px;color:var(--light)">Expires in <span id="phoneTimer">02:00</span></span><span class="login-link" onclick="revealOtp('phoneOtpSection','phoneTimer')">Resend</span></div>
+            <button class="btn btn-primary btn-full" style="padding:14px" onclick="showPage('page-dashboard')">Verify & Sign In →</button>
+          </div>
+        </div>
+        <div class="login-footer-row">
+          <span style="font-size:13px;color:var(--light)">New client?</span>
+          <span class="login-link" onclick="alert('Please contact us at info@claim360.in to set up your portal access.')">Request Access</span>
+        </div>
+        <div style="margin-top:14px;text-align:center"><span class="login-link" onclick="showPage('page-website')">← Back to Website</span></div>
+      </div>
+      <div class="login-flow" id="flow-forgot">
+        <div class="login-card-title">Reset Password</div>
+        <div class="login-card-sub">Enter your registered email to receive an OTP.</div>
+        <div id="fe-step1">
+          <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" type="email" placeholder="you@example.com"></div>
+          <button class="btn btn-primary btn-full" style="padding:14px" onclick="toggleStep('fe-step1','fe-step2')">Send Reset OTP →</button>
+        </div>
+        <div id="fe-step2" style="display:none">
+          <div class="form-group"><label class="form-label">Enter OTP</label><div class="otp-boxes"><input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)"><input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)"><input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)"><input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)"><input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)"><input class="otp-box" maxlength="1" oninput="otpNext(this)" onkeydown="otpBack(event,this)"></div></div>
+          <div class="form-group"><label class="form-label">New Password</label><input class="form-input" type="password" placeholder="Min. 8 characters"></div>
+          <div class="form-group"><label class="form-label">Confirm Password</label><input class="form-input" type="password" placeholder="Repeat new password"></div>
+          <button class="btn btn-primary btn-full" style="padding:14px" onclick="showPage('page-dashboard')">Reset & Sign In →</button>
+        </div>
+        <div style="margin-top:20px;text-align:center"><span class="login-link" onclick="switchFlow('flow-main')">← Back to Login</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /page-login -->
+
+<!-- ═══════════════════════════════════════
+     PAGE: DASHBOARD
+═══════════════════════════════════════ -->
+<div id="page-dashboard" class="page">
+<div class="dash-layout">
+  <div class="dash-sidebar">
+    <div class="sidebar-logo-area">
+      <div class="sidebar-logo-mark"><svg viewBox="0 0 18 18" fill="none" width="16" height="16"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 12.5A5.5 5.5 0 1114.5 9 5.506 5.506 0 019 14.5z" fill="#0A2540"/><path d="M9 6.5A2.5 2.5 0 1111.5 9 2.503 2.503 0 019 6.5z" fill="#0A2540"/></svg></div>
+      <div class="sidebar-logo-name">Claim<span>360</span></div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-section-lbl">Main</div>
+      <div class="sidebar-item active" onclick="showDashView('dv-overview',this)"><span class="sidebar-item-icon">📊</span> Dashboard</div>
+      <div class="sidebar-item" onclick="showDashView('dv-leads',this)"><span class="sidebar-item-icon">👥</span> Leads</div>
+      <div class="sidebar-item" onclick="showDashView('dv-cases',this)"><span class="sidebar-item-icon">📁</span> Cases</div>
+      <div class="sidebar-section-lbl">Manage</div>
+      <div class="sidebar-item" onclick="showDashView('dv-content',this)"><span class="sidebar-item-icon">✏️</span> Content</div>
+      <div class="sidebar-item"><span class="sidebar-item-icon">👤</span> Users</div>
+      <div class="sidebar-item"><span class="sidebar-item-icon">⚙️</span> Settings</div>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="sidebar-item" onclick="showPage('page-login')" style="opacity:.5"><span class="sidebar-item-icon">🚪</span> Log Out</div>
+    </div>
+  </div>
+  <div class="dash-main">
+    <div class="dash-topbar">
+      <div class="topbar-left">
+        <div class="topbar-title" id="dashTitle">Dashboard</div>
+        <span class="topbar-crumb" id="dashCrumb">/ Overview</span>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-chip">● Live</div>
+        <div class="dash-avatar">SS</div>
+      </div>
+    </div>
+    <div class="dash-content">
+      <!-- Overview -->
+      <div class="dash-view active" id="dv-overview">
+        <div class="dash-section-title">Performance Overview</div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon ki-blue">📋</div><div class="kpi-change up">↑ 12%</div></div><div class="kpi-val">284</div><div class="kpi-lbl">Total Leads</div></div>
+          <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon ki-gold">📁</div><div class="kpi-change up">↑ 8%</div></div><div class="kpi-val">67</div><div class="kpi-lbl">Active Cases</div></div>
+          <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon ki-green">💰</div><div class="kpi-change up">↑ 23%</div></div><div class="kpi-val">₹18.4Cr</div><div class="kpi-lbl">Revenue Recovered</div></div>
+          <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon ki-purple">✅</div><div class="kpi-change dn">↓ 2%</div></div><div class="kpi-val">99%</div><div class="kpi-lbl">Success Rate</div></div>
+        </div>
+        <div class="d-card">
+          <div class="d-card-header"><div class="d-card-title">Recent Leads</div><div class="d-card-action" onclick="showDashView('dv-leads',document.querySelectorAll('.sidebar-item')[1])">View All →</div></div>
+          <table><thead><tr><th>Name</th><th>Phone</th><th>Service</th><th>Date</th><th>Status</th></tr></thead><tbody>
+            <tr><td><strong>Anita Sharma</strong></td><td>+91 98765 43210</td><td>IEPF Recovery</td><td>28 Mar 2025</td><td><span class="pill pill-new">New</span></td></tr>
+            <tr><td><strong>Rajiv Mehra</strong></td><td>+44 7700 900123</td><td>NRI Services</td><td>27 Mar 2025</td><td><span class="pill pill-progress">In Progress</span></td></tr>
+            <tr><td><strong>Sunita Patel</strong></td><td>+91 91234 56789</td><td>Physical Shares</td><td>25 Mar 2025</td><td><span class="pill pill-done">Completed</span></td></tr>
+            <tr><td><strong>Arun Kapoor</strong></td><td>+1 415 555 0192</td><td>Investment Recovery</td><td>24 Mar 2025</td><td><span class="pill pill-new">New</span></td></tr>
+          </tbody></table>
+        </div>
+        <div class="d-card">
+          <div class="d-card-header"><div class="d-card-title">Cases by Stage</div></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr)">
+            <div style="padding:20px;border-right:1px solid var(--border);text-align:center"><div style="font-family:var(--font-display);font-size:28px;color:var(--navy)">18</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Evaluation</div></div>
+            <div style="padding:20px;border-right:1px solid var(--border);text-align:center"><div style="font-family:var(--font-display);font-size:28px;color:var(--navy)">24</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Documentation</div></div>
+            <div style="padding:20px;border-right:1px solid var(--border);text-align:center"><div style="font-family:var(--font-display);font-size:28px;color:var(--navy)">16</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Legal Processing</div></div>
+            <div style="padding:20px;text-align:center"><div style="font-family:var(--font-display);font-size:28px;color:var(--navy)">9</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Recovery Pending</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Leads -->
+      <div class="dash-view" id="dv-leads">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><div class="dash-section-title" style="margin:0">All Leads</div><button class="btn btn-primary btn-sm">+ Add Lead</button></div>
+        <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+          <input class="form-input" style="max-width:240px;padding:9px 13px" placeholder="🔍 Search…">
+          <select class="form-input" style="max-width:150px;padding:9px 13px"><option>All Statuses</option><option>New</option><option>In Progress</option><option>Completed</option></select>
+          <select class="form-input" style="max-width:200px;padding:9px 13px"><option>All Services</option><option>IEPF Recovery</option><option>NRI Services</option><option>Physical Shares</option></select>
+        </div>
+        <div class="d-card">
+          <table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Service</th><th>Date</th><th>Status</th><th></th></tr></thead><tbody>
+            <tr><td><strong>Anita Sharma</strong></td><td>+91 98765 43210</td><td>anita@gmail.com</td><td>IEPF Recovery</td><td>28 Mar</td><td><span class="pill pill-new">New</span></td><td style="font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.5">View →</td></tr>
+            <tr><td><strong>Rajiv Mehra</strong></td><td>+44 7700 900123</td><td>rajiv@outlook.com</td><td>NRI Services</td><td>27 Mar</td><td><span class="pill pill-progress">In Progress</span></td><td style="font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.5">View →</td></tr>
+            <tr><td><strong>Sunita Patel</strong></td><td>+91 91234 56789</td><td>sunita@yahoo.in</td><td>Physical Shares</td><td>25 Mar</td><td><span class="pill pill-done">Completed</span></td><td style="font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.5">View →</td></tr>
+            <tr><td><strong>Arun Kapoor</strong></td><td>+1 415 555 0192</td><td>arun@gmail.com</td><td>Investment Recovery</td><td>24 Mar</td><td><span class="pill pill-new">New</span></td><td style="font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.5">View →</td></tr>
+            <tr><td><strong>Deepika Nair</strong></td><td>+91 87654 32109</td><td>deepika@mail.com</td><td>IEPF Recovery</td><td>22 Mar</td><td><span class="pill pill-progress">In Progress</span></td><td style="font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.5">View →</td></tr>
+            <tr><td><strong>Mohammed Hussain</strong></td><td>+971 50 123 4567</td><td>mh@email.ae</td><td>NRI Services</td><td>20 Mar</td><td><span class="pill pill-new">New</span></td><td style="font-size:13px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.5">View →</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+      <!-- Cases -->
+      <div class="dash-view" id="dv-cases">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><div class="dash-section-title" style="margin:0">Case Management</div><button class="btn btn-primary btn-sm">+ New Case</button></div>
+        <div class="kpi-grid" style="margin-bottom:20px">
+          <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon ki-blue">🔍</div></div><div class="kpi-val">18</div><div class="kpi-lbl">Evaluation Stage</div></div>
+          <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon ki-gold">📂</div></div><div class="kpi-val">24</div><div class="kpi-lbl">Documentation</div></div>
+          <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon ki-purple">⚖️</div></div><div class="kpi-val">16</div><div class="kpi-lbl">Legal Processing</div></div>
+          <div class="kpi-card"><div class="kpi-top"><div class="kpi-icon ki-green">✅</div></div><div class="kpi-val">9</div><div class="kpi-lbl">Recovery Pending</div></div>
+        </div>
+        <div class="d-card">
+          <div class="d-card-header"><div class="d-card-title">Active Cases</div><div class="d-card-action">Export CSV</div></div>
+          <table><thead><tr><th>Case ID</th><th>Client</th><th>Service</th><th>Est. Value</th><th>Stage</th><th>Days Active</th></tr></thead><tbody>
+            <tr><td><strong>#C-2025-142</strong></td><td>Rajiv Mehra</td><td>NRI Services</td><td>₹48L</td><td><span class="pill pill-progress">Documentation</span></td><td>12 days</td></tr>
+            <tr><td><strong>#C-2025-138</strong></td><td>Anita Sharma</td><td>IEPF Recovery</td><td>₹22L</td><td><span class="pill pill-eval">Evaluation</span></td><td>3 days</td></tr>
+            <tr><td><strong>#C-2025-129</strong></td><td>Deepika Nair</td><td>IEPF Recovery</td><td>₹35L</td><td><span class="pill pill-legal">Legal Processing</span></td><td>28 days</td></tr>
+            <tr><td><strong>#C-2025-115</strong></td><td>Mohammed Hussain</td><td>NRI Services</td><td>₹91L</td><td><span class="pill pill-done">Recovery Stage</span></td><td>45 days</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+      <!-- Content -->
+      <div class="dash-view" id="dv-content">
+        <div class="dash-section-title">Content Management</div>
+        <div class="content-grid">
+          <div class="c-card"><div class="c-card-header"><div class="c-card-title">Hero Text</div><span class="c-edit-btn">Edit</span></div><div class="c-preview"><strong>Headline:</strong> Recover What's Rightfully Yours.<br><br><strong>Sub:</strong> India's premier investment recovery firm — guiding clients through forgotten shares, IEPF claims, and complex legal recoveries.</div></div>
+          <div class="c-card"><div class="c-card-header"><div class="c-card-title">Announcement Bar</div><span class="c-edit-btn">Edit</span></div><div class="c-preview">3 rotating messages active · Free Consultation Week · NRI Special · Q3 Recovery Milestone</div></div>
+          <div class="c-card"><div class="c-card-header"><div class="c-card-title">Testimonials</div><span class="c-edit-btn">Manage</span></div><div class="c-preview">KJ Alphons IAS — ₹42L · Sanjay Raigaga — ₹28L · Priya Menon — ₹61L<br><br><span style="font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.6">+ Add Testimonial</span></div></div>
+          <div class="c-card"><div class="c-card-header"><div class="c-card-title">Blog Posts</div><span class="c-edit-btn">Manage</span></div><div class="c-preview">6 posts active across 5 categories: IEPF, NRI, Legal, Shares, Stories<br><br><span style="font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.6">+ New Post</span></div></div>
+          <div class="c-card"><div class="c-card-header"><div class="c-card-title">Press Releases</div><span class="c-edit-btn">Manage</span></div><div class="c-preview">6 press items · 3 press releases · 3 media coverage entries<br><br><span style="font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;opacity:.6">+ Add Press Release</span></div></div>
+          <div class="c-card"><div class="c-card-header"><div class="c-card-title">Stats Bar</div><span class="c-edit-btn">Edit</span></div><div class="c-preview">₹105Cr+ Recovered · 320+ Clients · 6 Countries · 99% Success Rate</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /page-dashboard -->
+<script>
+// ═══════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>{
+    p.classList.remove('active');
+    if(p.id==='page-dashboard')p.style.display='';
+  });
+  const pg=document.getElementById(id);
+  pg.classList.add('active');
+  if(id==='page-dashboard')pg.style.display='flex';
+  window.scrollTo(0,0);
+  if(id==='page-privacy') setTimeout(()=>initLegalTocHighlight('pp-toc','pp-'),200);
+  if(id==='page-terms') setTimeout(()=>initLegalTocHighlight('tc-toc','tc-'),200);
+}
+
+// ═══════════════════════════════════
+// SCROLL HELPERS
+// ═══════════════════════════════════
+function scrollToSection(id){
+  const el=document.getElementById(id);
+  if(el){
+    const offset=document.getElementById('announce-bar')?.style.display==='none'?68:108;
+    const top=el.getBoundingClientRect().top+window.pageYOffset-offset;
+    window.scrollTo({top,behavior:'smooth'});
+  }
+}
+function scrollToContact(){scrollToSection('section-contact')}
+
+// ═══════════════════════════════════
+// NAVBAR SCROLL
+// ═══════════════════════════════════
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar')?.classList.toggle('scrolled',window.scrollY>10);
+});
+
+// ═══════════════════════════════════
+// ANNOUNCEMENT BAR
+// ═══════════════════════════════════
+function closeAnnounceBar(){
+  const bar=document.getElementById('announce-bar');
+  bar.style.transition='height .3s ease, opacity .3s ease';
+  bar.style.height=bar.offsetHeight+'px';
+  requestAnimationFrame(()=>{
+    bar.style.height='0';
+    bar.style.opacity='0';
+    bar.style.overflow='hidden';
+  });
+  setTimeout(()=>bar.style.display='none',350);
+}
+
+// ═══════════════════════════════════
+// MOBILE MENU
+// ═══════════════════════════════════
+function toggleMobileMenu(){
+  const m=document.getElementById('mobileMenu');
+  m.classList.toggle('open');
+  document.getElementById('hamburger').style.opacity=m.classList.contains('open')?'0':'1';
+}
+
+// ═══════════════════════════════════
+// STATS COUNTER ANIMATION
+// ═══════════════════════════════════
+function animateCounters(){
+  document.querySelectorAll('.stat-num[data-target]').forEach(el=>{
+    const target=parseInt(el.dataset.target);
+    const suffix=el.querySelector('.accent')?.outerHTML||'';
+    let current=0;
+    const step=Math.max(1,Math.floor(target/60));
+    const timer=setInterval(()=>{
+      current=Math.min(current+step,target);
+      el.innerHTML=current+suffix;
+      if(current>=target)clearInterval(timer);
+    },18);
+  });
+}
+// Trigger on scroll into view
+let statsAnimated=false;
+const statsObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting&&!statsAnimated){
+    statsAnimated=true;
+    animateCounters();
+  }
+},{threshold:.3});
+const statsEl=document.getElementById('section-stats');
+if(statsEl)statsObs.observe(statsEl);
+
+// ═══════════════════════════════════
+// BLOG FILTER
+// ═══════════════════════════════════
+function filterBlog(btn,cat){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const allCards=document.querySelectorAll('[data-cat]');
+  allCards.forEach(card=>{
+    if(cat==='all'||card.dataset.cat===cat){
+      card.style.display='';
+      card.style.opacity='1';
+    } else {
+      card.style.opacity='0';
+      setTimeout(()=>{if(card.dataset.cat!==cat||cat!=='all')card.style.display='none';},200);
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// FAQ
+// ═══════════════════════════════════
+const faqData={
+  general:[
+    {q:"What is investment recovery and how does it work?",a:"Investment recovery involves identifying and reclaiming forgotten, dormant, or unclaimed financial assets — including shares, dividends, mutual funds, and debentures. We conduct a full audit, handle all documentation, and coordinate with registrars, IEPF, and courts to return assets to their rightful owners."},
+    {q:"What documents do I need to start a claim?",a:"For most cases: PAN card, Aadhaar, demat account details, and any existing share certificates or folio numbers. For inheritance cases, you'll also need a death certificate and succession documents. We guide you through every requirement specific to your case."},
+    {q:"Can you help if I don't know which shares my family owned?",a:"Absolutely. This is one of our most common scenarios. We conduct a full portfolio trace using your family member's PAN, name, and address history to identify all holdings — including shares you may never have known about."},
+  ],
+  iepf:[
+    {q:"What is the IEPF and when are shares transferred to it?",a:"The Investor Education and Protection Fund (IEPF) is a government fund. Companies transfer unclaimed dividends to the IEPF after 7 years, and the corresponding shares are also transferred. You can reclaim both, but the process requires specific forms and regulatory filings."},
+    {q:"How long does an IEPF claim take?",a:"Typically 6–12 months, depending on the company and complexity. IEPF processing timelines are set by the Ministry of Corporate Affairs. We track every case proactively and follow up on your behalf to minimise delays."},
+    {q:"My IEPF claim was rejected. Can you help?",a:"Yes — this is one of our specialties. Most rejections are due to documentation errors or incomplete filings. We review your rejection order, correct the issues, and refile. We have a strong success record with rejected claims."},
+  ],
+  nri:[
+    {q:"Can I recover Indian investments without visiting India?",a:"Yes. We handle the entire process remotely for NRI, OCI, and PIO clients. All document execution can be done via courier or power of attorney. No India visit is required in the vast majority of cases."},
+    {q:"I don't have a PAN card or OCI. Can you still help?",a:"Yes. We have successfully recovered assets for clients without current PAN or OCI documentation. We assist with obtaining these documents as part of our service, or use alternative legal pathways where applicable."},
+    {q:"Which countries do you serve NRI clients in?",a:"We currently serve clients in India, the UK, USA, Canada, Australia, and the UAE. We're expanding to other GCC and European countries — contact us if you're in a different jurisdiction."},
+  ],
+  fees:[
+    {q:"How do you charge for your services?",a:"We work on a success-fee model for most recovery cases — meaning you pay only when we successfully recover your assets. The percentage varies based on case complexity and value. Our initial consultation and case evaluation are always free."},
+    {q:"Are there any upfront costs?",a:"No upfront fees for standard recovery cases. For complex legal cases requiring court filings or succession certificates, there may be government fees and stamp duty payable — we inform you of these in advance with full transparency."},
+  ],
+  timeline:[
+    {q:"How long does a typical recovery take?",a:"Simple share transmissions and demat conversions: 2–4 months. IEPF claims: 6–12 months. Complex inheritance or NRI cases: 8–18 months. We provide a personalised timeline estimate after your initial case evaluation."},
+    {q:"What factors affect the recovery timeline?",a:"Key factors include: the company's responsiveness, IEPF or RTA backlogs, complexity of legal documentation, whether succession certificates are required, and the number of shares/companies involved. We keep you updated throughout."},
+  ]
+};
+let currentFaqCat='general';
+function renderFaq(cat){
+  currentFaqCat=cat;
+  const list=document.getElementById('faq-list');
+  list.innerHTML='';
+  (faqData[cat]||[]).forEach((item,i)=>{
+    const div=document.createElement('div');
+    div.className='faq-item';
+    div.innerHTML=`<div class="faq-q" onclick="toggleFaq(this)">${item.q}<span class="faq-icon">+</span></div><div class="faq-a"><div class="faq-a-inner">${item.a}</div></div>`;
+    list.appendChild(div);
+  });
+}
+function toggleFaq(el){
+  const item=el.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+function setFaqCat(btn,cat){
+  document.querySelectorAll('.faq-cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFaq(cat);
+}
+
+// ═══════════════════════════════════
+// CONTACT MULTI-STEP
+// ═══════════════════════════════════
+function contactStep(step){
+  [1,2,3].forEach(s=>{
+    const el=document.getElementById('contact-step-'+s);
+    if(el)el.style.display=s===step?'block':'none';
+  });
+  const dots=document.querySelectorAll('#stepIndicator .step-dot');
+  dots.forEach((d,i)=>{
+    d.classList.remove('active','done');
+    if(i+1<step)d.classList.add('done');
+    else if(i+1===step)d.classList.add('active');
+  });
+}
+function submitContact(){
+  alert('Thank you! Our team will contact you within 24 hours for your free case evaluation.');
+  contactStep(1);
+}
+
+// ═══════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════
+function switchFlow(id){
+  document.querySelectorAll('.login-flow').forEach(f=>f.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+}
+function switchLoginTab(el,showId,tabContainerId){
+  document.getElementById(tabContainerId)?.querySelectorAll('.m-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const parent=el.closest('.login-flow');
+  parent?.querySelectorAll(':scope > div:not(.method-tabs)').forEach(d=>d.style.display='none');
+  document.getElementById(showId)?.style && (document.getElementById(showId).style.display='block');
+}
+function revealOtp(sectionId,timerId){
+  const s=document.getElementById(sectionId);
+  if(s)s.style.display='block';
+  startTimer(timerId);
+}
+function startTimer(elId){
+  let s=120;
+  const el=document.getElementById(elId);
+  if(!el)return;
+  if(el._t)clearInterval(el._t);
+  el._t=setInterval(()=>{
+    s--;
+    el.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+    if(s<=0){clearInterval(el._t);el.textContent='Expired';}
+  },1000);
+}
+function otpNext(el){
+  if(el.value.length===1){
+    const boxes=[...el.closest('.otp-boxes').querySelectorAll('.otp-box')];
+    const i=boxes.indexOf(el);
+    if(i<boxes.length-1)boxes[i+1].focus();
+  }
+}
+function otpBack(e,el){
+  if(e.key==='Backspace'&&el.value===''){
+    const boxes=[...el.closest('.otp-boxes').querySelectorAll('.otp-box')];
+    const i=boxes.indexOf(el);
+    if(i>0)boxes[i-1].focus();
+  }
+}
+function toggleStep(hideId,showId){
+  document.getElementById(hideId).style.display='none';
+  document.getElementById(showId).style.display='block';
+}
+
+// ═══════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════
+const dTitles={
+  'dv-overview':'Dashboard','dv-leads':'Leads',
+  'dv-cases':'Cases','dv-content':'Content'
+};
+const dCrumbs={
+  'dv-overview':'/ Overview','dv-leads':'/ Leads Management',
+  'dv-cases':'/ Case Management','dv-content':'/ Content Management'
+};
+function showDashView(id,navEl){
+  document.querySelectorAll('.dash-view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(n=>n.classList.remove('active'));
+  if(navEl)navEl.classList.add('active');
+  document.getElementById('dashTitle').textContent=dTitles[id]||'Dashboard';
+  document.getElementById('dashCrumb').textContent=dCrumbs[id]||'';
+}
+
+
+// ═══════════════════════════════════
+// LEGAL PAGE TOC SCROLLING
+// ═══════════════════════════════════
+function scrollLegal(sectionId, tocItem) {
+  const el = document.getElementById(sectionId);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - 90;
+  window.scrollTo({top, behavior: 'smooth'});
+  document.querySelectorAll('#pp-toc .legal-toc-item').forEach(i => i.classList.remove('active'));
+  if (tocItem) tocItem.classList.add('active');
+}
+function scrollLegalTc(sectionId, tocItem) {
+  const el = document.getElementById(sectionId);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - 90;
+  window.scrollTo({top, behavior: 'smooth'});
+  document.querySelectorAll('#tc-toc .legal-toc-item').forEach(i => i.classList.remove('active'));
+  if (tocItem) tocItem.classList.add('active');
+}
+
+// Auto-highlight TOC on scroll for legal pages
+function initLegalTocHighlight(tocId, prefix) {
+  const toc = document.getElementById(tocId);
+  if (!toc) return;
+  const items = toc.querySelectorAll('.legal-toc-item');
+  const sections = [];
+  items.forEach((item, i) => {
+    const sid = prefix + (i + 1);
+    const el = document.getElementById(sid);
+    if (el) sections.push({el, item});
+  });
+  window.addEventListener('scroll', () => {
+    const scrollY = window.pageYOffset + 120;
+    let current = sections[0];
+    sections.forEach(s => { if (s.el.offsetTop <= scrollY) current = s; });
+    items.forEach(i => i.classList.remove('active'));
+    if (current) current.item.classList.add('active');
+  }, {passive: true});
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  renderFaq('general');
+  ['tab-emailotp','tab-phoneotp'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display='none';
+  });
+});
+</script>
+
+<!-- ═══════════════════════════════════════
+     PAGE: PRIVACY POLICY
+═══════════════════════════════════════ -->
+<div id="page-privacy" class="page">
+
+<!-- Reuse navbar -->
+<nav id="navbar-legal" style="position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(10,37,64,.1)">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;height:68px">
+      <div class="logo" onclick="showPage('page-website')">
+        <div class="logo-mark" style="width:36px;height:36px;background:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center">
+          <svg viewBox="0 0 18 18" fill="none" width="18" height="18"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 12.5A5.5 5.5 0 1114.5 9 5.506 5.506 0 019 14.5z" fill="#C9A24A"/><path d="M9 6.5A2.5 2.5 0 1111.5 9 2.503 2.503 0 019 6.5z" fill="#C9A24A"/></svg>
+        </div>
+        <div class="logo-name" style="font-family:var(--font-display);font-size:20px;color:var(--navy)">Claim<span style="color:var(--gold)">360</span></div>
+      </div>
+      <div class="legal-nav-right">
+        <span class="legal-nav-peer" onclick="showPage('page-terms')">Terms & Conditions</span>
+        <button class="btn btn-primary btn-sm" onclick="showPage('page-website');setTimeout(()=>scrollToContact(),100)" style="white-space:nowrap">Contact Us</button>
+        <button class="legal-nav-back" onclick="showPage('page-website')"><span>← Home</span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="legal-hero">
+  <div class="container">
+    <div class="legal-hero-inner">
+      <div class="legal-eyebrow">Legal Documentation</div>
+      <h1>Privacy Policy</h1>
+      <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:560px;line-height:1.7">How we collect, use, protect, and manage your personal information in compliance with India's Digital Personal Data Protection Act, 2023 and applicable international regulations.</p>
+      <div class="legal-hero-meta">
+        <div class="legal-meta-item"><span class="legal-meta-icon">📅</span> Last Updated: April 1, 2025</div>
+        <div class="legal-meta-item"><span class="legal-meta-icon">🏛️</span> Effective: April 1, 2025</div>
+        <div class="legal-meta-item"><span class="legal-meta-icon">📄</span> Version 3.2</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="legal-body">
+  <div class="container">
+    <div class="legal-layout">
+
+      <!-- TOC -->
+      <div>
+        <div class="legal-toc">
+          <div class="legal-toc-title">Table of Contents</div>
+          <div class="legal-toc-list" id="pp-toc">
+            <div class="legal-toc-item active" onclick="scrollLegal('pp-1',this)">1. Who We Are</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-2',this)">2. Information We Collect</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-3',this)">3. How We Use Your Data</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-4',this)">4. Legal Basis</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-5',this)">5. Sharing & Disclosure</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-6',this)">6. Data Retention</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-7',this)">7. Security</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-8',this)">8. Your Rights</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-9',this)">9. Cookies</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-10',this)">10. NRI & International</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-11',this)">11. Grievance Officer</div>
+            <div class="legal-toc-item" onclick="scrollLegal('pp-12',this)">12. Changes to Policy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="legal-content">
+
+        <div class="legal-callout">
+          <p><strong>Summary:</strong> We collect only the data necessary to deliver your investment recovery services. We do not sell your personal information. You can request deletion at any time. This policy applies to all services provided by 360 Degrees Management Services Pvt. Ltd. ("Claim360").</p>
+        </div>
+
+        <div class="legal-section" id="pp-1">
+          <div class="legal-section-num">Section 01</div>
+          <h2>Who We Are</h2>
+          <p>360 Degrees Management Services Private Limited, trading as Claim360, is a company incorporated under the Companies Act, 2013, with its registered office in Mumbai, Maharashtra, India. We operate investment recovery, IEPF claim management, NRI services, and related financial advisory services.</p>
+          <p>For the purposes of the Digital Personal Data Protection Act, 2023 (DPDPA), we act as the Data Fiduciary for personal data collected through our website (claim360.in), client portal, and ancillary services. Our Data Protection Officer can be contacted at the details provided in Section 11.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-2">
+          <div class="legal-section-num">Section 02</div>
+          <h2>Information We Collect</h2>
+          <p>We collect personal data that you voluntarily provide to us, data generated through your use of our services, and in limited cases, data from third-party sources with your consent.</p>
+          <p><strong>Identity & Contact Information:</strong></p>
+          <ul>
+            <li>Full name, date of birth, photograph (where required for KYC)</li>
+            <li>Email address, phone number, WhatsApp number</li>
+            <li>Residential address — current and historical</li>
+            <li>PAN card number, Aadhaar number (masked), OCI/PIO card details</li>
+            <li>Passport details (for NRI clients)</li>
+          </ul>
+          <p><strong>Financial & Investment Information:</strong></p>
+          <ul>
+            <li>Share folio numbers, demat account details (DP ID and Client ID)</li>
+            <li>Bank account details (IFSC, account number — for credit of recovered assets)</li>
+            <li>Investment portfolio details, share certificates, dividend records</li>
+            <li>Succession certificates, wills, probate documents (where applicable)</li>
+          </ul>
+          <p><strong>Automatically Collected Data:</strong></p>
+          <ul>
+            <li>IP address, browser type and version, operating system</li>
+            <li>Pages visited, time spent, referral sources</li>
+            <li>Cookies and similar tracking technologies (see Section 9)</li>
+          </ul>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-3">
+          <div class="legal-section-num">Section 03</div>
+          <h2>How We Use Your Data</h2>
+          <p>We use your personal data solely for the following purposes:</p>
+          <ul>
+            <li>To provide investment recovery, IEPF claim, and share management services you have engaged us for</li>
+            <li>To verify your identity and conduct KYC/AML checks as required by applicable law</li>
+            <li>To correspond with registrars, RTAs, IEPF, SEBI, company secretaries, courts, and other regulatory bodies on your behalf</li>
+            <li>To prepare and execute legal documents including power of attorney, affidavits, and transmission requests</li>
+            <li>To send you service updates, case status communications, and required legal notices</li>
+            <li>To send you optional marketing communications (with your explicit consent, which you may withdraw at any time)</li>
+            <li>To comply with our legal and regulatory obligations under SEBI, IEPF, MCA, and DPDPA regulations</li>
+            <li>To improve our website and services through anonymised analytics</li>
+            <li>To respond to regulatory inquiries or legal proceedings</li>
+          </ul>
+          <p>We will never use your data for purposes beyond those disclosed without your prior explicit consent.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-4">
+          <div class="legal-section-num">Section 04</div>
+          <h2>Legal Basis for Processing</h2>
+          <p>Under the Digital Personal Data Protection Act, 2023, we process your personal data on the following lawful bases:</p>
+          <ul>
+            <li><strong>Consent:</strong> For marketing communications, optional data collection, and non-essential cookies</li>
+            <li><strong>Contractual necessity:</strong> For all data required to deliver the services you have contracted us for</li>
+            <li><strong>Legal obligation:</strong> For KYC, AML, and regulatory reporting requirements</li>
+            <li><strong>Legitimate interests:</strong> For security monitoring, fraud prevention, and product improvement — balanced against your rights</li>
+          </ul>
+          <p>For clients in the UK and EU, we additionally comply with the UK GDPR and GDPR respectively, processing data under equivalent lawful bases under those frameworks.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-5">
+          <div class="legal-section-num">Section 05</div>
+          <h2>Sharing & Disclosure</h2>
+          <p>We do not sell, rent, or trade your personal data to third parties. We share your data only in the following circumstances:</p>
+          <ul>
+            <li><strong>Regulatory bodies:</strong> IEPF Authority, SEBI, BSE, NSE, MCA, and courts — as required to process your recovery claims</li>
+            <li><strong>Registrar & Transfer Agents (RTAs):</strong> KFin Technologies, Link Intime, Bigshare Services — to process share transmissions and demat requests</li>
+            <li><strong>Depository Participants:</strong> NSDL, CDSL — for demat account operations</li>
+            <li><strong>Legal professionals:</strong> Advocates and notaries engaged specifically for your case, bound by professional confidentiality obligations</li>
+            <li><strong>Technology service providers:</strong> Cloud hosting, secure document management, and email services — under strict data processing agreements</li>
+            <li><strong>Law enforcement:</strong> Where required by a valid court order or statutory obligation</li>
+          </ul>
+          <div class="legal-callout">
+            <p><strong>Important:</strong> Any third party we engage is contractually bound to process your data only for the specified purpose and to protect it to the same standard we do. We do not permit third parties to use your data for their own marketing purposes.</p>
+          </div>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-6">
+          <div class="legal-section-num">Section 06</div>
+          <h2>Data Retention</h2>
+          <p>We retain your personal data for as long as necessary to fulfil the purposes for which it was collected, comply with legal obligations, resolve disputes, and enforce our agreements.</p>
+          <ul>
+            <li><strong>Active client records:</strong> Duration of the service engagement plus 7 years (as required by Indian financial regulations)</li>
+            <li><strong>KYC & identity documents:</strong> 5 years from the end of the client relationship, per PMLA requirements</li>
+            <li><strong>Legal case records:</strong> 10 years from case closure (for cases involving court proceedings)</li>
+            <li><strong>Website analytics data:</strong> 26 months (anonymised after 13 months)</li>
+            <li><strong>Marketing consent records:</strong> Until withdrawn, plus 3 years</li>
+            <li><strong>Enquiry-only records (no engagement):</strong> 2 years from initial contact</li>
+          </ul>
+          <p>Upon expiry of retention periods, data is securely deleted or anonymised using industry-standard methods.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-7">
+          <div class="legal-section-num">Section 07</div>
+          <h2>Security Measures</h2>
+          <p>We implement industry-standard technical and organisational security measures to protect your personal data against unauthorised access, loss, destruction, or alteration:</p>
+          <ul>
+            <li>256-bit SSL/TLS encryption for all data transmitted via our website and client portal</li>
+            <li>AES-256 encryption for data stored at rest</li>
+            <li>Role-based access controls — data accessible only to authorised personnel on a need-to-know basis</li>
+            <li>Multi-factor authentication for all staff accessing client systems</li>
+            <li>Regular security audits and vulnerability assessments</li>
+            <li>Physical security controls at all office locations</li>
+            <li>Staff data protection training and confidentiality agreements</li>
+            <li>Incident response plan with mandatory breach notification procedures</li>
+          </ul>
+          <p>In the event of a data breach that poses a risk to your rights, we will notify you and the relevant Data Protection Board within the timelines prescribed by law.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-8">
+          <div class="legal-section-num">Section 08</div>
+          <h2>Your Rights</h2>
+          <p>Under the DPDPA 2023 and applicable regulations, you have the following rights regarding your personal data:</p>
+          <ul>
+            <li><strong>Right to access:</strong> Obtain confirmation of whether we hold your data and receive a copy</li>
+            <li><strong>Right to correction:</strong> Request correction of inaccurate or incomplete personal data</li>
+            <li><strong>Right to erasure:</strong> Request deletion of your data, subject to our legal retention obligations</li>
+            <li><strong>Right to grievance redressal:</strong> Lodge a complaint with our Grievance Officer (Section 11) or the Data Protection Board of India</li>
+            <li><strong>Right to withdraw consent:</strong> Withdraw consent for marketing communications or optional data processing at any time</li>
+            <li><strong>Right to nominate:</strong> Nominate an individual to exercise your data rights in the event of your death or incapacity</li>
+          </ul>
+          <p>For UK/EU clients, additional rights apply under UK GDPR/GDPR including the right to data portability and the right to object to processing based on legitimate interests.</p>
+          <p>To exercise any of these rights, contact our Grievance Officer (Section 11). We will respond within 30 days.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-9">
+          <div class="legal-section-num">Section 09</div>
+          <h2>Cookies & Tracking</h2>
+          <p>Our website uses cookies and similar technologies. We use the following categories:</p>
+          <ul>
+            <li><strong>Strictly necessary:</strong> Essential for the website to function (login sessions, security tokens). Cannot be disabled.</li>
+            <li><strong>Performance / Analytics:</strong> Anonymised data on how visitors use the site (e.g., Google Analytics). Enabled with your consent.</li>
+            <li><strong>Functional:</strong> Remember your preferences such as language and region. Enabled with consent.</li>
+            <li><strong>Marketing:</strong> Not currently used. We do not serve behavioural advertising on this website.</li>
+          </ul>
+          <p>You can manage your cookie preferences through the cookie consent banner displayed on your first visit, or through your browser settings. Note that disabling strictly necessary cookies may impair functionality.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-10">
+          <div class="legal-section-num">Section 10</div>
+          <h2>NRI & International Transfers</h2>
+          <p>As a firm serving clients in India, the UK, USA, Canada, Australia, and the UAE, we may transfer personal data across international borders in order to deliver our services. All such transfers are made in compliance with applicable law:</p>
+          <ul>
+            <li>For UK clients: Transfers are made under UK GDPR-compliant mechanisms including Standard Contractual Clauses or UK Adequacy Decisions where applicable</li>
+            <li>For EU clients: Transfers comply with GDPR Chapter V requirements</li>
+            <li>For US, Canada, Australia, and UAE clients: Transfers are made under contractual safeguards consistent with the DPDPA and the laws of the respective jurisdiction</li>
+          </ul>
+          <p>Your data may be processed and stored on servers located in India and, where our technology partners operate, in the UK and/or EU (all under appropriate data protection agreements).</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-11">
+          <div class="legal-section-num">Section 11</div>
+          <h2>Grievance Officer</h2>
+          <p>In accordance with the Information Technology Act, 2000, and the Digital Personal Data Protection Act, 2023, the name and contact details of our Grievance Officer are as follows:</p>
+          <div class="legal-contact-card">
+            <h3>Data Protection & Grievance Officer</h3>
+            <p>If you have any concerns, complaints, or requests regarding your personal data or this Privacy Policy, please contact our Grievance Officer. We aim to resolve all complaints within 30 days.</p>
+            <div class="legal-contact-details">
+              <div class="legal-contact-row"><span class="legal-contact-icon">👤</span> Grievance Officer, 360 Degrees Management Services Pvt. Ltd.</div>
+              <div class="legal-contact-row"><span class="legal-contact-icon">✉️</span> privacy@claim360.in</div>
+              <div class="legal-contact-row"><span class="legal-contact-icon">📞</span> +91 99101 74035</div>
+              <div class="legal-contact-row"><span class="legal-contact-icon">🏢</span> Registered Office: Mumbai, Maharashtra, India</div>
+              <div class="legal-contact-row"><span class="legal-contact-icon">⏱️</span> Response time: Within 30 days of receipt</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="pp-12">
+          <div class="legal-section-num">Section 12</div>
+          <h2>Changes to This Policy</h2>
+          <p>We may update this Privacy Policy from time to time to reflect changes in our practices, services, or applicable law. We will notify you of any material changes by:</p>
+          <ul>
+            <li>Posting the updated policy on this page with a revised "Last Updated" date</li>
+            <li>Sending an email notification to registered clients</li>
+            <li>Displaying a prominent notice on our website for 30 days following significant changes</li>
+          </ul>
+          <p>Your continued use of our services after the effective date of a revised policy constitutes your acceptance of the changes. We encourage you to review this policy periodically.</p>
+          <p>If you have any questions about this Privacy Policy, please contact us at <strong>privacy@claim360.in</strong> or use the contact details in Section 11.</p>
+        </div>
+
+      </div><!-- /legal-content -->
+    </div><!-- /legal-layout -->
+  </div>
+</div>
+
+<!-- Footer for legal pages -->
+<div style="background:var(--navy-deep);padding:28px 0;border-top:1px solid rgba(255,255,255,.08)">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+      <div style="font-size:12px;color:rgba(255,255,255,.3)">© 2025 360 Degrees Management Services Pvt. Ltd. All rights reserved.</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+        <span onclick="showPage('page-website')" style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer" onmouseover="this.style.color='#e8c878'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</span>
+        <span onclick="showPage('page-privacy')" style="font-size:12px;color:rgba(255,255,255,.75);cursor:pointer;font-weight:500">Privacy Policy</span>
+        <span onclick="showPage('page-terms')" style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer" onmouseover="this.style.color='#e8c878'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Terms & Conditions</span>
+        <span onclick="showPage('page-website');setTimeout(()=>scrollToContact(),100)" style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer" onmouseover="this.style.color='#e8c878'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Contact Us</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-privacy -->
+
+
+<!-- ═══════════════════════════════════════
+     PAGE: TERMS & CONDITIONS
+═══════════════════════════════════════ -->
+<div id="page-terms" class="page">
+
+<nav style="position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(10,37,64,.1)">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;height:68px;overflow:hidden">
+      <div class="logo" onclick="showPage('page-website')" style="display:flex;align-items:center;gap:11px;cursor:pointer">
+        <div style="width:36px;height:36px;background:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg viewBox="0 0 18 18" fill="none" width="18" height="18"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 12.5A5.5 5.5 0 1114.5 9 5.506 5.506 0 019 14.5z" fill="#C9A24A"/><path d="M9 6.5A2.5 2.5 0 1111.5 9 2.503 2.503 0 019 6.5z" fill="#C9A24A"/></svg>
+        </div>
+        <div style="font-family:var(--font-display);font-size:20px;color:var(--navy)">Claim<span style="color:var(--gold)">360</span></div>
+      </div>
+      <div class="legal-nav-right">
+        <span class="legal-nav-peer" onclick="showPage('page-privacy')">Privacy Policy</span>
+        <button class="btn btn-primary btn-sm" onclick="showPage('page-website');setTimeout(()=>scrollToContact(),100)" style="white-space:nowrap">Contact Us</button>
+        <button class="legal-nav-back" onclick="showPage('page-website')"><span>← Home</span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="legal-hero">
+  <div class="container">
+    <div class="legal-hero-inner">
+      <div class="legal-eyebrow">Legal Documentation</div>
+      <h1>Terms & Conditions</h1>
+      <p style="font-size:16px;color:rgba(255,255,255,.6);max-width:580px;line-height:1.7">The terms governing your use of Claim360's website and services. Please read carefully before engaging our investment recovery, IEPF claim, or NRI financial services.</p>
+      <div class="legal-hero-meta">
+        <div class="legal-meta-item"><span class="legal-meta-icon">📅</span> Last Updated: April 1, 2025</div>
+        <div class="legal-meta-item"><span class="legal-meta-icon">🏛️</span> Governed by Indian Law</div>
+        <div class="legal-meta-item"><span class="legal-meta-icon">⚖️</span> Version 4.1</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="legal-body">
+  <div class="container">
+    <div class="legal-layout">
+
+      <div>
+        <div class="legal-toc">
+          <div class="legal-toc-title">Table of Contents</div>
+          <div class="legal-toc-list" id="tc-toc">
+            <div class="legal-toc-item active" onclick="scrollLegalTc('tc-1',this)">1. Acceptance of Terms</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-2',this)">2. Services Description</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-3',this)">3. Client Obligations</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-4',this)">4. Fees & Payment</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-5',this)">5. No Guarantee of Outcome</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-6',this)">6. Intellectual Property</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-7',this)">7. Confidentiality</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-8',this)">8. Limitation of Liability</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-9',this)">9. Termination</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-10',this)">10. Prohibited Use</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-11',this)">11. Governing Law</div>
+            <div class="legal-toc-item" onclick="scrollLegalTc('tc-12',this)">12. Contact & Disputes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legal-content">
+
+        <div class="legal-callout">
+          <p><strong>Important:</strong> By accessing our website or engaging Claim360's services, you agree to these Terms & Conditions. If you do not agree, please do not use our services. These terms constitute a legally binding agreement between you and 360 Degrees Management Services Pvt. Ltd.</p>
+        </div>
+
+        <div class="legal-section" id="tc-1">
+          <div class="legal-section-num">Section 01</div>
+          <h2>Acceptance of Terms</h2>
+          <p>These Terms & Conditions ("Terms") govern your access to and use of the website at claim360.in and all associated services provided by 360 Degrees Management Services Private Limited ("Claim360", "we", "us", or "our"), a company incorporated under the Companies Act, 2013.</p>
+          <p>By accessing our website, submitting an enquiry, signing a service agreement, or otherwise engaging with our services, you ("Client", "you") confirm that you have read, understood, and agree to be bound by these Terms, our Privacy Policy, and any service-specific agreement entered into with us.</p>
+          <p>If you are acting on behalf of a company or other legal entity, you represent that you have the authority to bind that entity to these Terms.</p>
+          <p>We reserve the right to modify these Terms at any time. Continued use of our services after changes are posted constitutes acceptance of the revised Terms.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-2">
+          <div class="legal-section-num">Section 02</div>
+          <h2>Services Description</h2>
+          <p>Claim360 provides professional investment recovery and related financial services, including but not limited to:</p>
+          <ul>
+            <li>Identification and recovery of dormant, forgotten, or unclaimed shares and securities</li>
+            <li>Filing and management of claims with the Investor Education and Protection Fund (IEPF)</li>
+            <li>NRI, OCI, and PIO investment recovery and portfolio management services</li>
+            <li>Dematerialisation of physical share certificates</li>
+            <li>Share transmission, transfer, and succession services</li>
+            <li>Compliance support and legal documentation services</li>
+            <li>Advisory services in connection with investment recovery matters</li>
+          </ul>
+          <p>Specific services, timelines, and deliverables for each engagement are outlined in the individual service agreement or letter of engagement provided to you.</p>
+          <p>Claim360 operates as a service intermediary and advisor. We are not a law firm and do not provide independent legal advice. Where legal proceedings are required, we engage qualified legal professionals on your behalf, whose engagement is governed by separate professional agreements.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-3">
+          <div class="legal-section-num">Section 03</div>
+          <h2>Client Obligations</h2>
+          <p>To enable us to effectively deliver services, you agree to:</p>
+          <ul>
+            <li>Provide accurate, complete, and current information as requested. Providing false or misleading information may result in immediate termination of services and may constitute fraud under applicable law</li>
+            <li>Promptly respond to requests for additional documents, clarifications, or signatures — recognising that delays on your part may extend processing timelines</li>
+            <li>Notify us immediately of any changes to your contact details, legal status, or relevant circumstances</li>
+            <li>Execute all required documents (POA, affidavits, transmission forms, etc.) in the form and manner specified by us and/or the relevant authority</li>
+            <li>Maintain a valid demat account and bank account to receive recovered assets</li>
+            <li>Comply with all applicable laws in your jurisdiction, including tax reporting obligations arising from recovered assets</li>
+            <li>Not engage multiple agents for the same recovery claim simultaneously without our written consent</li>
+            <li>Pay applicable fees as set out in your service agreement</li>
+          </ul>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-4">
+          <div class="legal-section-num">Section 04</div>
+          <h2>Fees & Payment</h2>
+          <p>Our fee structure is disclosed in full in your individual service agreement. The following general principles apply:</p>
+          <ul>
+            <li><strong>Success-based fees:</strong> For most recovery engagements, our primary fee is charged as a percentage of the value of assets successfully recovered. No recovery, no fee — subject to any applicable disbursement costs</li>
+            <li><strong>Disbursements & government fees:</strong> Costs such as stamp duty, court filing fees, notarisation charges, RTA fees, and courier charges are recoverable from you as incurred. These are disclosed and agreed before being incurred</li>
+            <li><strong>Retainer fees:</strong> Certain complex engagements (multi-party inheritance, offshore coordination, court proceedings) may require a fixed retainer in addition to the success fee. This will be stated explicitly in your agreement</li>
+            <li><strong>Payment terms:</strong> Invoices are payable within 14 days of issue unless otherwise agreed. Late payment attracts interest at 1.5% per month</li>
+            <li><strong>GST:</strong> All fees are subject to applicable Goods and Services Tax (GST) at the prevailing rate</li>
+          </ul>
+          <div class="legal-callout">
+            <p><strong>Note:</strong> Our initial case evaluation and consultation is entirely free of charge, with no obligation. Fees only apply once a formal service agreement is signed.</p>
+          </div>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-5">
+          <div class="legal-section-num">Section 05</div>
+          <h2>No Guarantee of Outcome</h2>
+          <p>Investment recovery involves regulatory processes, third-party decisions (including by IEPF, RTAs, companies, and courts), and factors outside our control. Accordingly:</p>
+          <ul>
+            <li>We make no guarantee of a successful recovery outcome in any specific case</li>
+            <li>Our stated success rate of 99% reflects our historical performance across all completed cases and does not constitute a representation regarding your specific case</li>
+            <li>Recovery timelines are estimates based on our experience and current regulatory processing times, and may be affected by changes in regulation, third-party delays, or the complexity of your case</li>
+            <li>In cases where a claim is rejected by the IEPF or other authority, we will advise on available remedies, but any further proceedings may attract additional fees</li>
+          </ul>
+          <p>Our obligation is to exercise professional skill, care, and diligence in pursuing your recovery — not to guarantee a specific result.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-6">
+          <div class="legal-section-num">Section 06</div>
+          <h2>Intellectual Property</h2>
+          <p>All content on the Claim360 website — including text, graphics, logos, icons, images, audio clips, data compilations, and software — is the property of 360 Degrees Management Services Pvt. Ltd. or its content suppliers and is protected by applicable intellectual property laws.</p>
+          <ul>
+            <li>You may access and view website content for personal, non-commercial use only</li>
+            <li>You may not reproduce, distribute, modify, transmit, or use any content for commercial purposes without our prior written consent</li>
+            <li>Our name "Claim360", "360 Degrees Management Services", and our logo are registered trademarks or pending registration. Unauthorised use is prohibited</li>
+            <li>Any templates, checklists, guides, or documents we provide to you as part of our service are for your personal use in connection with the engagement only</li>
+          </ul>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-7">
+          <div class="legal-section-num">Section 07</div>
+          <h2>Confidentiality</h2>
+          <p>Both parties acknowledge that in the course of the engagement, confidential information will be exchanged. Both parties agree to:</p>
+          <ul>
+            <li>Keep all confidential information strictly confidential and not disclose it to any third party except as necessary to deliver the services or as required by law</li>
+            <li>Use confidential information solely for the purpose of the engagement</li>
+            <li>Take all reasonable measures to protect confidential information from unauthorised access or disclosure</li>
+          </ul>
+          <p>This obligation survives the termination of the engagement for a period of 5 years. It does not apply to information that is or becomes publicly available through no breach of this agreement, or that is required to be disclosed by a court or regulatory authority.</p>
+          <p>We take client confidentiality extremely seriously. Our staff are bound by confidentiality agreements and our systems are secured to industry standards.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-8">
+          <div class="legal-section-num">Section 08</div>
+          <h2>Limitation of Liability</h2>
+          <p>To the maximum extent permitted by applicable law:</p>
+          <ul>
+            <li>Our total liability to you for any claim arising out of or relating to these Terms or our services shall not exceed the fees actually paid by you to us in the 12 months preceding the claim</li>
+            <li>We shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, loss of data, or loss of opportunity</li>
+            <li>We shall not be liable for delays or failures caused by third parties (including IEPF, RTAs, courts, government departments), changes in law or regulation, or circumstances beyond our reasonable control</li>
+            <li>Nothing in these Terms limits liability for fraud, death or personal injury caused by negligence, or any other liability that cannot be excluded by law</li>
+          </ul>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-9">
+          <div class="legal-section-num">Section 09</div>
+          <h2>Termination</h2>
+          <p>Either party may terminate the service engagement by providing written notice. The following terms apply on termination:</p>
+          <ul>
+            <li>Fees earned up to the date of termination are payable. For success-fee engagements, no success fee is payable if no recovery has been achieved as at termination</li>
+            <li>You are responsible for all disbursements and government fees incurred prior to termination</li>
+            <li>We will provide you with all documents and information held on your behalf within 14 days of termination</li>
+            <li>We may terminate immediately if you provide false information, engage in conduct that puts us in breach of law or regulation, or fail to pay undisputed invoices after 30 days' notice</li>
+            <li>Clauses relating to confidentiality, intellectual property, limitation of liability, and governing law survive termination</li>
+          </ul>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-10">
+          <div class="legal-section-num">Section 10</div>
+          <h2>Prohibited Use</h2>
+          <p>You agree not to use our website or services in any manner that:</p>
+          <ul>
+            <li>Violates any applicable local, national, or international law or regulation</li>
+            <li>Involves the transmission of unsolicited or unauthorised advertising material</li>
+            <li>Involves impersonating any person or entity or misrepresenting your affiliation with a person or entity</li>
+            <li>Attempts to gain unauthorised access to our systems, client portal, or other users' accounts</li>
+            <li>Transmits any data containing viruses, trojans, or other malicious code</li>
+            <li>Collects or harvests any personally identifiable information from our website</li>
+            <li>Uses our services to facilitate money laundering, fraud, or any other illegal financial activity</li>
+          </ul>
+          <p>Violation of this section may result in immediate termination of services and may be reported to the relevant law enforcement or regulatory authorities.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-11">
+          <div class="legal-section-num">Section 11</div>
+          <h2>Governing Law & Jurisdiction</h2>
+          <p>These Terms and any disputes arising out of or in connection with them shall be governed by and construed in accordance with the laws of India, without regard to its conflict of law provisions.</p>
+          <p>Any dispute arising out of these Terms or our services shall first be referred to mediation under the Mediation Act, 2023. If mediation fails, disputes shall be subject to the exclusive jurisdiction of the courts of Mumbai, Maharashtra, India.</p>
+          <p>For clients in the United Kingdom: Nothing in these Terms affects your statutory rights as a consumer under UK law. UK clients may additionally seek recourse through the Financial Ombudsman Service for financial services disputes where applicable.</p>
+          <p>For clients in the European Union: You may access the EU Online Dispute Resolution platform at ec.europa.eu/odr as an additional avenue for dispute resolution.</p>
+        </div>
+
+        <div class="legal-divider"></div>
+
+        <div class="legal-section" id="tc-12">
+          <div class="legal-section-num">Section 12</div>
+          <h2>Contact & Dispute Resolution</h2>
+          <p>For any queries, concerns, or disputes regarding these Terms, please contact us at the earliest opportunity. We aim to resolve all concerns promptly and amicably.</p>
+          <div class="legal-contact-card">
+            <h3>Legal & Compliance Team</h3>
+            <p>For questions about these Terms & Conditions, contractual disputes, or compliance matters, please reach our legal team directly. We respond to all legal queries within 5 business days.</p>
+            <div class="legal-contact-details">
+              <div class="legal-contact-row"><span class="legal-contact-icon">⚖️</span> Legal & Compliance, 360 Degrees Management Services Pvt. Ltd.</div>
+              <div class="legal-contact-row"><span class="legal-contact-icon">✉️</span> legal@claim360.in</div>
+              <div class="legal-contact-row"><span class="legal-contact-icon">📞</span> +91 99101 74035</div>
+              <div class="legal-contact-row"><span class="legal-contact-icon">🏢</span> Registered Office: Mumbai, Maharashtra, India</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="background:var(--navy-deep);padding:28px 0;border-top:1px solid rgba(255,255,255,.08)">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+      <div style="font-size:12px;color:rgba(255,255,255,.3)">© 2025 360 Degrees Management Services Pvt. Ltd. All rights reserved.</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+        <span onclick="showPage('page-website')" style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer" onmouseover="this.style.color='#e8c878'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</span>
+        <span onclick="showPage('page-privacy')" style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer" onmouseover="this.style.color='#e8c878'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Privacy Policy</span>
+        <span onclick="showPage('page-terms')" style="font-size:12px;color:rgba(255,255,255,.75);cursor:pointer;font-weight:500">Terms & Conditions</span>
+        <span onclick="showPage('page-website');setTimeout(()=>scrollToContact(),100)" style="font-size:12px;color:rgba(255,255,255,.4);cursor:pointer" onmouseover="this.style.color='#e8c878'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Contact Us</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page-terms -->
+
+</body>
+</html>
