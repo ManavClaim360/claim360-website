@@ -32,7 +32,7 @@ export default function ContactSection() {
       setSubmitted(true)
     } catch (err) {
       console.error(err)
-      alert("Failed to send message")
+      alert('Failed to send message')
     } finally {
       setLoading(false)
     }
@@ -45,8 +45,10 @@ export default function ContactSection() {
           {/* Left — Info */}
           <div>
             <div className="eyebrow reveal mb-4">Get In Touch</div>
-            <h2 className="reveal font-display text-navy dark:text-white tracking-tight mb-4"
-              style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}>
+            <h2
+              className="reveal font-display text-navy dark:text-white tracking-tight mb-4"
+              style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}
+            >
               Schedule a{' '}
               <span className="italic text-gold">Free</span>{' '}
               Consultation
@@ -55,7 +57,6 @@ export default function ContactSection() {
               Tell us about your investment situation, and our experts will assess your case and chart a clear recovery path — at no cost.
             </p>
 
-            {/* Contact details */}
             <div className="reveal space-y-5 mb-8">
               {[
                 { icon: Phone, label: 'Phone', val: '+91 991 003 5050', href: 'tel:+919910035050' },
@@ -74,8 +75,7 @@ export default function ContactSection() {
               ))}
             </div>
 
-            {/* Offices */}
-            <div className="reveal space-y-3">
+            <div className="reveal space-y-3 mb-8">
               {[
                 { city: 'Mumbai', addr: '311, Sun Industrial Estate, Lower Parel' },
                 { city: 'New Delhi', addr: 'D-4/4035, Vasant Kunj' },
@@ -87,6 +87,15 @@ export default function ContactSection() {
                   <span className="text-slate-500 dark:text-white/40">{o.addr}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Map image */}
+            <div className="reveal rounded-2xl overflow-hidden border border-slate-100 dark:border-white/10 shadow-md">
+              <img
+                src="/assets/map_img.png"
+                alt="Our office locations"
+                className="w-full h-auto object-cover"
+              />
             </div>
           </div>
 
@@ -185,9 +194,7 @@ export default function ContactSection() {
                     {loading ? (
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
-                      <>
-                        Send Message <Send size={15} />
-                      </>
+                      <>Send Message <Send size={15} /></>
                     )}
                   </button>
                 </div>

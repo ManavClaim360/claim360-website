@@ -119,6 +119,12 @@
 }
 
 @layer utilities {
+  /* Ticker — defined here so .ticker-track in @layer components can reference it */
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
   /* Counter animation */
   @keyframes countUp {
     from { opacity: 0; transform: translateY(10px); }

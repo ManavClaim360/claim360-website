@@ -11,6 +11,7 @@ import BlogPage from './pages/BlogPage'
 import BlogPostPage from './pages/BlogPostPage'
 import PrivacyPage from './pages/PrivacyPage'
 import TermsPage from './pages/TermsPage'
+import NotFoundPage from './pages/NotFoundPage'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 
 export default function App() {
@@ -49,6 +50,7 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
             <Route path="/login" element={<AuthPage mode="signin" />} />
             <Route path="/signup" element={<AuthPage mode="signup" />} />

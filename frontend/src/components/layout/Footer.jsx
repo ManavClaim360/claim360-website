@@ -48,23 +48,16 @@ export default function Footer() {
   return (
     <footer className="bg-navy-deep border-t-4 border-gold">
       <div className="c pt-16 pb-8">
-        {/* Top grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-14">
           {/* Brand col */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 bg-gold rounded-xl flex items-center justify-center flex-shrink-0">
-                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                  <path d="M10 2L4 6v8l6 4 6-4V6L10 2z" fill="#0A1628" fillOpacity="0.9"/>
-                </svg>
-              </div>
-              <span className="font-display text-xl text-white">Claim<span className="text-gold">360</span></span>
+            <div className="mb-5">
+              <img src="/assets/Logo.png" alt="Claim360" className="h-10 w-auto object-contain brightness-0 invert" />
             </div>
             <p className="text-white/40 text-sm leading-relaxed mb-5 max-w-xs">
               India's most trusted investment recovery specialists. We navigate the complexities so you get back what's rightfully yours.
             </p>
 
-            {/* Social */}
             <div className="flex gap-2 mb-6">
               {SOCIAL.map(s => (
                 <a
@@ -80,7 +73,6 @@ export default function Footer() {
               ))}
             </div>
 
-            {/* CIN */}
             <div className="text-white/20 text-[10px] leading-relaxed">
               360 Degrees Management Services Pvt. Ltd.<br />
               CIN: U74999DL2016PTC303092
@@ -95,8 +87,6 @@ export default function Footer() {
                 {links.map(l => (
                   <li key={l.label}>
                     <a
-                      href={l.href.startsWith('/') && !l.href.startsWith('/#') ? undefined : l.href}
-                      onClick={l.href.startsWith('/') && !l.href.startsWith('/#') ? undefined : undefined}
                       href={l.href}
                       className="text-sm text-white/40 hover:text-gold-light transition-colors duration-200"
                     >
