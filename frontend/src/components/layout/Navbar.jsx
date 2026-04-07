@@ -77,18 +77,17 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
+        className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
             ? 'bg-white/95 dark:bg-navy-deep/95 backdrop-blur-xl shadow-lg shadow-black/5'
             : 'bg-white dark:bg-navy-deep'
-        } border-b border-slate-100 dark:border-white/[0.06]`}
+          } border-b border-slate-100 dark:border-white/[0.06]`}
       >
         <div className="c">
           <div className="flex items-center justify-between h-[72px] gap-6">
             {/* Logo */}
             <Link to="/" className="flex items-center flex-shrink-0 group">
               <img
-                src="/assets/Logo.png"
+                src="/assets/Logo_1.png"
                 alt="Claim360"
                 className="h-10 w-auto object-contain group-hover:opacity-90 transition-opacity duration-200"
               />
