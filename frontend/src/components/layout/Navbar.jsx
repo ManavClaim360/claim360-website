@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Sun, Moon, User, LogOut, ChevronDown, Menu, X, Search } from 'lucide-react'
+import { Sun, Moon, ChevronDown, Menu, Search } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext'
 import { useAuth } from '../../context/AuthContext'
 import MegaMenuModal from './MegaMenuModal'
@@ -55,15 +55,13 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const { isDark, toggle } = useTheme()
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const [scrolled, setScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
   const [megaOpen, setMegaOpen] = useState(false)
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [activeMegaTab, setActiveMegaTab] = useState('popular')
   const navigate = useNavigate()
   const location = useLocation()
-  const dropdownRef = useRef(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -88,17 +86,12 @@ export default function Navbar() {
         <div className="c">
           <div className="flex items-center justify-between h-[72px] gap-6">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
-              <div className="w-9 h-9 bg-navy dark:bg-gold rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M10 2L4 6v8l6 4 6-4V6L10 2z" fill="white" fillOpacity="0.9"/>
-                </svg>
-              </div>
-              <div>
-                <span className="font-display text-xl text-navy dark:text-white tracking-tight leading-none">
-                   Claim<span className="text-gold">360</span>
-                </span>
-              </div>
+            <Link to="/" className="flex items-center flex-shrink-0 group">
+              <img
+                src="/assets/Logo.png"
+                alt="Claim360"
+                className="h-10 w-auto object-contain group-hover:opacity-90 transition-opacity duration-200"
+              />
             </Link>
 
             {/* Desktop Nav */}
@@ -119,7 +112,7 @@ export default function Navbar() {
                       />
                     </button>
                     {activeDropdown === item.label && (
-                      <MegaDropdown 
+                      <MegaDropdown
                         categories={MEGA_CATEGORIES}
                         activeTab={activeMegaTab}
                         onTabChange={setActiveMegaTab}
@@ -136,8 +129,7 @@ export default function Navbar() {
 
             {/* Right side */}
             <div className="flex items-center gap-2 flex-shrink-0">
-               {/* Search icon */}
-               <button
+              <button
                 onClick={() => user ? navigate('/search') : navigate('/login')}
                 className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-navy dark:hover:text-white transition-all duration-200"
                 title="Investor Search"
@@ -145,7 +137,6 @@ export default function Navbar() {
                 <Search size={17} />
               </button>
 
-              {/* Dark mode */}
               <button
                 onClick={toggle}
                 className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-navy dark:hover:text-white transition-all duration-200"
@@ -154,7 +145,6 @@ export default function Navbar() {
                 {isDark ? <Sun size={17} /> : <Moon size={17} />}
               </button>
 
-              {/* Mobile menu button */}
               <button
                 onClick={() => setMegaOpen(true)}
                 className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-200"
@@ -162,7 +152,10 @@ export default function Navbar() {
                 <Menu size={20} />
               </button>
 
-              <Link to="/signup" className="px-5 py-2 rounded-xl text-sm font-semibold bg-gold hover:bg-gold-light text-navy-deep transition-all duration-200 shadow-sm">
+              <Link
+                to="/signup"
+                className="px-5 py-2 rounded-xl text-sm font-semibold bg-gold hover:bg-gold-light text-navy-deep transition-all duration-200 shadow-sm"
+              >
                 Get Started
               </Link>
             </div>
@@ -170,11 +163,11 @@ export default function Navbar() {
         </div>
       </header>
 
-      <MegaMenuModal 
-        isOpen={megaOpen} 
-        onClose={() => setMegaOpen(false)} 
-        navLinks={NAV_LINKS} 
-        megaCategories={MEGA_CATEGORIES} 
+      <MegaMenuModal
+        isOpen={megaOpen}
+        onClose={() => setMegaOpen(false)}
+        navLinks={NAV_LINKS}
+        megaCategories={MEGA_CATEGORIES}
       />
     </>
   )
