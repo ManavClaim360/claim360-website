@@ -4,29 +4,29 @@ import { Linkedin } from 'lucide-react'
 const TEAM = [
   {
     name: 'Balbir Saran',
-    role: 'Founding Member',
-    desc: '5 decades of finance experience. Pioneer in investment recovery and share regularisation across India.',
+    role: 'FOUNDING MEMBER AND SENIOR ADVISOR',
+    desc: 'Balbir has donned many hats through his 5 decades of finance and management experience – from working with IBM across the continents, to running his own consulting establishment in India, to now driving the agenda of 360 Degrees Management Services.',
     photo: '/assets/Balbir-Saran.jpeg',
     initials: 'BS',
   },
   {
     name: 'Sheekher Saran',
-    role: 'Managing Director',
-    desc: 'Former Associate Partner at Deloitte. Leads strategy and operations across Claim360\'s three offices.',
+    role: 'FOUNDING MEMBER AND MANAGING DIRECTOR',
+    desc: 'Sheekher brings over 17 years of expertise in strategy and operations as a former Associate Partner at Deloitte with experience across multiple continents. Sheekher holds an MBA from London Business School and a Bachelors in Mathematics from St. Stephens College.',
     photo: '/assets/Sheekher-Saran.jpeg',
     initials: 'SS',
   },
   {
     name: 'Ashok Dhawan',
-    role: 'UK Operations Head',
-    desc: 'FCCA with 35+ years of experience. Manages NRI cases and UK-based client relations.',
+    role: 'HEAD OF UNITED KINGDOM OPERATIONS',
+    desc: 'A qualified Certified Chartered Accountant FCCA with 35 years of experience as the Managing Director and CEO of a number of international companies and brands including Muddyfox Bicycles, Willett Hotels, and Asiana International magazines. A UK National residing in Central London.',
     photo: '/assets/Ashok-Dhawan-02.jpg',
     initials: 'AD',
   },
   {
     name: 'Nitish Tripathi',
-    role: 'Business Development Head',
-    desc: 'MBA from IIM Kashipur. Drives new client acquisition and partnerships across India.',
+    role: 'HEAD OF BUSINESS DEVELOPMENT',
+    desc: 'Nitish brings over 8 years of experience in finance (at ICICI Bank, Nuvama Wealth, etc.), specializing in customer relationships and investment advisory. He is a client-centric professional with a knack for achieving targets. Nitish holds an MBA from IIM Kashipur.',
     photo: '/assets/NITISH-TRIPATHI.jpg.jpeg',
     initials: 'NT',
   },
@@ -45,7 +45,11 @@ export default function ManagementSection() {
   }, [])
 
   return (
-    <section id="team" ref={ref} className="section-pad bg-slate-50 dark:bg-navy-deep relative overflow-hidden">
+    <section
+      id="team"
+      ref={ref}
+      className="section-pad bg-slate-50 dark:bg-navy-deep relative overflow-hidden"
+    >
       {/* BG glow */}
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold/[0.03] rounded-full blur-3xl pointer-events-none" />
 
@@ -53,10 +57,11 @@ export default function ManagementSection() {
         {/* Header */}
         <div className="text-center mb-14">
           <div className="eyebrow reveal mb-4 justify-center">Our Leadership</div>
-          <h2 className="reveal font-display text-navy dark:text-white tracking-tight"
-            style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}>
-            Meet the{' '}
-            <span className="italic text-gold">Team</span>
+          <h2
+            className="reveal font-display text-navy dark:text-white tracking-tight"
+            style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}
+          >
+            Meet the <span className="italic text-gold">Team</span>
           </h2>
           <p className="reveal text-slate-500 dark:text-white/45 text-base max-w-lg mx-auto mt-4 leading-relaxed">
             Decades of combined expertise in finance, law, and investment recovery — working for you.
@@ -72,21 +77,18 @@ export default function ManagementSection() {
               style={{ transitionDelay: `${i * 80}ms` }}
             >
               {/* Photo */}
-              <div className="relative h-56 bg-slate-100 dark:bg-navy-mid overflow-hidden">
+              <div className="relative aspect-[4/5] w-full bg-slate-100 dark:bg-navy-mid overflow-hidden">
                 <img
                   src={member.photo}
                   alt={member.name}
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  className="absolute inset-0 h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   onError={e => {
                     e.currentTarget.style.display = 'none'
                     e.currentTarget.nextSibling.style.display = 'flex'
                   }}
                 />
                 {/* Fallback initials */}
-                <div
-                  className="hidden absolute inset-0 items-center justify-center bg-navy"
-                  style={{ display: 'none' }}
-                >
+                <div className="hidden absolute inset-0 items-center justify-center bg-navy">
                   <span className="font-display text-4xl text-gold">{member.initials}</span>
                 </div>
                 {/* Gold bottom gradient */}
@@ -95,7 +97,9 @@ export default function ManagementSection() {
 
               {/* Info */}
               <div className="p-5">
-                <div className="text-[10px] font-semibold uppercase tracking-widest text-gold mb-1">{member.role}</div>
+                <div className="text-[10px] font-semibold uppercase tracking-widest text-gold mb-1">
+                  {member.role}
+                </div>
                 <h3 className="font-display text-navy dark:text-white text-lg mb-2">{member.name}</h3>
                 <p className="text-slate-500 dark:text-white/40 text-xs leading-relaxed">{member.desc}</p>
               </div>
