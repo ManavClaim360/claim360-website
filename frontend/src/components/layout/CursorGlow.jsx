@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { useTheme } from '../../context/ThemeContext'
 
-const NUM_POINTS = 70
-const LINK_DIST = 140       // max distance between points to draw a line
-const CURSOR_DIST = 180     // max distance from cursor to connect a point
-const SPEED = 0.35
+const DOT_SPACING = 88
+const DOT_SIZE = 2.4
+const HOVER_RADIUS = 140
 
+// Dotted grid glow, low z-index so it never interferes with content
 export default function CursorGlow() {
   const canvasRef = useRef(null)
   const { isDark } = useTheme()
@@ -18,7 +18,7 @@ export default function CursorGlow() {
 
     const resize = () => {
       canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      canvas.height = Math.max(window.innerHeight, document.body.scrollHeight)
     }
     resize()
     window.addEventListener('resize', resize)
@@ -26,58 +26,28 @@ export default function CursorGlow() {
     const onMove = e => { mouse.x = e.clientX; mouse.y = e.clientY }
     window.addEventListener('mousemove', onMove)
 
-    // Initialise drifting particles
-    const points = Array.from({ length: NUM_POINTS }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      vx: (Math.random() - 0.5) * SPEED,
-      vy: (Math.random() - 0.5) * SPEED,
-    }))
-
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Palette: light mode uses dual tones, dark mode a single gold tone
-      const base = isDark ? { r: 201, g: 162, b: 74 } : { r: 14, g: 32, b: 74 }
-      const accent = isDark ? base : { r: 212, g: 176, b: 98 }
+      const primary = isDark ? { r: 201, g: 162, b: 74 } : { r: 14, g: 32, b: 74 }
+      const secondary = isDark ? primary : { r: 212, g: 176, b: 98 }
 
-      // Update particle positions
-      for (const p of points) {
-        p.x += p.vx
-        p.y += p.vy
-        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1
-      }
-
-      // Draw web lines between nearby particles
-      for (let i = 0; i < points.length; i++) {
-        for (let j = i + 1; j < points.length; j++) {
-          const dx = points[i].x - points[j].x
-          const dy = points[i].y - points[j].y
+      for (let x = DOT_SPACING / 2; x < canvas.width; x += DOT_SPACING) {
+        for (let y = DOT_SPACING / 2; y < canvas.height; y += DOT_SPACING) {
+          const dx = x - mouse.x
+          const dy = y - mouse.y
           const dist = Math.hypot(dx, dy)
-          if (dist < LINK_DIST) {
-            const alpha = (1 - dist / LINK_DIST) * 0.12
-            ctx.strokeStyle = `rgba(${base.r},${base.g},${base.b},${alpha})`
-            ctx.lineWidth = 0.5
-            ctx.beginPath()
-            ctx.moveTo(points[i].x, points[i].y)
-            ctx.lineTo(points[j].x, points[j].y)
-            ctx.stroke()
-          }
-        }
+          const near = Math.max(0, 1 - dist / HOVER_RADIUS)
 
-        // Draw lines from particle to cursor
-        const dx = points[i].x - mouse.x
-        const dy = points[i].y - mouse.y
-        const dist = Math.hypot(dx, dy)
-        if (dist < CURSOR_DIST) {
-          const alpha = (1 - dist / CURSOR_DIST) * 0.35
-          ctx.strokeStyle = `rgba(${accent.r},${accent.g},${accent.b},${alpha})`
-          ctx.lineWidth = 0.8
+          // Alternate colors in light mode for subtle depth
+          const useSecondary = !isDark && (Math.floor(x / DOT_SPACING) + Math.floor(y / DOT_SPACING)) % 2 === 0
+          const c = useSecondary ? secondary : primary
+          const alpha = 0.16 + near * 0.28
+
+          ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`
           ctx.beginPath()
-          ctx.moveTo(points[i].x, points[i].y)
-          ctx.lineTo(mouse.x, mouse.y)
-          ctx.stroke()
+          ctx.arc(x, y, DOT_SIZE + near * 1.1, 0, Math.PI * 2)
+          ctx.fill()
         }
       }
 
@@ -99,12 +69,11 @@ export default function CursorGlow() {
       aria-hidden="true"
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
+        inset: 0,
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
-        zIndex: 1,              // keep well under nav/modals so nothing is overlapped
+        zIndex: 1, // sits under headers/menus
       }}
     />
   )

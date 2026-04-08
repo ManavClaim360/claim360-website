@@ -1,72 +1,199 @@
+
 import { useEffect, useRef, useState } from 'react'
 import { Star, ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
 
 const ALL_TESTIMONIALS = [
   {
     name: 'KJ Alphons IAS (Rtd.)',
-    role: 'Former Member of Parliament & Minister of Tourism',
-    location: 'New Delhi',
+    role: 'Former Member of Parliament and Minister of Tourism',
+    location: 'New Delhi, India',
     state: 'Delhi',
-    quote: 'I was so pleasantly surprised by the job done by Mr. Saran and his company. They recovered very valuable stocks which we did not know we owned. Their service was outstanding and highly dependable.',
-    result: '₹24 Lakh in shares recovered',
+    quote:
+      'I was so pleasantly surprised by the job done by Mr. Saran and his company, 360 Degrees Management Services, who recovered very valuable stocks which we did not know we owned. Their service was outstanding and highly dependable.',
+    result: 'Valuable stocks traced and recovered',
     rating: 5,
     photo: '/assets/alphons.png',
     initials: 'KA',
   },
   {
+    name: 'Rajiv Kaul',
+    role: 'Former President at Leela Hotels and Resorts',
+    location: 'Mumbai, India',
+    state: 'Maharashtra',
+    quote:
+      'My grateful thanks to the 360 Degrees team for helping me reclaim lost shares and unclaimed dividends of substantial value that I was completely unaware of. Their services are very professional. Also, meeting Mr. Saran was a most rewarding stroke of serendipity.',
+    result: 'Lost shares and dividends reclaimed',
+    rating: 5,
+    photo: '/assets/Rajiv-Kaul.jpg.jpeg',
+    initials: 'RK',
+  },
+  {
     name: 'Sanjay M. Raigaga',
-    role: 'IT Professional',
+    role: '',
     location: 'Texas, USA',
     state: 'NRI',
-    quote: 'It has been a pleasure working with Claim360! They have been very professional and efficient even though I was thousands of miles away in the USA and the regularization had been rejected by a previous provider.',
-    result: 'Investment regularized successfully',
+    quote:
+      'It has been a pleasure working with Claim 360! They have been very professional and efficient even though the regularization of my late mother's investment had been rejected previously while working with another service provider, and I was thousands of miles away in the USA.',
+    result: 'Investment regularized remotely',
     rating: 5,
     photo: '/assets/sanjay-raigaga.png',
     initials: 'SR',
   },
   {
-    name: 'Anushka Khanna',
-    role: 'Business Professional',
-    location: 'Mumbai, Maharashtra',
-    state: 'Maharashtra',
-    quote: 'My late father\'s shares were stuck for 10 years. Claim360 recovered them in just 5 months. Absolutely incredible service. I was amazed at how efficiently they handled everything.',
-    result: '₹18 Lakh + dividends recovered',
-    rating: 5,
-    photo: '/assets/Anushka-Khanna.png',
-    initials: 'AK',
-  },
-  {
-    name: 'Jamshed Wadia',
-    role: 'Business Owner',
-    location: 'Bengaluru, Karnataka',
-    state: 'Karnataka',
-    quote: 'Professional, transparent, and delivered exactly what they promised. The team kept me updated at every step. Highly recommend Claim360 to anyone with unclaimed investments.',
-    result: 'IEPF shares fully recovered',
+    name: 'Jamshed (Jim) Wadia',
+    role: '',
+    location: 'London, United Kingdom',
+    state: 'NRI',
+    quote:
+      'Professional, accurate, thorough, responsive, and timely - words to describe my experience with Claim 360 and Mr. Saran. The team spared me the hassle of dealing with officialdom and converted a contingent asset into a real one when it hit my demat account.',
+    result: 'IEPF shares converted to demat',
     rating: 5,
     photo: '/assets/jamshed-wadia.png',
     initials: 'JW',
   },
   {
+    name: 'Nithya and Santhakumar Sundaram',
+    role: 'World Bank',
+    location: 'Chennai, India',
+    state: 'Tamil Nadu',
+    quote:
+      'Truth to tell, our initial conversation was one of total disbelief, if not mistrust. However, thanks to the team's patient and diligent follow-up, and their credibility, we received a windfall at a time when it was most needed.',
+    result: 'Windfall recovered at critical time',
+    rating: 5,
+    photo: '/assets/Nithya-and-Santhakumar-Sundaram.jpg.jpeg',
+    initials: 'NS',
+  },
+  {
+    name: 'Anushka Khanna',
+    role: '',
+    location: 'London, United Kingdom',
+    state: 'NRI',
+    quote:
+      'I cannot thank you enough for transferring my parents' shares into my name after 17 years of trying. Your office was efficient, knowledgeable and extremely helpful during the whole process. It was a pleasure dealing with your staff.',
+    result: 'Legacy shares transferred after 17 years',
+    rating: 5,
+    photo: '/assets/Anushka-Khanna.png',
+    initials: 'AK',
+  },
+  {
+    name: 'Vinod Juneja',
+    role: 'Former MD at Bank of Rajasthan',
+    location: 'New Delhi, India',
+    state: 'Delhi',
+    quote:
+      'I am thoroughly impressed with the exceptional services of 360 Degrees - their comprehensive expertise, seamless processes, professionalism and client confidentiality are truly commendable. I highly recommend their services and it is a pleasure to work with such reliable team.',
+    result: 'Unclaimed investments recovered',
+    rating: 5,
+    photo: '/assets/Vinod-Juneja.png',
+    initials: 'VJ',
+  },
+  {
+    name: 'Rajni Jain',
+    role: '',
+    location: 'New Delhi, India',
+    state: 'Delhi',
+    quote:
+      'Grateful for 360 Degrees Management's service, uncovering my holdings' value to be 10 times more than expected! Their detailed research and personalized service provided peace of mind and exceeded all financial expectations.',
+    result: 'Portfolio value uncovered (10x expectation)',
+    rating: 5,
+    photo: '/assets/Rajni-Jain.jpg.jpeg',
+    initials: 'RJ',
+  },
+  {
+    name: 'K. R. Palta',
+    role: 'Executive Vice President of a leading multinational conglomerate',
+    location: 'New Delhi, India',
+    state: 'Delhi',
+    quote:
+      'I write this as a happy beneficiary of the services of Mr. Saran and his team. I commend them for their knowledge, professionalism and skills, plus a success-oriented approach in handling our difficult requirement.',
+    result: 'Complex recovery handled successfully',
+    rating: 5,
+    photo: '/assets/K-R-Palta.jpg.jpeg',
+    initials: 'KP',
+  },
+  {
+    name: 'Sanjay Mishra',
+    role: 'Principal Chief Commercial Manager at North-Eastern Railways',
+    location: 'Gorakhpur, India',
+    state: 'Uttar Pradesh',
+    quote:
+      'I have had and continue to have a warm and satisfying professional relationship with Mr. Saran and his company. I have utilized their services regarding my family investments, and I find them professionally very competent and personally easy-to-get-along-with.',
+    result: 'Family investments managed smoothly',
+    rating: 5,
+    photo: '/assets/Sanjay-Mishra.jpg.jpeg',
+    initials: 'SM',
+  },
+  {
     name: 'Kishor Chohan',
-    role: 'Retired Executive',
-    location: 'Ahmedabad, Gujarat',
-    state: 'Gujarat',
-    quote: 'Claim360 helped my family recover old physical share certificates. The process was smooth, and the team\'s patience with our questions was remarkable.',
-    result: '3 companies\' shares recovered',
+    role: '',
+    location: 'Harrow, Middlesex, United Kingdom',
+    state: 'NRI',
+    quote:
+      'Living in the UK, I faced challenges in managing shares in India. Claim 360 provided outstanding support in recovering my shares. The process was seamless, efficient, and handled with utmost professionalism. Highly recommended!',
+    result: 'Cross-border recovery completed',
     rating: 5,
     photo: '/assets/Kishor-Chohan.jpeg',
     initials: 'KC',
   },
   {
+    name: 'Shri Vijai Kapur',
+    role: '',
+    location: 'Gurugram, India',
+    state: 'Haryana',
+    quote:
+      'Mr. Saran and 360 Degrees Management Services have been a great help in recovering old and forgotten IEPF shares. His personal assistance, excellent manners, and charming approach to client relations stand out. I highly recommend him and his team for such work.',
+    result: 'Old IEPF shares recovered',
+    rating: 5,
+    photo: '/assets/Shri-Vijai-Kapur.jpg.jpeg',
+    initials: 'VK',
+  },
+  {
     name: 'Arvind Chopra',
-    role: 'NRI — London, UK',
-    location: 'London, UK',
+    role: 'Chartered Accountant',
+    location: 'United Kingdom',
     state: 'NRI',
-    quote: 'As an NRI, I was worried about managing Indian investments remotely. Claim360 handled everything without requiring me to travel to India. Simply outstanding.',
-    result: 'NRI portfolio regularized',
+    quote:
+      'I was amazed to discover such a service existed, meticulously executed for our family investments. Heartfelt thanks for the professional approach of 360 Degrees Management.',
+    result: 'Family investments regularized',
     rating: 5,
     photo: '/assets/Arvind-Chopra.jpg.jpeg',
     initials: 'AC',
+  },
+  {
+    name: 'M. D. Asthana',
+    role: 'I.A.S. (Retd.), Formerly Secretary Government of India',
+    location: 'Delhi NCR, India',
+    state: 'Delhi',
+    quote:
+      'Mr. Saran informed me about forgotten shares for which I lacked supporting documents. These were purchased during my 1992-95 postings across Delhi, Gurgaon, and Chandigarh. Thanks to their hard work, it resulted in a windfall. Thank you.',
+    result: 'Forgotten shares traced without paperwork',
+    rating: 5,
+    photo: '/assets/M-D-Asthana.png',
+    initials: 'MA',
+  },
+  {
+    name: 'Umesh Shrivastava',
+    role: 'Executive Chairman at Holtec Consulting',
+    location: 'Gurugram, India',
+    state: 'Haryana',
+    quote:
+      'I was fortunate to engage with 360 Degrees on services for my old investments - they have an elaborate database giving access to information, an appropriate network to expedite matters, and provide impeccable, time-bound service.',
+    result: 'Old investments revived quickly',
+    rating: 5,
+    photo: '/assets/Umesh-Shrivastava.jpg.jpeg',
+    initials: 'US',
+  },
+  {
+    name: 'Mahendra Ottambhai Patel',
+    role: '',
+    location: 'High Wycombe, United Kingdom',
+    state: 'NRI',
+    quote:
+      'My wife and I would like to thank the Claim 360 team! They have been very patient and professional in guiding us through the process of regularizing our Reliance shares (bought in the 1980s). Our age and limited technology knowhow did not deter them from serving us.',
+    result: 'Reliance shares regularized (1980s holding)',
+    rating: 5,
+    photo: '/assets/Mahendra-Ottambhai-Patel.jpeg',
+    initials: 'MP',
   },
 ]
 
@@ -109,7 +236,7 @@ export default function TestimonialsSection() {
   }, [])
 
   const visible = [
-    filtered[(current) % filtered.length],
+    filtered[current % filtered.length],
     filtered[(current + 1) % filtered.length],
     filtered[(current + 2) % filtered.length],
   ]
@@ -164,7 +291,7 @@ export default function TestimonialsSection() {
               </div>
 
               <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-3 py-1.5 text-xs font-semibold text-gold-dark mb-5 self-start">
-                🎯 {t.result}
+                Result: {t.result}
               </div>
 
               <p className="font-display text-slate-700 dark:text-white/70 text-sm leading-relaxed italic flex-1 mb-6">
@@ -187,7 +314,7 @@ export default function TestimonialsSection() {
                 </div>
                 <div>
                   <div className="text-navy dark:text-white font-semibold text-sm">{t.name}</div>
-                  <div className="text-slate-400 dark:text-white/35 text-xs mt-0.5">{t.role}</div>
+                  <div className="text-slate-400 dark:text-white/35 text-xs mt-0.5">{t.role || 'Client'}</div>
                   <div className="flex items-center gap-1 text-[10px] text-slate-400 dark:text-white/25 mt-0.5">
                     <MapPin size={8} />
                     {t.location}
