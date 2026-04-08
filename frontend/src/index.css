@@ -51,6 +51,16 @@
     width: max-content;
   }
 
+  /* Trust bar scroll track — 3 copies, animates by -33.33% */
+  .trust-scroll-track {
+    display: flex;
+    gap: 56px;
+    align-items: center;
+    animation: trust-ticker 30s linear infinite;
+    width: max-content;
+    will-change: transform;
+  }
+
   /* Glassmorphism card */
   .glass-card {
     @apply backdrop-blur-md bg-white/[0.04] border border-white/10 rounded-2xl;
@@ -120,6 +130,12 @@
   @keyframes ticker {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
+  }
+
+  /* Trust bar ticker — 3 copies, loops at -33.33% */
+  @keyframes trust-ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-33.3333%); }
   }
 
   /* Counter animation */
