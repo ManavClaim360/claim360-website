@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel, Session, select
 from db.database import engine
 from api.api import api_router
+from core.config import settings
 
 
 def create_db_and_tables():
@@ -14,13 +15,13 @@ def seed_admin():
     """Create the admin user on startup if it doesn't already exist."""
     from db.models import User
     from core.security import get_password_hash
-    ADMIN_EMAIL = "manav@claim360.in"
-    ADMIN_PASSWORD = "Manav@360@"
+    ADMIN_EMAIL = settings.ADMIN_EMAIL or "admin@claim360.in"
+    ADMIN_PASSWORD = settings.ADMIN_PASSWORD or "ChangeThisAdminPass123!"
     with Session(engine) as session:
         existing = session.exec(select(User).where(User.email == ADMIN_EMAIL)).first()
         if not existing:
             admin = User(
-                name="Manav",
+                name="Admin",
                 email=ADMIN_EMAIL,
                 hashed_password=get_password_hash(ADMIN_PASSWORD),
                 role="admin",
