@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Settings, Users, FileText, BarChart2, Eye, EyeOff, ToggleLeft, ToggleRight, LogOut, Upload, Plus, Trash2, Mail } from 'lucide-react'
+import { Settings, Users, FileText, BarChart2, Eye, EyeOff, ToggleLeft, ToggleRight, LogOut, Upload, Plus, Trash2, Mail, Pencil } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
@@ -43,8 +43,9 @@ export default function AdminPage() {
       return []
     }
   })
-  const [form, setForm] = useState({ name: '', role: '', city: '', state: '', quote: '', photo: '' })
+  const [form, setForm] = useState({ name: '', role: '', city: '', state: '', country: '', quote: '', photo: '' })
   const [newsForm, setNewsForm] = useState('')
+  const [editingIndex, setEditingIndex] = useState(null)
 
   useEffect(() => {
     localStorage.setItem('customTestimonials', JSON.stringify(testimonials))
@@ -71,21 +72,50 @@ export default function AdminPage() {
   const addTestimonial = (e) => {
     e.preventDefault()
     if (!form.name || !form.quote) return
+    const country = form.country.trim()
     const city = form.city.trim()
     const state = form.state.trim()
-    const location = city && state ? `${city}, ${state}` : (city || state)
-    setTestimonials(prev => [{
+    const locationParts = [city, state, country].filter(Boolean)
+    const nextItem = {
       ...form,
       city,
       state,
-      location,
+      country,
+      location: locationParts.join(', '),
       initials: form.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase(),
-    }, ...prev])
-    setForm({ name: '', role: '', city: '', state: '', quote: '', photo: '' })
+    }
+
+    if (editingIndex !== null) {
+      setTestimonials(prev => prev.map((item, idx) => (idx === editingIndex ? nextItem : item)))
+    } else {
+      setTestimonials(prev => [nextItem, ...prev])
+    }
+
+    setEditingIndex(null)
+    setForm({ name: '', role: '', city: '', state: '', country: '', quote: '', photo: '' })
   }
 
   const removeTestimonial = (idx) => {
     setTestimonials(prev => prev.filter((_, i) => i !== idx))
+  }
+
+  const editTestimonial = (idx) => {
+    const item = testimonials[idx]
+    setEditingIndex(idx)
+    setForm({
+      name: item.name || '',
+      role: item.role || '',
+      city: item.city || '',
+      state: item.state || '',
+      country: item.country || '',
+      quote: item.quote || '',
+      photo: item.photo || '',
+    })
+  }
+
+  const cancelEdit = () => {
+    setEditingIndex(null)
+    setForm({ name: '', role: '', city: '', state: '', country: '', quote: '', photo: '' })
   }
 
   const addNewsletter = (e) => {
@@ -224,13 +254,14 @@ export default function AdminPage() {
               <div className="grid lg:grid-cols-2 gap-6">
                 <form onSubmit={addTestimonial} className="bg-white dark:bg-navy-card border border-slate-100 dark:border-white/10 rounded-2xl p-6 space-y-3">
                   <div className="flex items-center gap-2 text-sm font-semibold text-navy dark:text-white">
-                    <Upload size={16} /> Add Testimonial
+                    <Upload size={16} /> {editingIndex !== null ? 'Edit Testimonial' : 'Add Testimonial'}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input className="admin-input" placeholder="Name*" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required />
-                    <input className="admin-input" placeholder="Role" value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))} />
+                    <input className="admin-input" placeholder="Role of the Client" value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))} />
                     <input className="admin-input" placeholder="City" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} />
                     <input className="admin-input" placeholder="State" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} />
+                    <input className="admin-input sm:col-span-2" placeholder="Country" value={form.country} onChange={e => setForm(f => ({ ...f, country: e.target.value }))} />
                   </div>
                   <textarea className="admin-input min-h-[110px]" placeholder="Quote*" value={form.quote} onChange={e => setForm(f => ({ ...f, quote: e.target.value }))} required />
                   <div className="flex items-center justify-between gap-3">
@@ -239,7 +270,16 @@ export default function AdminPage() {
                       <span className="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-dashed border-slate-200 dark:border-white/15 text-xs">Upload Photo</span>
                       {form.photo ? <span className="text-emerald-500 text-xs">Attached</span> : <span className="text-slate-400 text-xs">Optional</span>}
                     </label>
-                    <button type="submit" className="px-4 py-2 rounded-xl bg-gold text-navy-deep font-semibold text-sm hover:bg-gold-light transition">Save</button>
+                    <div className="flex items-center gap-2">
+                      {editingIndex !== null ? (
+                        <button type="button" onClick={cancelEdit} className="px-4 py-2 rounded-xl border border-slate-200 dark:border-white/15 text-navy dark:text-white text-sm font-semibold hover:bg-slate-50 dark:hover:bg-white/5 transition">
+                          Cancel
+                        </button>
+                      ) : null}
+                      <button type="submit" className="px-4 py-2 rounded-xl bg-gold text-navy-deep font-semibold text-sm hover:bg-gold-light transition">
+                        {editingIndex !== null ? 'Update' : 'Save'}
+                      </button>
+                    </div>
                   </div>
                 </form>
 
@@ -252,7 +292,7 @@ export default function AdminPage() {
                   )}
                   {testimonials.map((t, idx) => (
                     <div key={idx} className="p-3 rounded-xl border border-slate-100 dark:border-white/10 flex gap-3">
-                      <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-white/10 overflow-hidden flex-shrink-0">
+                      <div className="w-14 h-14 rounded-xl bg-slate-100 dark:bg-white/10 overflow-hidden flex-shrink-0">
                         {t.photo ? <img src={t.photo} alt={t.name} className="w-full h-full object-cover" /> : (
                           <div className="w-full h-full flex items-center justify-center text-xs font-semibold text-slate-500 dark:text-white/60">
                             {t.initials || 'NA'}
@@ -261,14 +301,19 @@ export default function AdminPage() {
                       </div>
                       <div className="flex-1">
                         <div className="text-sm font-semibold text-navy dark:text-white">{t.name}</div>
-                        <div className="text-xs text-slate-400 dark:text-white/40">
-                          {[t.role, t.city && t.state ? `${t.city}, ${t.state}` : (t.city || t.state || t.location)].filter(Boolean).join(' | ')}
-                        </div>
+                        {t.role ? <div className="text-xs font-medium text-slate-600 dark:text-white/55 mt-0.5">Role of the Client: {t.role}</div> : null}
+                        {t.city || t.state ? <div className="text-xs text-slate-400 dark:text-white/40 mt-0.5">{[t.city, t.state].filter(Boolean).join(', ')}</div> : null}
+                        {t.country ? <div className="text-xs text-slate-400 dark:text-white/35 mt-0.5">{t.country}</div> : null}
                         <div className="text-xs text-slate-500 dark:text-white/50 line-clamp-2 mt-1">"{t.quote}"</div>
                       </div>
-                      <button onClick={() => removeTestimonial(idx)} className="text-red-500 hover:text-red-400">
-                        <Trash2 size={16} />
-                      </button>
+                      <div className="flex items-start gap-2">
+                        <button onClick={() => editTestimonial(idx)} className="text-slate-500 hover:text-gold transition-colors">
+                          <Pencil size={16} />
+                        </button>
+                        <button onClick={() => removeTestimonial(idx)} className="text-red-500 hover:text-red-400">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>

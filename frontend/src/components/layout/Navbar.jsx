@@ -79,9 +79,13 @@ export default function Navbar() {
       <header
         className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/70 dark:bg-navy-deep/70 backdrop-blur-2xl shadow-[0_8px_30px_rgba(10,22,40,0.12)] border border-white/30 dark:border-white/10'
-            : 'bg-white dark:bg-navy-deep border-b border-slate-100 dark:border-white/[0.06]'
+            ? 'backdrop-blur-3xl shadow-[0_18px_60px_rgba(3,8,18,0.45)] border-b border-white/12'
+            : 'border-b border-white/8'
         }`}
+        style={{
+          backgroundColor: scrolled ? 'rgba(6, 14, 28, 0.82)' : '#060E1C',
+          boxShadow: scrolled ? '0 18px 60px rgba(3, 8, 18, 0.45), inset 0 1px 0 rgba(255,255,255,0.08)' : 'none',
+        }}
       >
         <div className="c">
           <div className="flex items-center justify-between h-[72px] gap-6">

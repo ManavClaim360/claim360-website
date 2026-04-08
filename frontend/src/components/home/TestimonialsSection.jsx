@@ -260,13 +260,15 @@ export default function TestimonialsSection() {
     )
     ref.current?.querySelectorAll('.reveal').forEach(el => observer.observe(el))
     return () => observer.disconnect()
-  }, [])
+  }, [current, filtered.length])
 
-  const visible = [
-    filtered[current % filtered.length],
-    filtered[(current + 1) % filtered.length],
-    filtered[(current + 2) % filtered.length],
-  ]
+  const visible = filtered.length
+    ? [
+        filtered[current % filtered.length],
+        filtered[(current + 1) % filtered.length],
+        filtered[(current + 2) % filtered.length],
+      ].filter(Boolean)
+    : []
 
   return (
     <section id="testimonials" ref={ref} className="section-pad bg-white dark:bg-navy relative overflow-hidden">
@@ -308,7 +310,7 @@ export default function TestimonialsSection() {
           {visible.map((t, i) => (
             <div
               key={`${current}-${i}`}
-              className="reveal bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-7 flex flex-col transition-all duration-500"
+              className="reveal visible bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-7 flex flex-col transition-all duration-500"
               style={{ transitionDelay: `${i * 80}ms` }}
             >
               <p className="font-display text-slate-700 dark:text-white/70 text-[15px] leading-relaxed italic flex-1 mb-8">
@@ -316,7 +318,7 @@ export default function TestimonialsSection() {
               </p>
 
               <div className="flex items-center gap-4 pt-5 border-t border-slate-100 dark:border-white/[0.07]">
-                <div className="w-20 h-20 rounded-[22px] overflow-hidden flex-shrink-0 border border-gold/30 relative bg-navy dark:bg-gold/20">
+                <div className="w-24 h-24 rounded-[24px] overflow-hidden flex-shrink-0 border border-gold/30 relative bg-navy dark:bg-gold/20">
                   <div className="absolute inset-0 flex items-center justify-center font-bold font-display text-white dark:text-gold text-sm">
                     {t.initials}
                   </div>
@@ -332,29 +334,42 @@ export default function TestimonialsSection() {
                 <div className="min-w-0">
                   <div className="text-navy dark:text-white font-semibold text-base leading-tight">{t.name}</div>
                   {t.role ? (
-                    <div className="text-slate-500 dark:text-white/45 text-sm mt-1 leading-snug">{t.role}</div>
+                    <div className="text-slate-700 dark:text-white/70 text-sm mt-1 leading-snug font-medium">
+                      Role of the Client: {t.role}
+                    </div>
                   ) : null}
-                  {(t.city || t.state || t.location) ? (
-                  <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-white/25 mt-2">
-                    <MapPin size={8} />
-                    {t.city && t.state ? `${t.city}, ${t.state}` : (t.city || t.state || t.location)}
-                  </div>
+                  {(t.city || t.state) ? (
+                    <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-white/30 mt-2">
+                      <MapPin size={8} />
+                      {[t.city, t.state].filter(Boolean).join(', ')}
+                    </div>
                   ) : null}
+                  {t.country ? (
+                    <div className="text-xs text-slate-400 dark:text-white/25 mt-1">
+                      {t.country}
+                    </div>
+                  ) : (!t.city && !t.state && t.location ? (
+                    <div className="text-xs text-slate-400 dark:text-white/25 mt-1">
+                      {t.location}
+                    </div>
+                  ) : null)}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="flex justify-center gap-2 mt-8">
-          {filtered.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${i === current ? 'bg-gold w-8' : 'bg-slate-200 dark:bg-white/20 w-2'}`}
-            />
-          ))}
-        </div>
+        {filtered.length > 1 ? (
+          <div className="flex justify-center gap-2 mt-8">
+            {filtered.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${i === current ? 'bg-gold w-8' : 'bg-slate-200 dark:bg-white/20 w-2'}`}
+              />
+            ))}
+          </div>
+        ) : null}
 
         <div className="text-center mt-8 text-slate-400 dark:text-white/25 text-xs">
           We're happy to provide client contact details for verification upon request.
