@@ -9,7 +9,7 @@ const ALL_TESTIMONIALS = [
     location: 'New Delhi, India',
     state: 'Delhi',
     quote:
-      'I was so pleasantly surprised by the job done by Mr. Saran and his company, 360 Degrees Management Services, who recovered very valuable stocks which we did not know we owned. Their service was outstanding and highly dependable.',
+      `I was so pleasantly surprised by the job done by Mr. Saran and his company, 360 Degrees Management Services, who recovered very valuable stocks which we did not know we owned. Their service was outstanding and highly dependable.`,
     result: 'Valuable stocks traced and recovered',
     rating: 5,
     photo: '/assets/alphons.png',
@@ -21,7 +21,7 @@ const ALL_TESTIMONIALS = [
     location: 'Mumbai, India',
     state: 'Maharashtra',
     quote:
-      'My grateful thanks to the 360 Degrees team for helping me reclaim lost shares and unclaimed dividends of substantial value that I was completely unaware of. Their services are very professional. Also, meeting Mr. Saran was a most rewarding stroke of serendipity.',
+      `My grateful thanks to the 360 Degrees team for helping me reclaim lost shares and unclaimed dividends of substantial value that I was completely unaware of. Their services are very professional. Also, meeting Mr. Saran was a most rewarding stroke of serendipity.`,
     result: 'Lost shares and dividends reclaimed',
     rating: 5,
     photo: '/assets/Rajiv-Kaul.jpg.jpeg',
@@ -33,7 +33,7 @@ const ALL_TESTIMONIALS = [
     location: 'Texas, USA',
     state: 'NRI',
     quote:
-      'It has been a pleasure working with Claim 360! They have been very professional and efficient even though the regularization of my late mother's investment had been rejected previously while working with another service provider, and I was thousands of miles away in the USA.',
+      `It has been a pleasure working with Claim 360! They have been very professional and efficient even though the regularization of my late mother's investment had been rejected previously while working with another service provider, and I was thousands of miles away in the USA.`,
     result: 'Investment regularized remotely',
     rating: 5,
     photo: '/assets/sanjay-raigaga.png',
@@ -45,7 +45,7 @@ const ALL_TESTIMONIALS = [
     location: 'London, United Kingdom',
     state: 'NRI',
     quote:
-      'Professional, accurate, thorough, responsive, and timely - words to describe my experience with Claim 360 and Mr. Saran. The team spared me the hassle of dealing with officialdom and converted a contingent asset into a real one when it hit my demat account.',
+      `Professional, accurate, thorough, responsive, and timely - words to describe my experience with Claim 360 and Mr. Saran. The team spared me the hassle of dealing with officialdom and converted a contingent asset into a real one when it hit my demat account.`,
     result: 'IEPF shares converted to demat',
     rating: 5,
     photo: '/assets/jamshed-wadia.png',
@@ -57,7 +57,7 @@ const ALL_TESTIMONIALS = [
     location: 'Chennai, India',
     state: 'Tamil Nadu',
     quote:
-      'Truth to tell, our initial conversation was one of total disbelief, if not mistrust. However, thanks to the team's patient and diligent follow-up, and their credibility, we received a windfall at a time when it was most needed.',
+      `Truth to tell, our initial conversation was one of total disbelief, if not mistrust. However, thanks to the team's patient and diligent follow-up, and their credibility, we received a windfall at a time when it was most needed.`,
     result: 'Windfall recovered at critical time',
     rating: 5,
     photo: '/assets/Nithya-and-Santhakumar-Sundaram.jpg.jpeg',
@@ -69,7 +69,7 @@ const ALL_TESTIMONIALS = [
     location: 'London, United Kingdom',
     state: 'NRI',
     quote:
-      'I cannot thank you enough for transferring my parents' shares into my name after 17 years of trying. Your office was efficient, knowledgeable and extremely helpful during the whole process. It was a pleasure dealing with your staff.',
+      `I cannot thank you enough for transferring my parents' shares into my name after 17 years of trying. Your office was efficient, knowledgeable and extremely helpful during the whole process. It was a pleasure dealing with your staff.`,
     result: 'Legacy shares transferred after 17 years',
     rating: 5,
     photo: '/assets/Anushka-Khanna.png',
@@ -81,7 +81,7 @@ const ALL_TESTIMONIALS = [
     location: 'New Delhi, India',
     state: 'Delhi',
     quote:
-      'I am thoroughly impressed with the exceptional services of 360 Degrees - their comprehensive expertise, seamless processes, professionalism and client confidentiality are truly commendable. I highly recommend their services and it is a pleasure to work with such reliable team.',
+      `I am thoroughly impressed with the exceptional services of 360 Degrees - their comprehensive expertise, seamless processes, professionalism and client confidentiality are truly commendable. I highly recommend their services and it is a pleasure to work with such reliable team.`,
     result: 'Unclaimed investments recovered',
     rating: 5,
     photo: '/assets/Vinod-Juneja.png',
@@ -93,7 +93,7 @@ const ALL_TESTIMONIALS = [
     location: 'New Delhi, India',
     state: 'Delhi',
     quote:
-      'Grateful for 360 Degrees Management's service, uncovering my holdings' value to be 10 times more than expected! Their detailed research and personalized service provided peace of mind and exceeded all financial expectations.',
+      `Grateful for 360 Degrees Management's service, uncovering my holdings' value to be 10 times more than expected! Their detailed research and personalized service provided peace of mind and exceeded all financial expectations.`,
     result: 'Portfolio value uncovered (10x expectation)',
     rating: 5,
     photo: '/assets/Rajni-Jain.jpg.jpeg',
@@ -105,7 +105,7 @@ const ALL_TESTIMONIALS = [
     location: 'New Delhi, India',
     state: 'Delhi',
     quote:
-      'I write this as a happy beneficiary of the services of Mr. Saran and his team. I commend them for their knowledge, professionalism and skills, plus a success-oriented approach in handling our difficult requirement.',
+      `I write this as a happy beneficiary of the services of Mr. Saran and his team. I commend them for their knowledge, professionalism and skills, plus a success-oriented approach in handling our difficult requirement.`,
     result: 'Complex recovery handled successfully',
     rating: 5,
     photo: '/assets/K-R-Palta.jpg.jpeg',
@@ -117,7 +117,7 @@ const ALL_TESTIMONIALS = [
     location: 'Gorakhpur, India',
     state: 'Uttar Pradesh',
     quote:
-      'I have had and continue to have a warm and satisfying professional relationship with Mr. Saran and his company. I have utilized their services regarding my family investments, and I find them professionally very competent and personally easy-to-get-along-with.',
+      `I have had and continue to have a warm and satisfying professional relationship with Mr. Saran and his company. I have utilized their services regarding my family investments, and I find them professionally very competent and personally easy-to-get-along-with.`,
     result: 'Family investments managed smoothly',
     rating: 5,
     photo: '/assets/Sanjay-Mishra.jpg.jpeg',
@@ -129,7 +129,7 @@ const ALL_TESTIMONIALS = [
     location: 'Harrow, Middlesex, United Kingdom',
     state: 'NRI',
     quote:
-      'Living in the UK, I faced challenges in managing shares in India. Claim 360 provided outstanding support in recovering my shares. The process was seamless, efficient, and handled with utmost professionalism. Highly recommended!',
+      `Living in the UK, I faced challenges in managing shares in India. Claim 360 provided outstanding support in recovering my shares. The process was seamless, efficient, and handled with utmost professionalism. Highly recommended!`,
     result: 'Cross-border recovery completed',
     rating: 5,
     photo: '/assets/Kishor-Chohan.jpeg',
@@ -141,7 +141,7 @@ const ALL_TESTIMONIALS = [
     location: 'Gurugram, India',
     state: 'Haryana',
     quote:
-      'Mr. Saran and 360 Degrees Management Services have been a great help in recovering old and forgotten IEPF shares. His personal assistance, excellent manners, and charming approach to client relations stand out. I highly recommend him and his team for such work.',
+      `Mr. Saran and 360 Degrees Management Services have been a great help in recovering old and forgotten IEPF shares. His personal assistance, excellent manners, and charming approach to client relations stand out. I highly recommend him and his team for such work.`,
     result: 'Old IEPF shares recovered',
     rating: 5,
     photo: '/assets/Shri-Vijai-Kapur.jpg.jpeg',
@@ -153,7 +153,7 @@ const ALL_TESTIMONIALS = [
     location: 'United Kingdom',
     state: 'NRI',
     quote:
-      'I was amazed to discover such a service existed, meticulously executed for our family investments. Heartfelt thanks for the professional approach of 360 Degrees Management.',
+      `I was amazed to discover such a service existed, meticulously executed for our family investments. Heartfelt thanks for the professional approach of 360 Degrees Management.`,
     result: 'Family investments regularized',
     rating: 5,
     photo: '/assets/Arvind-Chopra.jpg.jpeg',
@@ -165,7 +165,7 @@ const ALL_TESTIMONIALS = [
     location: 'Delhi NCR, India',
     state: 'Delhi',
     quote:
-      'Mr. Saran informed me about forgotten shares for which I lacked supporting documents. These were purchased during my 1992-95 postings across Delhi, Gurgaon, and Chandigarh. Thanks to their hard work, it resulted in a windfall. Thank you.',
+      `Mr. Saran informed me about forgotten shares for which I lacked supporting documents. These were purchased during my 1992-95 postings across Delhi, Gurgaon, and Chandigarh. Thanks to their hard work, it resulted in a windfall. Thank you.`,
     result: 'Forgotten shares traced without paperwork',
     rating: 5,
     photo: '/assets/M-D-Asthana.png',
@@ -177,7 +177,7 @@ const ALL_TESTIMONIALS = [
     location: 'Gurugram, India',
     state: 'Haryana',
     quote:
-      'I was fortunate to engage with 360 Degrees on services for my old investments - they have an elaborate database giving access to information, an appropriate network to expedite matters, and provide impeccable, time-bound service.',
+      `I was fortunate to engage with 360 Degrees on services for my old investments - they have an elaborate database giving access to information, an appropriate network to expedite matters, and provide impeccable, time-bound service.`,
     result: 'Old investments revived quickly',
     rating: 5,
     photo: '/assets/Umesh-Shrivastava.jpg.jpeg',
@@ -189,7 +189,7 @@ const ALL_TESTIMONIALS = [
     location: 'High Wycombe, United Kingdom',
     state: 'NRI',
     quote:
-      'My wife and I would like to thank the Claim 360 team! They have been very patient and professional in guiding us through the process of regularizing our Reliance shares (bought in the 1980s). Our age and limited technology knowhow did not deter them from serving us.',
+      `My wife and I would like to thank the Claim 360 team! They have been very patient and professional in guiding us through the process of regularizing our Reliance shares (bought in the 1980s). Our age and limited technology knowhow did not deter them from serving us.`,
     result: 'Reliance shares regularized (1980s holding)',
     rating: 5,
     photo: '/assets/Mahendra-Ottambhai-Patel.jpeg',
