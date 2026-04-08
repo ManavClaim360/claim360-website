@@ -43,7 +43,7 @@ export default function AdminPage() {
       return []
     }
   })
-  const [form, setForm] = useState({ name: '', role: '', location: '', state: '', quote: '', result: '', photo: '' })
+  const [form, setForm] = useState({ name: '', role: '', city: '', state: '', quote: '', photo: '' })
   const [newsForm, setNewsForm] = useState('')
 
   useEffect(() => {
@@ -71,8 +71,17 @@ export default function AdminPage() {
   const addTestimonial = (e) => {
     e.preventDefault()
     if (!form.name || !form.quote) return
-    setTestimonials(prev => [{ ...form, rating: 5, initials: form.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase() }, ...prev])
-    setForm({ name: '', role: '', location: '', state: '', quote: '', result: '', photo: '' })
+    const city = form.city.trim()
+    const state = form.state.trim()
+    const location = city && state ? `${city}, ${state}` : (city || state)
+    setTestimonials(prev => [{
+      ...form,
+      city,
+      state,
+      location,
+      initials: form.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase(),
+    }, ...prev])
+    setForm({ name: '', role: '', city: '', state: '', quote: '', photo: '' })
   }
 
   const removeTestimonial = (idx) => {
@@ -220,10 +229,9 @@ export default function AdminPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input className="admin-input" placeholder="Name*" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required />
                     <input className="admin-input" placeholder="Role" value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))} />
-                    <input className="admin-input" placeholder="Location" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} />
-                    <input className="admin-input" placeholder="State (for geo sort)" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} />
+                    <input className="admin-input" placeholder="City" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} />
+                    <input className="admin-input" placeholder="State" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} />
                   </div>
-                  <input className="admin-input" placeholder="Result highlight" value={form.result} onChange={e => setForm(f => ({ ...f, result: e.target.value }))} />
                   <textarea className="admin-input min-h-[110px]" placeholder="Quote*" value={form.quote} onChange={e => setForm(f => ({ ...f, quote: e.target.value }))} required />
                   <div className="flex items-center justify-between gap-3">
                     <label className="text-xs font-semibold text-slate-500 dark:text-white/50 flex items-center gap-2 cursor-pointer">
@@ -253,7 +261,9 @@ export default function AdminPage() {
                       </div>
                       <div className="flex-1">
                         <div className="text-sm font-semibold text-navy dark:text-white">{t.name}</div>
-                        <div className="text-xs text-slate-400 dark:text-white/40">{t.role || 'Client'} • {t.location || '—'}</div>
+                        <div className="text-xs text-slate-400 dark:text-white/40">
+                          {[t.role, t.city && t.state ? `${t.city}, ${t.state}` : (t.city || t.state || t.location)].filter(Boolean).join(' | ')}
+                        </div>
                         <div className="text-xs text-slate-500 dark:text-white/50 line-clamp-2 mt-1">"{t.quote}"</div>
                       </div>
                       <button onClick={() => removeTestimonial(idx)} className="text-red-500 hover:text-red-400">

@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react'
-import { Star, ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
 
 const ALL_TESTIMONIALS = [
   {
@@ -229,6 +229,10 @@ export default function TestimonialsSection() {
   }, [custom])
 
   useEffect(() => {
+    setCurrent(0)
+  }, [filtered.length])
+
+  useEffect(() => {
     fetch('https://ipapi.co/json/')
       .then(r => r.json())
       .then(data => {
@@ -248,11 +252,6 @@ export default function TestimonialsSection() {
 
   const prev = () => setCurrent(c => (c - 1 + filtered.length) % filtered.length)
   const next = () => setCurrent(c => (c + 1) % filtered.length)
-
-  useEffect(() => {
-    const t = setInterval(next, 5000)
-    return () => clearInterval(t)
-  }, [filtered.length])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -309,25 +308,15 @@ export default function TestimonialsSection() {
           {visible.map((t, i) => (
             <div
               key={`${current}-${i}`}
-              className="reveal bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-2xl p-7 flex flex-col transition-all duration-500"
+              className="reveal bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-7 flex flex-col transition-all duration-500"
               style={{ transitionDelay: `${i * 80}ms` }}
             >
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star key={j} size={14} fill="currentColor" className="text-gold" />
-                ))}
-              </div>
-
-              <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-3 py-1.5 text-xs font-semibold text-gold-dark mb-5 self-start">
-                Result: {t.result}
-              </div>
-
-              <p className="font-display text-slate-700 dark:text-white/70 text-sm leading-relaxed italic flex-1 mb-6">
+              <p className="font-display text-slate-700 dark:text-white/70 text-[15px] leading-relaxed italic flex-1 mb-8">
                 "{t.quote}"
               </p>
 
-              <div className="flex items-center gap-3 pt-5 border-t border-slate-100 dark:border-white/[0.07]">
-                <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-gold/30 relative bg-navy dark:bg-gold/20">
+              <div className="flex items-center gap-4 pt-5 border-t border-slate-100 dark:border-white/[0.07]">
+                <div className="w-20 h-20 rounded-[22px] overflow-hidden flex-shrink-0 border border-gold/30 relative bg-navy dark:bg-gold/20">
                   <div className="absolute inset-0 flex items-center justify-center font-bold font-display text-white dark:text-gold text-sm">
                     {t.initials}
                   </div>
@@ -340,13 +329,17 @@ export default function TestimonialsSection() {
                     />
                   )}
                 </div>
-                <div>
-                  <div className="text-navy dark:text-white font-semibold text-sm">{t.name}</div>
-                  <div className="text-slate-400 dark:text-white/35 text-xs mt-0.5">{t.role || 'Client'}</div>
-                  <div className="flex items-center gap-1 text-[10px] text-slate-400 dark:text-white/25 mt-0.5">
+                <div className="min-w-0">
+                  <div className="text-navy dark:text-white font-semibold text-base leading-tight">{t.name}</div>
+                  {t.role ? (
+                    <div className="text-slate-500 dark:text-white/45 text-sm mt-1 leading-snug">{t.role}</div>
+                  ) : null}
+                  {(t.city || t.state || t.location) ? (
+                  <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-white/25 mt-2">
                     <MapPin size={8} />
-                    {t.location}
+                    {t.city && t.state ? `${t.city}, ${t.state}` : (t.city || t.state || t.location)}
                   </div>
+                  ) : null}
                 </div>
               </div>
             </div>
