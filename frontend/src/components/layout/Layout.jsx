@@ -6,10 +6,12 @@ import WhatsAppButton from './WhatsAppButton'
 import AnnouncementBar from './AnnouncementBar'
 import MobileBottomNav from './MobileBottomNav'
 import CursorGlow from './CursorGlow'
+import ParallaxBackdrop from './ParallaxBackdrop'
 
 export default function Layout() {
   return (
     <div className="min-h-screen bg-white dark:bg-navy flex flex-col">
+      <ParallaxBackdrop />
       <CursorGlow />
       <AnnouncementBar />
       <Navbar />

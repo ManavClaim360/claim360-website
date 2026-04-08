@@ -37,10 +37,9 @@ export default function CursorGlow() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Light mode: dark navy threads. Dark mode: gold threads.
-      const r = isDark ? 201 : 10
-      const g = isDark ? 162 : 22
-      const b = isDark ? 74  : 40
+      // Palette: light mode uses dual tones, dark mode a single gold tone
+      const base = isDark ? { r: 201, g: 162, b: 74 } : { r: 14, g: 32, b: 74 }
+      const accent = isDark ? base : { r: 212, g: 176, b: 98 }
 
       // Update particle positions
       for (const p of points) {
@@ -58,7 +57,7 @@ export default function CursorGlow() {
           const dist = Math.hypot(dx, dy)
           if (dist < LINK_DIST) {
             const alpha = (1 - dist / LINK_DIST) * 0.12
-            ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`
+            ctx.strokeStyle = `rgba(${base.r},${base.g},${base.b},${alpha})`
             ctx.lineWidth = 0.5
             ctx.beginPath()
             ctx.moveTo(points[i].x, points[i].y)
@@ -73,7 +72,7 @@ export default function CursorGlow() {
         const dist = Math.hypot(dx, dy)
         if (dist < CURSOR_DIST) {
           const alpha = (1 - dist / CURSOR_DIST) * 0.35
-          ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`
+          ctx.strokeStyle = `rgba(${accent.r},${accent.g},${accent.b},${alpha})`
           ctx.lineWidth = 0.8
           ctx.beginPath()
           ctx.moveTo(points[i].x, points[i].y)
@@ -105,7 +104,7 @@ export default function CursorGlow() {
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
-        zIndex: 9998,
+        zIndex: 1,              // keep well under nav/modals so nothing is overlapped
       }}
     />
   )
