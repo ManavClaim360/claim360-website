@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
     setLoading(true)
     try {
       const params = new URLSearchParams()
-      params.append('username', credentials.email)
+      params.append('username', credentials.email || credentials.phone)
       params.append('password', credentials.password || 'password123') // frontend mock didn't capture pass, using default if missing
 
       const res = await axios.post(`${API_URL}/auth/login`, params, {

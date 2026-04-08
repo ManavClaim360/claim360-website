@@ -7,7 +7,8 @@
       "Bash(powershell -Command \"Get-ChildItem -Path ''M:\\\\Code\\\\Claim360 Website\\\\.claude\\\\worktrees\\\\competent-shaw\\\\.git'' -Force | Select-Object Name\")",
       "Bash(powershell -Command \"Get-Content ''M:\\\\Code\\\\Claim360 Website\\\\.claude\\\\worktrees\\\\competent-shaw\\\\.git''\")",
       "Bash(gh pr:*)",
-      "Bash(.venv/Scripts/pip install:*)"
+      "Bash(.venv/Scripts/pip install:*)",
+      "Bash(.venv/Scripts/python.exe -c ':*)"
     ]
   }
 }
