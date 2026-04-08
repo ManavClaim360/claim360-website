@@ -172,20 +172,17 @@ export default function TestimonialsSection() {
               </p>
 
               <div className="flex items-center gap-3 pt-5 border-t border-slate-100 dark:border-white/[0.07]">
-                <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 border-2 border-gold/30 bg-navy dark:bg-gold/20">
-                  {t.photo ? (
+                <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-gold/30 relative bg-navy dark:bg-gold/20">
+                  <div className="absolute inset-0 flex items-center justify-center font-bold font-display text-white dark:text-gold text-sm">
+                    {t.initials}
+                  </div>
+                  {t.photo && (
                     <img
                       src={t.photo}
                       alt={t.name}
-                      className="w-full h-full object-cover"
-                      onError={e => {
-                        e.currentTarget.style.display = 'none'
-                      }}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      onError={e => e.currentTarget.remove()}
                     />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center font-bold font-display text-white dark:text-gold text-sm">
-                      {t.initials}
-                    </div>
                   )}
                 </div>
                 <div>

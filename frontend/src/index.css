@@ -41,9 +41,6 @@
     animation: ticker 25s linear infinite;
     width: max-content;
   }
-  .ticker-track:hover {
-    animation-play-state: paused;
-  }
 
   /* Logo scroll track */
   .logo-scroll-track {
