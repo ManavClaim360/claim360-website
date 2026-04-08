@@ -8,6 +8,13 @@ export default function NewsletterSection() {
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const ref = useRef(null)
+  const [customHighlights, setCustomHighlights] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('newsletterHighlights') || '[]')
+    } catch {
+      return []
+    }
+  })
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,6 +62,7 @@ export default function NewsletterSection() {
                 'RBI & SEBI regulatory changes affecting NRIs',
                 'Success stories & recovery tips from our experts',
                 'Free webinar invitations and guides',
+                ...customHighlights,
               ].map(perk => (
                 <div key={perk} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-white/55">
                   <div className="w-5 h-5 rounded-full bg-navy dark:bg-gold flex items-center justify-center text-white dark:text-navy-deep flex-shrink-0 mt-0.5">

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Settings, Users, FileText, BarChart2, Eye, EyeOff, ToggleLeft, ToggleRight, LogOut } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Settings, Users, FileText, BarChart2, Eye, EyeOff, ToggleLeft, ToggleRight, LogOut, Upload, Plus, Trash2, Mail } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
@@ -29,12 +29,64 @@ export default function AdminPage() {
   const [visibleSections, setVisibleSections] = useState(
     SECTIONS.reduce((acc, s) => ({ ...acc, [s.key]: true }), {})
   )
+  const [testimonials, setTestimonials] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('customTestimonials') || '[]')
+    } catch {
+      return []
+    }
+  })
+  const [newsletterItems, setNewsletterItems] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('newsletterHighlights') || '[]')
+    } catch {
+      return []
+    }
+  })
+  const [form, setForm] = useState({ name: '', role: '', location: '', state: '', quote: '', result: '', photo: '' })
+  const [newsForm, setNewsForm] = useState('')
+
+  useEffect(() => {
+    localStorage.setItem('customTestimonials', JSON.stringify(testimonials))
+  }, [testimonials])
+
+  useEffect(() => {
+    localStorage.setItem('newsletterHighlights', JSON.stringify(newsletterItems))
+  }, [newsletterItems])
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   const toggleSection = (key) => {
     setVisibleSections(p => ({ ...p, [key]: !p[key] }))
   }
+
+  const handleFile = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => setForm(f => ({ ...f, photo: reader.result }))
+    reader.readAsDataURL(file)
+  }
+
+  const addTestimonial = (e) => {
+    e.preventDefault()
+    if (!form.name || !form.quote) return
+    setTestimonials(prev => [{ ...form, rating: 5, initials: form.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase() }, ...prev])
+    setForm({ name: '', role: '', location: '', state: '', quote: '', result: '', photo: '' })
+  }
+
+  const removeTestimonial = (idx) => {
+    setTestimonials(prev => prev.filter((_, i) => i !== idx))
+  }
+
+  const addNewsletter = (e) => {
+    e.preventDefault()
+    if (!newsForm.trim()) return
+    setNewsletterItems(prev => [newsForm.trim(), ...prev])
+    setNewsForm('')
+  }
+
+  const removeNewsletter = (idx) => setNewsletterItems(prev => prev.filter((_, i) => i !== idx))
 
   const TABS = [
     { id: 'sections', icon: Eye, label: 'Section Control' },
@@ -158,12 +210,58 @@ export default function AdminPage() {
             <div>
               <div className="mb-6">
                 <h2 className="font-display text-navy dark:text-white text-xl mb-1">Manage Testimonials</h2>
-                <p className="text-sm text-slate-400 dark:text-white/35">Add, edit, or remove client testimonials.</p>
+                <p className="text-sm text-slate-400 dark:text-white/35">Add, edit, or remove client testimonials (stored locally).</p>
               </div>
-              <div className="bg-white dark:bg-navy-card border border-slate-100 dark:border-white/10 rounded-2xl p-6 text-center py-16">
-                <div className="text-4xl mb-4">💬</div>
-                <div className="font-display text-navy dark:text-white text-xl mb-2">Testimonials Editor</div>
-                <p className="text-slate-400 dark:text-white/35 text-sm">Full CRUD testimonial management — Phase 2 with backend integration</p>
+              <div className="grid lg:grid-cols-2 gap-6">
+                <form onSubmit={addTestimonial} className="bg-white dark:bg-navy-card border border-slate-100 dark:border-white/10 rounded-2xl p-6 space-y-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-navy dark:text-white">
+                    <Upload size={16} /> Add Testimonial
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input className="admin-input" placeholder="Name*" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required />
+                    <input className="admin-input" placeholder="Role" value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))} />
+                    <input className="admin-input" placeholder="Location" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} />
+                    <input className="admin-input" placeholder="State (for geo sort)" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} />
+                  </div>
+                  <input className="admin-input" placeholder="Result highlight" value={form.result} onChange={e => setForm(f => ({ ...f, result: e.target.value }))} />
+                  <textarea className="admin-input min-h-[110px]" placeholder="Quote*" value={form.quote} onChange={e => setForm(f => ({ ...f, quote: e.target.value }))} required />
+                  <div className="flex items-center justify-between gap-3">
+                    <label className="text-xs font-semibold text-slate-500 dark:text-white/50 flex items-center gap-2 cursor-pointer">
+                      <input type="file" accept="image/*" onChange={handleFile} className="hidden" />
+                      <span className="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-dashed border-slate-200 dark:border-white/15 text-xs">Upload Photo</span>
+                      {form.photo ? <span className="text-emerald-500 text-xs">Attached</span> : <span className="text-slate-400 text-xs">Optional</span>}
+                    </label>
+                    <button type="submit" className="px-4 py-2 rounded-xl bg-gold text-navy-deep font-semibold text-sm hover:bg-gold-light transition">Save</button>
+                  </div>
+                </form>
+
+                <div className="bg-white dark:bg-navy-card border border-slate-100 dark:border-white/10 rounded-2xl p-6 space-y-3 max-h-[480px] overflow-y-auto">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-navy dark:text-white">
+                    <Users size={16} /> Saved Testimonials ({testimonials.length})
+                  </div>
+                  {testimonials.length === 0 && (
+                    <div className="text-sm text-slate-400 dark:text-white/40">No custom testimonials yet.</div>
+                  )}
+                  {testimonials.map((t, idx) => (
+                    <div key={idx} className="p-3 rounded-xl border border-slate-100 dark:border-white/10 flex gap-3">
+                      <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-white/10 overflow-hidden flex-shrink-0">
+                        {t.photo ? <img src={t.photo} alt={t.name} className="w-full h-full object-cover" /> : (
+                          <div className="w-full h-full flex items-center justify-center text-xs font-semibold text-slate-500 dark:text-white/60">
+                            {t.initials || 'NA'}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-semibold text-navy dark:text-white">{t.name}</div>
+                        <div className="text-xs text-slate-400 dark:text-white/40">{t.role || 'Client'} • {t.location || '—'}</div>
+                        <div className="text-xs text-slate-500 dark:text-white/50 line-clamp-2 mt-1">"{t.quote}"</div>
+                      </div>
+                      <button onClick={() => removeTestimonial(idx)} className="text-red-500 hover:text-red-400">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -182,6 +280,34 @@ export default function AdminPage() {
                     </button>
                   </div>
                 ))}
+              </div>
+
+              <div className="bg-white dark:bg-navy-card border border-slate-100 dark:border-white/10 rounded-2xl p-5 mt-6">
+                <div className="flex items-center gap-2 text-sm font-semibold text-navy dark:text-white mb-3">
+                  <Mail size={16} /> Newsletter Highlights
+                </div>
+                <form onSubmit={addNewsletter} className="flex flex-col sm:flex-row gap-3 mb-4">
+                  <input
+                    className="admin-input flex-1"
+                    placeholder="Add a highlight bullet (e.g., 'New SEBI guideline explainer')"
+                    value={newsForm}
+                    onChange={e => setNewsForm(e.target.value)}
+                  />
+                  <button type="submit" className="px-4 py-2 rounded-xl bg-gold text-navy-deep font-semibold text-sm hover:bg-gold-light transition flex items-center gap-1">
+                    <Plus size={14} /> Add
+                  </button>
+                </form>
+                <div className="space-y-2">
+                  {newsletterItems.length === 0 && <div className="text-sm text-slate-400 dark:text-white/40">No custom highlights yet.</div>}
+                  {newsletterItems.map((item, idx) => (
+                    <div key={idx} className="flex items-center justify-between bg-slate-50 dark:bg-white/5 rounded-xl px-3 py-2 text-sm text-navy dark:text-white">
+                      <span>{item}</span>
+                      <button onClick={() => removeNewsletter(idx)} className="text-red-500 hover:text-red-400">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}

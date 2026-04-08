@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { useTheme } from '../../context/ThemeContext'
 
-const DOT_SPACING = 88
-const DOT_SIZE = 2.4
-const HOVER_RADIUS = 140
+const DOT_SPACING = 82
+const DOT_SIZE = 2
+const HOVER_RADIUS = 180
 
-// Dotted grid glow, low z-index so it never interferes with content
+// Dotted field with soft glow behind all content
 export default function CursorGlow() {
   const canvasRef = useRef(null)
   const { isDark } = useTheme()
@@ -29,26 +29,36 @@ export default function CursorGlow() {
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      const primary = isDark ? { r: 201, g: 162, b: 74 } : { r: 14, g: 32, b: 74 }
-      const secondary = isDark ? primary : { r: 212, g: 176, b: 98 }
+      const base = isDark ? { r: 201, g: 162, b: 74 } : { r: 13, g: 33, b: 72 }
+      const accent = isDark ? { r: 255, g: 214, b: 140 } : { r: 212, g: 176, b: 98 }
 
       for (let x = DOT_SPACING / 2; x < canvas.width; x += DOT_SPACING) {
         for (let y = DOT_SPACING / 2; y < canvas.height; y += DOT_SPACING) {
           const dx = x - mouse.x
           const dy = y - mouse.y
           const dist = Math.hypot(dx, dy)
-          const near = Math.max(0, 1 - dist / HOVER_RADIUS)
+          const influence = Math.exp(-(dist * dist) / (2 * HOVER_RADIUS * HOVER_RADIUS))
 
-          // Alternate colors in light mode for subtle depth
-          const useSecondary = !isDark && (Math.floor(x / DOT_SPACING) + Math.floor(y / DOT_SPACING)) % 2 === 0
-          const c = useSecondary ? secondary : primary
-          const alpha = 0.16 + near * 0.28
+          const alternate = (Math.floor(x / DOT_SPACING) + Math.floor(y / DOT_SPACING)) % 2 === 0
+          const color = alternate ? base : accent
+          const alpha = (isDark ? 0.18 : 0.14) + influence * 0.22
 
-          ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`
+          ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${alpha})`
           ctx.beginPath()
-          ctx.arc(x, y, DOT_SIZE + near * 1.1, 0, Math.PI * 2)
+          ctx.arc(x, y, DOT_SIZE + influence * 1.4, 0, Math.PI * 2)
           ctx.fill()
         }
+      }
+
+      // Subtle halo
+      if (mouse.x > 0) {
+        const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, HOVER_RADIUS * 1.2)
+        grad.addColorStop(0, `rgba(${accent.r},${accent.g},${accent.b},0.15)`)
+        grad.addColorStop(1, 'rgba(0,0,0,0)')
+        ctx.fillStyle = grad
+        ctx.beginPath()
+        ctx.arc(mouse.x, mouse.y, HOVER_RADIUS * 1.2, 0, Math.PI * 2)
+        ctx.fill()
       }
 
       animId = requestAnimationFrame(draw)
@@ -73,7 +83,7 @@ export default function CursorGlow() {
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
-        zIndex: 1, // sits under headers/menus
+        zIndex: -1, // keep behind everything
       }}
     />
   )

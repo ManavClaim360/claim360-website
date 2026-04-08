@@ -202,6 +202,31 @@ export default function TestimonialsSection() {
   const [userState, setUserState] = useState(null)
   const [filtered, setFiltered] = useState(ALL_TESTIMONIALS)
   const ref = useRef(null)
+  const [custom, setCustom] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('customTestimonials') || '[]')
+    } catch {
+      return []
+    }
+  })
+
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key === 'customTestimonials') {
+        try {
+          setCustom(JSON.parse(e.newValue || '[]'))
+        } catch {
+          setCustom([])
+        }
+      }
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
+  }, [])
+
+  useEffect(() => {
+    setFiltered([...custom, ...ALL_TESTIMONIALS])
+  }, [custom])
 
   useEffect(() => {
     fetch('https://ipapi.co/json/')
@@ -209,14 +234,17 @@ export default function TestimonialsSection() {
       .then(data => {
         const state = data.region
         setUserState(state)
-        const local = ALL_TESTIMONIALS.filter(t => t.state.toLowerCase() === state?.toLowerCase())
+        const merged = [...custom, ...ALL_TESTIMONIALS]
+        const local = merged.filter(t => t.state.toLowerCase() === state?.toLowerCase())
         if (local.length >= 1) {
-          const rest = ALL_TESTIMONIALS.filter(t => t.state.toLowerCase() !== state?.toLowerCase())
+          const rest = merged.filter(t => t.state.toLowerCase() !== state?.toLowerCase())
           setFiltered([...local, ...rest])
+        } else {
+          setFiltered(merged)
         }
       })
-      .catch(() => {})
-  }, [])
+      .catch(() => setFiltered([...custom, ...ALL_TESTIMONIALS]))
+  }, [custom])
 
   const prev = () => setCurrent(c => (c - 1 + filtered.length) % filtered.length)
   const next = () => setCurrent(c => (c + 1) % filtered.length)
