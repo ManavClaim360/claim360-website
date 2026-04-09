@@ -45,12 +45,12 @@ export default function NotFoundPage() {
             <ArrowLeft size={16} />
             Back to Home
           </Link>
-          <a
-            href="/#contact"
+          <Link
+            to="/contact"
             className="flex items-center gap-2 bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200"
           >
             Contact Us
-          </a>
+          </Link>
         </div>
 
         {/* Helpful links */}

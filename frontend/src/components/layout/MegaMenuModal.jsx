@@ -83,14 +83,14 @@ export default function MegaMenuModal({ isOpen, onClose, navLinks, megaCategorie
                     )}
                   </div>
                 ) : (
-                  <a
-                    href={item.href || '#'}
+                  <Link
+                    to={item.href || '/'}
                     onClick={onClose}
                     className="flex items-center justify-between px-4 py-4 rounded-2xl text-slate-700 dark:text-slate-300 hover:text-navy dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-all text-base font-semibold"
                   >
                     {item.label}
                     <ChevronRight size={18} className="text-slate-400" />
-                  </a>
+                  </Link>
                 )}
               </div>
             ))}

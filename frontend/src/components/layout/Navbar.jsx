@@ -50,7 +50,7 @@ const NAV_LINKS = [
   { label: 'Services', mega: true },
   { label: 'Testimonials', href: '/#testimonials' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export default function Navbar() {
@@ -124,9 +124,9 @@ export default function Navbar() {
                     )}
                   </div>
                 ) : (
-                  <a key={item.label} href={item.href || '#'} className="nav-item">
+                  <Link key={item.label} to={item.href || '/'} className="nav-item">
                     {item.label}
-                  </a>
+                  </Link>
                 )
               )}
             </nav>

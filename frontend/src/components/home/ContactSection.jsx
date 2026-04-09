@@ -9,8 +9,25 @@ const SERVICES = [
   'Legal Documentation', 'Investment Tracing', 'Other',
 ]
 
-export default function ContactSection() {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', message: '' })
+const COUNTRY_CODES = [
+  { label: 'India', code: '+91' },
+  { label: 'United States', code: '+1' },
+  { label: 'United Kingdom', code: '+44' },
+  { label: 'United Arab Emirates', code: '+971' },
+  { label: 'Singapore', code: '+65' },
+  { label: 'Australia', code: '+61' },
+  { label: 'Canada', code: '+1' },
+]
+
+export default function ContactSection({ sectionId = 'contact' }) {
+  const [form, setForm] = useState({
+    name: '',
+    phoneCode: '+91',
+    phoneNumber: '',
+    email: '',
+    service: '',
+    message: '',
+  })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const ref = useRef(null)
@@ -28,7 +45,18 @@ export default function ContactSection() {
     e.preventDefault()
     setLoading(true)
     try {
-      await axios.post(`${API_URL}/contact/message`, form)
+      const payload = {
+        name: form.name,
+        email: form.email,
+        message: [
+          `Phone: ${form.phoneCode} ${form.phoneNumber}`,
+          form.service ? `Service: ${form.service}` : null,
+          '',
+          form.message,
+        ].filter(Boolean).join('\n'),
+      }
+
+      await axios.post(`${API_URL}/contact/message`, payload)
       setSubmitted(true)
     } catch (err) {
       console.error(err)
@@ -39,7 +67,7 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" ref={ref} className="section-pad bg-white dark:bg-navy">
+    <section id={sectionId} ref={ref} className="section-pad bg-white dark:bg-navy">
       <div className="c">
         <div className="grid lg:grid-cols-2 gap-14 items-start">
           {/* Left — Info */}
@@ -140,14 +168,28 @@ export default function ContactSection() {
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Phone *</label>
-                      <input
-                        type="tel"
-                        required
-                        value={form.phone}
-                        onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                        placeholder="+91 or country code"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/25 text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
-                      />
+                      <div className="grid grid-cols-[132px_minmax(0,1fr)] gap-3">
+                        <select
+                          required
+                          value={form.phoneCode}
+                          onChange={e => setForm(p => ({ ...p, phoneCode: e.target.value }))}
+                          className="w-full px-3 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
+                        >
+                          {COUNTRY_CODES.map(country => (
+                            <option key={`${country.label}-${country.code}`} value={country.code}>
+                              {country.label} ({country.code})
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          type="tel"
+                          required
+                          value={form.phoneNumber}
+                          onChange={e => setForm(p => ({ ...p, phoneNumber: e.target.value }))}
+                          placeholder="Phone number"
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/25 text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
+                        />
+                      </div>
                     </div>
                   </div>
 

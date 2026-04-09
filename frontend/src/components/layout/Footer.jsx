@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom'
-
 const FOOTER_LINKS = {
   Services: [
     { label: 'IEPF Claims', href: '/#services' },
@@ -20,7 +18,7 @@ const FOOTER_LINKS = {
     { label: 'Testimonials', href: '/#testimonials' },
     { label: 'Investor Search', href: '/search' },
     { label: 'Newsletter', href: '/#newsletter' },
-    { label: 'Contact Us', href: '/#contact' },
+    { label: 'Contact Us', href: '/contact' },
   ],
   Legal: [
     { label: 'Privacy Policy', href: '/privacy' },

@@ -28,13 +28,13 @@ const POSTS_CONTENT = {
       <p>The IEPF-5 form must be filed on the MCA21 portal. This form collects details about the claimant, the company, and the nature of the claim. Once submitted, you'll receive an SRN (Service Request Number) for tracking.</p>
 
       <h2>Step 4: Contact the Nodal Officer</h2>
-      <p>After filing IEPF-5, you must contact the company's appointed Nodal Officer with a physical copy of the form and supporting documents. The timeline from this point is typically 3–6 months.</p>
+      <p>After filing IEPF-5, you must contact the company's appointed Nodal Officer with a physical copy of the form and supporting documents. The timeline from this point is typically 3-6 months.</p>
 
       <h2>Common Mistakes to Avoid</h2>
       <p>Many first-time filers make errors in the IEPF-5 form, leading to rejections. These include mismatches between PAN details and demat records, wrong folio numbers, or incomplete document sets.</p>
 
       <h2>Why Choose Claim360?</h2>
-      <p>Rather than navigating this process alone, our specialists handle the entire filing, follow-up, and documentation — with a 99%+ success rate. Contact us for a free case assessment.</p>
+      <p>Rather than navigating this process alone, our specialists handle the entire filing, follow-up, and documentation - with a 99%+ success rate. Contact us for a free case assessment.</p>
     `,
   },
 }
@@ -47,7 +47,7 @@ const DEFAULT_POST = {
   author: 'Claim360 Team',
   content: `
     <h2>Coming Soon</h2>
-    <p>This article is being prepared by our expert team. It will be published shortly. In the meantime, please <a href="/#contact">contact us</a> for personalized guidance.</p>
+    <p>This article is being prepared by our expert team. It will be published shortly. In the meantime, please <a href="/contact">contact us</a> for personalized guidance.</p>
   `,
 }
 
@@ -57,7 +57,6 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-navy">
-      {/* Hero */}
       <div className="bg-navy-deep py-14 lg:py-20">
         <div className="c max-w-3xl">
           <Link to="/blog" className="inline-flex items-center gap-2 text-white/40 hover:text-white text-sm mb-6 transition-colors">
@@ -77,23 +76,21 @@ export default function BlogPostPage() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="c max-w-3xl py-12">
         <div
           className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-display prose-headings:text-navy dark:prose-headings:text-white prose-p:text-slate-600 dark:prose-p:text-white/55 prose-li:text-slate-600 dark:prose-li:text-white/55 prose-a:text-gold prose-a:no-underline hover:prose-a:underline prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        {/* CTA */}
         <div className="mt-12 bg-navy dark:bg-navy-card border border-white/10 rounded-2xl p-8 text-center">
           <div className="font-display text-white text-2xl mb-3">Ready to Recover Your Investments?</div>
           <p className="text-white/50 text-sm mb-5">Get a free consultation with our IEPF and investment recovery specialists.</p>
-          <a
-            href="/#contact"
+          <Link
+            to="/contact"
             className="inline-flex items-center gap-2 bg-gold hover:bg-gold-light text-navy-deep px-7 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200"
           >
-            Book Free Consultation →
-          </a>
+            Book Free Consultation {'->'}
+          </Link>
         </div>
       </div>
     </div>
