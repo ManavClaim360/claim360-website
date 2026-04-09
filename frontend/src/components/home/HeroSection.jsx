@@ -24,7 +24,8 @@ export default function HeroSection() {
     <section
       id="hero"
       ref={heroRef}
-      className="relative bg-navy overflow-hidden min-h-[88vh] flex items-center"
+      className="dot-field dot-tone-gold relative bg-navy overflow-hidden flex items-center"
+      style={{ minHeight: 'calc(100vh - var(--header-stack-height))' }}
     >
       {/* BG layers */}
       <div className="absolute inset-0 bg-navy-deep" />
@@ -35,15 +36,7 @@ export default function HeroSection() {
             'radial-gradient(ellipse 80% 70% at 70% -10%, rgba(201,162,74,0.12) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 100% 100%, rgba(10,35,71,0.8) 0%, transparent 70%)',
         }}
       />
-      <div
-        className="absolute inset-0 opacity-[0.025]"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-          backgroundSize: '36px 36px',
-        }}
-      />
-
-      <div className="c relative z-10 py-24 lg:py-32">
+      <div className="c relative z-10 pt-6 pb-14 lg:pt-8 lg:pb-20">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left */}
           <div>

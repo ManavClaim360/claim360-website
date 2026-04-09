@@ -10,7 +10,7 @@ export default function AnnouncementBar() {
   const items = [...ANNOUNCEMENTS, ...ANNOUNCEMENTS]
 
   return (
-    <div className="bg-navy dark:bg-navy-deep text-white overflow-hidden relative z-[60]" style={{ height: '38px' }}>
+    <div className="fixed top-0 left-0 right-0 bg-navy/95 dark:bg-navy-deep/95 backdrop-blur-xl text-white overflow-hidden z-[70]" style={{ height: 'var(--announcement-height)' }}>
       <div className="h-full flex items-center overflow-hidden">
         <div className="ticker-track">
           {items.map((item, i) => (

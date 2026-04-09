@@ -15,7 +15,7 @@ const FOOTER_LINKS = {
   ],
   Resources: [
     { label: 'FAQs', href: '/#faq' },
-    { label: 'Testimonials', href: '/#testimonials' },
+    { label: 'Testimonials', href: '/testimonials' },
     { label: 'Investor Search', href: '/search' },
     { label: 'Newsletter', href: '/#newsletter' },
     { label: 'Contact Us', href: '/contact' },

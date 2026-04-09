@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MapPin, X } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const ALL_TESTIMONIALS = [
   {
@@ -200,6 +201,7 @@ const ALL_TESTIMONIALS = [
 export default function TestimonialsSection() {
   const [current, setCurrent] = useState(0)
   const [userState, setUserState] = useState(null)
+  const [showLocationPreview, setShowLocationPreview] = useState(true)
   const [filtered, setFiltered] = useState(ALL_TESTIMONIALS)
   const ref = useRef(null)
   const [custom, setCustom] = useState(() => {
@@ -230,6 +232,14 @@ export default function TestimonialsSection() {
 
   useEffect(() => {
     setCurrent(0)
+  }, [filtered.length])
+
+  useEffect(() => {
+    if (filtered.length <= 1) return undefined
+    const timer = window.setInterval(() => {
+      setCurrent(c => (c + 1) % filtered.length)
+    }, 4200)
+    return () => window.clearInterval(timer)
   }, [filtered.length])
 
   useEffect(() => {
@@ -283,14 +293,28 @@ export default function TestimonialsSection() {
               Trusted by Clients{' '}
               <span className="italic text-gold">Worldwide</span>
             </h2>
-            {userState && (
-              <div className="reveal flex items-center gap-1.5 mt-2 text-sm text-slate-400 dark:text-white/40">
+            {userState && showLocationPreview && (
+              <div className="reveal mt-3 inline-flex items-center gap-2 rounded-full border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-white/[0.04] px-3 py-2 text-sm text-slate-400 dark:text-white/40">
                 <MapPin size={13} className="text-gold" />
-                Showing results near {userState}
+                <span>Showing results near {userState}</span>
+                <button
+                  type="button"
+                  onClick={() => setShowLocationPreview(false)}
+                  className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-navy dark:text-white/40 dark:hover:bg-white/10 dark:hover:text-white transition-colors"
+                  aria-label="Close location preview"
+                >
+                  <X size={12} />
+                </button>
               </div>
             )}
           </div>
-          <div className="reveal flex gap-2">
+          <div className="reveal flex flex-wrap items-center gap-2">
+            <Link
+              to="/testimonials"
+              className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/15 text-navy dark:text-white text-sm font-semibold hover:bg-slate-50 dark:hover:bg-white/10 transition-all duration-200"
+            >
+              View All
+            </Link>
             <button
               onClick={prev}
               className="w-10 h-10 rounded-xl border border-slate-200 dark:border-white/15 flex items-center justify-center text-slate-500 dark:text-white/50 hover:bg-navy dark:hover:bg-white/10 hover:text-white transition-all duration-200"
@@ -310,49 +334,53 @@ export default function TestimonialsSection() {
           {visible.map((t, i) => (
             <div
               key={`${current}-${i}`}
-              className="reveal visible bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-7 flex flex-col transition-all duration-500"
+              className="reveal visible bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-7 flex flex-col h-full min-h-[520px] transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/40 dark:hover:shadow-black/20"
               style={{ transitionDelay: `${i * 80}ms` }}
             >
-              <p className="font-display text-slate-700 dark:text-white/70 text-[15px] leading-relaxed italic flex-1 mb-8">
-                "{t.quote}"
-              </p>
-
-              <div className="flex items-center gap-4 pt-5 border-t border-slate-100 dark:border-white/[0.07]">
-                <div className="w-24 h-24 rounded-[24px] overflow-hidden flex-shrink-0 border border-gold/30 relative bg-navy dark:bg-gold/20">
-                  <div className="absolute inset-0 flex items-center justify-center font-bold font-display text-white dark:text-gold text-sm">
-                    {t.initials}
-                  </div>
-                  {t.photo && (
+              <div className="flex justify-center mb-6">
+                <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-white dark:border-white/[0.08] ring-1 ring-gold/30 bg-slate-200 dark:bg-white/[0.06] shadow-lg shadow-slate-200/60 dark:shadow-black/20">
+                  {t.photo ? (
                     <img
                       src={t.photo}
                       alt={t.name}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="w-full h-full object-cover"
                       onError={e => e.currentTarget.remove()}
                     />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center font-bold font-display text-white dark:text-gold text-2xl bg-navy dark:bg-gold/20">
+                      {t.initials}
+                    </div>
                   )}
                 </div>
-                <div className="min-w-0">
-                  <div className="text-navy dark:text-white font-semibold text-base leading-tight">{t.name}</div>
+              </div>
+
+              <div className="flex flex-col flex-1">
+                <p className="font-display text-slate-700 dark:text-white/74 text-[16px] leading-relaxed italic flex-1 mb-7 text-center">
+                  "{t.quote}"
+                </p>
+
+                <div className="pt-5 border-t border-slate-100 dark:border-white/[0.07] text-center">
+                  <div className="text-navy dark:text-white font-semibold text-[1.05rem] leading-tight">{t.name}</div>
                   {t.role ? (
-                    <div className="text-slate-700 dark:text-white/70 text-sm mt-1 leading-snug font-medium">
-                      Role of the Client: {t.role}
+                    <div className="text-slate-600 dark:text-white/62 text-sm mt-2 leading-snug min-h-[42px]">
+                      {t.role}
                     </div>
-                  ) : null}
-                  {(t.city || t.state) ? (
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-white/30 mt-2">
-                      <MapPin size={8} />
-                      {[t.city, t.state].filter(Boolean).join(', ')}
+                  ) : (
+                    <div className="min-h-[42px]" />
+                  )}
+                  <div className="mt-3 space-y-1">
+                    {t.state ? (
+                      <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-white/34 uppercase tracking-[0.14em]">
+                        <MapPin size={10} className="text-gold" />
+                        <span>{t.state}</span>
+                      </div>
+                    ) : (
+                      <div className="h-[18px]" />
+                    )}
+                    <div className="text-xs text-slate-500 dark:text-white/32 uppercase tracking-[0.14em] min-h-[16px]">
+                      {t.location?.split(',').slice(-1)[0]?.trim() || t.location}
                     </div>
-                  ) : null}
-                  {t.country ? (
-                    <div className="text-xs text-slate-400 dark:text-white/25 mt-1">
-                      {t.country}
-                    </div>
-                  ) : (!t.city && !t.state && t.location ? (
-                    <div className="text-xs text-slate-400 dark:text-white/25 mt-1">
-                      {t.location}
-                    </div>
-                  ) : null)}
+                  </div>
                 </div>
               </div>
             </div>

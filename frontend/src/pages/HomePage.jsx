@@ -1,5 +1,6 @@
 import HeroSection from '../components/home/HeroSection'
 import TrustBar from '../components/home/TrustBar'
+import GlobalReachSection from '../components/home/GlobalReachSection'
 import ServicesSection from '../components/home/ServicesSection'
 import StatsSection from '../components/home/StatsSection'
 import WhySection from '../components/home/WhySection'
@@ -17,6 +18,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <TrustBar />
+      <GlobalReachSection />
       <ServicesSection />
       <StatsSection />
       <WhySection />

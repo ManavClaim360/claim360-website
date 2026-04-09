@@ -48,7 +48,7 @@ const MEGA_CATEGORIES = [
 const NAV_LINKS = [
   { label: 'About Us', href: '/#about' },
   { label: 'Services', mega: true },
-  { label: 'Testimonials', href: '/#testimonials' },
+  { label: 'Testimonials', href: '/testimonials' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
 ]
@@ -77,25 +77,36 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-[65] transition-all duration-300 ${
           scrolled
-            ? 'backdrop-blur-3xl shadow-[0_18px_60px_rgba(3,8,18,0.45)] border-b border-white/12'
-            : 'border-b border-white/8'
+            ? 'backdrop-blur-[26px] saturate-150'
+            : ''
         }`}
         style={{
-          backgroundColor: scrolled ? 'rgba(6, 14, 28, 0.82)' : '#060E1C',
-          boxShadow: scrolled ? '0 18px 60px rgba(3, 8, 18, 0.45), inset 0 1px 0 rgba(255,255,255,0.08)' : 'none',
+          top: 'var(--announcement-height)',
+          background: scrolled
+            ? 'linear-gradient(180deg, rgba(8, 17, 32, 0.82) 0%, rgba(8, 17, 32, 0.68) 100%)'
+            : '#060E1C',
+          boxShadow: scrolled
+            ? '0 20px 70px rgba(3, 8, 18, 0.38), inset 0 1px 0 rgba(255,255,255,0.11)'
+            : 'none',
         }}
       >
         <div className="c">
           <div className="flex items-center justify-between h-[72px] gap-6">
             {/* Logo */}
-            <Link to="/" className="flex items-center flex-shrink-0 group">
+            <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
               <img
                 src="/assets/Logo_1.png"
                 alt="Claim360"
-                className="h-10 w-auto object-contain group-hover:opacity-90 transition-opacity duration-200"
+                className="h-11 w-11 rounded-full p-1 object-contain"
               />
+              <span
+                className="text-white text-[1.55rem] tracking-[0.02em] group-hover:text-gold-light transition-colors duration-200"
+                style={{ fontFamily: '"Times New Roman", Georgia, serif' }}
+              >
+                Claim360
+              </span>
             </Link>
 
             {/* Desktop Nav */}
@@ -108,7 +119,7 @@ export default function Navbar() {
                     onMouseEnter={() => setActiveDropdown(item.label)}
                     onMouseLeave={() => setActiveDropdown(null)}
                   >
-                    <button className="nav-item flex items-center gap-1 h-[72px]">
+                    <button className="nav-item flex items-center gap-1 h-[72px] text-white/78 hover:text-white hover:bg-white/[0.06]">
                       {item.label}
                       <ChevronDown
                         size={14}
@@ -124,7 +135,7 @@ export default function Navbar() {
                     )}
                   </div>
                 ) : (
-                  <Link key={item.label} to={item.href || '/'} className="nav-item">
+                  <Link key={item.label} to={item.href || '/'} className="nav-item text-white/78 hover:text-white hover:bg-white/[0.06]">
                     {item.label}
                   </Link>
                 )
@@ -135,7 +146,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={() => user ? navigate('/search') : navigate('/login')}
-                className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-navy dark:hover:text-white transition-all duration-200"
+                className="w-9 h-9 rounded-xl flex items-center justify-center text-white/70 hover:bg-white/[0.06] hover:text-white transition-all duration-200"
                 title="Investor Search"
               >
                 <Search size={17} />
@@ -143,7 +154,7 @@ export default function Navbar() {
 
               <button
                 onClick={toggle}
-                className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-navy dark:hover:text-white transition-all duration-200"
+                className="w-9 h-9 rounded-xl flex items-center justify-center text-white/70 hover:bg-white/[0.06] hover:text-white transition-all duration-200"
                 title="Toggle dark mode"
               >
                 {isDark ? <Sun size={17} /> : <Moon size={17} />}
@@ -151,7 +162,7 @@ export default function Navbar() {
 
               <button
                 onClick={() => setMegaOpen(true)}
-                className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 transition-all duration-200"
+                className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center text-white/75 hover:bg-white/[0.06] transition-all duration-200"
               >
                 <Menu size={20} />
               </button>

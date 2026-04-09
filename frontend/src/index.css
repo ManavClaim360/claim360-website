@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=Lavishly+Yours&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +6,10 @@
 @layer base {
   :root {
     --navbar-height: 72px;
+    --announcement-height: 38px;
+    --header-stack-height: calc(var(--announcement-height) + var(--navbar-height));
+    --cursor-x: -9999px;
+    --cursor-y: -9999px;
   }
 
   * {
@@ -79,6 +83,24 @@
     @apply text-slate-400 hover:text-white hover:bg-white/10;
   }
 
+  .select-field {
+    color-scheme: light;
+  }
+
+  .dark .select-field {
+    color-scheme: dark;
+  }
+
+  .select-field option {
+    background-color: #ffffff;
+    color: #0f172a;
+  }
+
+  .dark .select-field option {
+    background-color: #162236;
+    color: #f8fafc;
+  }
+
   /* Section eyebrow */
   .eyebrow {
     @apply inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase text-gold-dark;
@@ -94,8 +116,62 @@
   }
 
   /* Section padding */
-  .section-pad {
-    @apply py-20 lg:py-28;
+  .section-pad,
+  .dot-field {
+    @apply py-20 lg:py-28 relative isolate overflow-hidden;
+    --dot-base-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.6' fill='%237a828e' fill-opacity='0.35'/%3E%3C/svg%3E");
+    --dot-hover-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.9' fill='%237a828e' fill-opacity='0.9'/%3E%3C/svg%3E");
+    --dot-base-opacity: 0.22;
+    --dot-hover-opacity: 0.58;
+  }
+
+  .section-pad > *,
+  .dot-field > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-pad::before,
+  .section-pad::after,
+  .dot-field::before,
+  .dot-field::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-size: 48px 48px;
+    background-position: 20px 18px;
+    background-repeat: repeat;
+    z-index: 0;
+  }
+
+  .section-pad::before,
+  .dot-field::before {
+    background-image: var(--dot-base-image);
+    opacity: var(--dot-base-opacity);
+  }
+
+  .section-pad::after,
+  .dot-field::after {
+    background-image: var(--dot-hover-image);
+    opacity: var(--dot-hover-opacity);
+    transition: -webkit-mask-image 120ms linear, mask-image 120ms linear, opacity 220ms ease;
+    -webkit-mask-image: radial-gradient(circle 280px at var(--cursor-x) var(--cursor-y), rgba(0, 0, 0, 0.96) 0, transparent 74%);
+    mask-image: radial-gradient(circle 280px at var(--cursor-x) var(--cursor-y), rgba(0, 0, 0, 0.96) 0, transparent 74%);
+  }
+
+  .dot-tone-gold {
+    --dot-base-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.6' fill='%23c9a24a' fill-opacity='0.34'/%3E%3C/svg%3E");
+    --dot-hover-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.95' fill='%23f0c86e' fill-opacity='0.96'/%3E%3C/svg%3E");
+    --dot-base-opacity: 0.2;
+    --dot-hover-opacity: 0.64;
+  }
+
+  .dot-tone-slate {
+    --dot-base-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.6' fill='%237a828e' fill-opacity='0.35'/%3E%3C/svg%3E");
+    --dot-hover-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.9' fill='%237a828e' fill-opacity='0.9'/%3E%3C/svg%3E");
+    --dot-base-opacity: 0.24;
+    --dot-hover-opacity: 0.62;
   }
 
   /* Container */

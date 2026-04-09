@@ -10,13 +10,13 @@ const SERVICES = [
 ]
 
 const COUNTRY_CODES = [
-  { label: 'India', code: '+91' },
-  { label: 'United States', code: '+1' },
-  { label: 'United Kingdom', code: '+44' },
-  { label: 'United Arab Emirates', code: '+971' },
-  { label: 'Singapore', code: '+65' },
-  { label: 'Australia', code: '+61' },
-  { label: 'Canada', code: '+1' },
+  { label: 'IN', code: '+91' },
+  { label: 'US', code: '+1' },
+  { label: 'UK', code: '+44' },
+  { label: 'UAE', code: '+971' },
+  { label: 'SG', code: '+65' },
+  { label: 'AU', code: '+61' },
+  { label: 'CA', code: '+1' },
 ]
 
 export default function ContactSection({ sectionId = 'contact' }) {
@@ -168,16 +168,16 @@ export default function ContactSection({ sectionId = 'contact' }) {
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Phone *</label>
-                      <div className="grid grid-cols-[132px_minmax(0,1fr)] gap-3">
+                      <div className="flex items-stretch overflow-hidden rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-colors focus-within:border-gold dark:focus-within:border-gold">
                         <select
                           required
                           value={form.phoneCode}
                           onChange={e => setForm(p => ({ ...p, phoneCode: e.target.value }))}
-                          className="w-full px-3 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
+                          className="select-field w-[108px] sm:w-[96px] flex-shrink-0 border-r border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] px-3 pr-8 py-3 text-navy dark:text-white text-sm outline-none appearance-none"
                         >
                           {COUNTRY_CODES.map(country => (
                             <option key={`${country.label}-${country.code}`} value={country.code}>
-                              {country.label} ({country.code})
+                              {country.label} {country.code}
                             </option>
                           ))}
                         </select>
@@ -187,7 +187,7 @@ export default function ContactSection({ sectionId = 'contact' }) {
                           value={form.phoneNumber}
                           onChange={e => setForm(p => ({ ...p, phoneNumber: e.target.value }))}
                           placeholder="Phone number"
-                          className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/25 text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
+                          className="min-w-0 flex-1 bg-transparent px-4 py-3 text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/25 text-sm outline-none"
                         />
                       </div>
                     </div>
@@ -209,7 +209,7 @@ export default function ContactSection({ sectionId = 'contact' }) {
                     <select
                       value={form.service}
                       onChange={e => setForm(p => ({ ...p, service: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
+                      className="select-field w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
                     >
                       <option value="">Select a service...</option>
                       {SERVICES.map(s => <option key={s} value={s}>{s}</option>)}

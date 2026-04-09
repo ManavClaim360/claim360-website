@@ -60,7 +60,7 @@ export default function NotFoundPage() {
             {[
               { label: 'Services', href: '/#services' },
               { label: 'About Us', href: '/#about' },
-              { label: 'Testimonials', href: '/#testimonials' },
+              { label: 'Testimonials', href: '/testimonials' },
               { label: 'Blog', href: '/blog' },
               { label: 'Privacy Policy', href: '/privacy' },
               { label: 'Terms of Service', href: '/terms' },

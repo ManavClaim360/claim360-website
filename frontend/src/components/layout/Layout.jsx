@@ -10,15 +10,17 @@ import ParallaxBackdrop from './ParallaxBackdrop'
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-white dark:bg-navy flex flex-col">
+    <div className="relative isolate min-h-screen bg-white dark:bg-navy flex flex-col overflow-hidden">
       <ParallaxBackdrop />
       <CursorGlow />
-      <AnnouncementBar />
-      <Navbar />
-      <main className="flex-1">
-        <Outlet />
-      </main>
-      <Footer />
+      <div className="relative z-10 flex min-h-screen flex-col">
+        <AnnouncementBar />
+        <Navbar />
+        <main className="flex-1" style={{ paddingTop: 'var(--header-stack-height)' }}>
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
       <ContactTab />
       <WhatsAppButton />
       <MobileBottomNav />

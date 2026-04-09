@@ -34,7 +34,7 @@ export default function WhySection() {
   }, [])
 
   return (
-    <section id="why" ref={ref} className="section-pad bg-navy-deep relative overflow-hidden">
+    <section id="why" ref={ref} className="section-pad dot-tone-gold bg-navy-deep relative overflow-hidden">
       {/* BG glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-gold/[0.04] rounded-full blur-3xl pointer-events-none" />
 
