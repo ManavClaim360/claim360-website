@@ -1,15 +1,15 @@
 const FOOTER_LINKS = {
   Services: [
     { label: 'IEPF Claims', href: '/#services' },
-    { label: 'NRI Services', href: '/#nri' },
-    { label: 'Share Transfers', href: '/#transfers' },
-    { label: 'Legal Documentation', href: '/#legal' },
-    { label: 'Corporate Actions', href: '/#corporate' },
+    { label: 'NRI Services', href: '/404' },
+    { label: 'Share Transfers', href: '/404' },
+    { label: 'Legal Documentation', href: '/404' },
+    { label: 'Corporate Actions', href: '/404' },
   ],
   Company: [
-    { label: 'About Us', href: '/#about' },
-    { label: 'Our Team', href: '/#team' },
-    { label: 'Our Story', href: '/#story' },
+    { label: 'About Us', href: '/404' },
+    { label: 'Our Team', href: '/404' },
+    { label: 'Our Story', href: '/404' },
     { label: 'Press & Media', href: '/#press' },
     { label: 'Blog', href: '/blog' },
   ],
@@ -17,7 +17,7 @@ const FOOTER_LINKS = {
     { label: 'FAQs', href: '/#faq' },
     { label: 'Testimonials', href: '/testimonials' },
     { label: 'Investor Search', href: '/search' },
-    { label: 'Newsletter', href: '/#newsletter' },
+    { label: 'Newsletter', href: '/404' },
     { label: 'Contact Us', href: '/contact' },
   ],
   Legal: [

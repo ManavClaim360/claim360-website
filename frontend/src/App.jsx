@@ -28,6 +28,7 @@ export default function App() {
               <Route path="blog/:slug" element={<BlogPostPage />} />
               <Route path="contact" element={<ContactPage />} />
               <Route path="testimonials" element={<TestimonialsPage />} />
+              <Route path="404" element={<NotFoundPage />} />
               <Route path="privacy" element={<PrivacyPage />} />
               <Route path="terms" element={<TermsPage />} />
               <Route

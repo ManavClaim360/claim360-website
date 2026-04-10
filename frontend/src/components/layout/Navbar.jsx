@@ -13,9 +13,9 @@ const MEGA_CATEGORIES = [
     title: 'Top Recovery Services',
     description: 'Our most sought-after services for reclaiming lost investments and physical shares with speed and accuracy.',
     items: [
-      { label: 'Equity Recovery', href: '/#equity' },
-      { label: 'Mutual Fund Claims', href: '/#mutual-funds' },
-      { label: 'Corporate FDs', href: '/#fds' }
+      { label: 'Equity Recovery', href: '/404' },
+      { label: 'Mutual Fund Claims', href: '/404' },
+      { label: 'Corporate FDs', href: '/404' }
     ],
     features: ['98% Success Rate', 'Dedicated Expert Support', 'End-to-end Process']
   },
@@ -25,9 +25,9 @@ const MEGA_CATEGORIES = [
     title: 'Unclaimed Bonds & FDs',
     description: 'Helping investors recover forgotten bonds, debentures, and company fixed deposits from public and private entities.',
     items: [
-      { label: 'RBI Bonds', href: '/#rbi-bonds' },
-      { label: 'Company Debentures', href: '/#debentures' },
-      { label: 'NCD Recovery', href: '/#ncd' }
+      { label: 'RBI Bonds', href: '/404' },
+      { label: 'Company Debentures', href: '/404' },
+      { label: 'NCD Recovery', href: '/404' }
     ],
     features: ['Direct Coordination with Issuers', 'Zero Upfront Fees', 'Legal Audit']
   },
@@ -37,16 +37,16 @@ const MEGA_CATEGORIES = [
     title: 'Share Transmission & Claims',
     description: 'Expert assistance in dematerialization, transfer, and transmission of shares across all listed Indian companies.',
     items: [
-      { label: 'Physical to Demat', href: '/#demat' },
-      { label: 'IEPF Transmission', href: '/#iepf' },
-      { label: 'Name Rectification', href: '/#rectify' }
+      { label: 'Physical to Demat', href: '/404' },
+      { label: 'IEPF Transmission', href: '/404' },
+      { label: 'Name Rectification', href: '/404' }
     ],
     features: ['KYC Optimization', 'Pan-India Service', 'Digital Tracking']
   }
 ]
 
 const NAV_LINKS = [
-  { label: 'About Us', href: '/#about' },
+  { label: 'About Us', href: '/404' },
   { label: 'Services', mega: true },
   { label: 'Testimonials', href: '/testimonials' },
   { label: 'Blog', href: '/blog' },
