@@ -121,6 +121,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/[0.07] pt-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-center">
           <div className="text-white/25 text-xs">
+            <span></span>
             © {new Date().getFullYear()} 360 Degrees Management Services Pvt. Ltd. All rights reserved.
           </div>
           <div className="flex items-center gap-3 text-white/25 text-xs flex-wrap justify-center">

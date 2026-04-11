@@ -95,14 +95,14 @@ export default function Navbar() {
         <div className="c">
           <div className="flex items-center justify-between h-[72px] gap-6">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
+            <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
               <img
                 src="/assets/Logo_1.png"
                 alt="Claim360"
-                className="h-11 w-11 rounded-full p-1 object-contain"
+                className="h-10 w-10 rounded-full p-1 object-contain"
               />
               <span
-                className="hidden xs:inline text-white text-[1.45rem] sm:text-[1.55rem] tracking-[0.02em] group-hover:text-gold-light transition-colors duration-200"
+                className="hidden sm:inline text-white text-[1.35rem] lg:text-[1.5rem] tracking-[0.02em] group-hover:text-gold-light transition-colors duration-200"
                 style={{ fontFamily: '"Times New Roman", Georgia, serif' }}
               >
                 Claim360
@@ -169,7 +169,7 @@ export default function Navbar() {
 
               <Link
                 to="/signup"
-                className="hidden sm:inline-flex px-4 py-2 rounded-xl text-sm font-semibold bg-gold hover:bg-gold-light text-navy-deep transition-all duration-200 shadow-sm whitespace-nowrap"
+                className="inline-flex items-center px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gold hover:bg-gold-light text-navy-deep transition-all duration-200 shadow-sm whitespace-nowrap"
               >
                 Get Started
               </Link>

@@ -46,10 +46,10 @@ export default function NewsletterSection() {
     <section
       id="newsletter"
       ref={ref}
-      className="py-16 bg-gold/[0.06] dark:bg-gold/[0.04] border-y border-gold/15"
+      className="py-16 bg-gold/[0.06] dark:bg-gold/[0.04] border-y border-gold/15 overflow-hidden"
     >
       <div className="c">
-        <div className="grid md:grid-cols-2 gap-10 items-center">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           {/* Left */}
           <div>
             <div className="eyebrow reveal mb-4">Stay Informed</div>
@@ -89,24 +89,24 @@ export default function NewsletterSection() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="bg-white dark:bg-white/[0.04] border border-slate-100 dark:border-white/10 rounded-2xl p-6 shadow-lg">
+              <form onSubmit={handleSubmit} className="w-full bg-white dark:bg-white/[0.04] border border-slate-100 dark:border-white/10 rounded-2xl p-5 sm:p-6 shadow-lg overflow-hidden">
                 <div className="font-display text-navy dark:text-white text-xl mb-2">Join 500+ investors</div>
                 <p className="text-slate-400 dark:text-white/40 text-sm mb-5">
                   Get free insights on recovering your investments, delivered monthly.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col gap-3">
                   <input
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="your@email.com"
-                    className="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-white/15 bg-slate-50 dark:bg-white/[0.05] text-navy dark:text-white placeholder-slate-400 dark:placeholder-white/30 text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
+                    className="w-full min-w-0 px-4 py-3 rounded-xl border border-slate-200 dark:border-white/15 bg-slate-50 dark:bg-white/[0.05] text-navy dark:text-white placeholder-slate-400 dark:placeholder-white/30 text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
                     required
                   />
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex items-center justify-center gap-2 bg-navy dark:bg-gold hover:bg-navy-light dark:hover:bg-gold-light text-white dark:text-navy-deep px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-200 whitespace-nowrap disabled:opacity-60"
+                    className="w-full flex items-center justify-center gap-2 bg-navy dark:bg-gold hover:bg-navy-light dark:hover:bg-gold-light text-white dark:text-navy-deep px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-60"
                   >
                     {loading ? '...' : <>Subscribe <Send size={14} /></>}
                   </button>
