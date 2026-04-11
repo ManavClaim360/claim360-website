@@ -69,60 +69,61 @@ export default function ContactSection({ sectionId = 'contact' }) {
   return (
     <section id={sectionId} ref={ref} className="section-pad bg-white dark:bg-navy">
       <div className="c">
-        <div className="grid lg:grid-cols-2 gap-14 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-start">
           {/* Left — Info */}
           <div>
-            <div className="eyebrow reveal mb-4">Get In Touch</div>
+            <div className="eyebrow reveal mb-3">Get In Touch</div>
             <h2
-              className="reveal font-display text-navy dark:text-white tracking-tight mb-4"
-              style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}
+              className="reveal font-display text-navy dark:text-white tracking-tight mb-3"
+              style={{ fontSize: 'clamp(26px, 3.5vw, 46px)' }}
             >
               Schedule a{' '}
               <span className="italic text-gold">Free</span>{' '}
               Consultation
             </h2>
-            <p className="reveal text-slate-500 dark:text-white/45 text-lg leading-relaxed mb-8">
+            <p className="reveal text-slate-500 dark:text-white/45 text-base leading-relaxed mb-6">
               Tell us about your investment situation, and our experts will assess your case and chart a clear recovery path — at no cost.
             </p>
 
-            <div className="reveal space-y-5 mb-8">
+            <div className="reveal space-y-3 sm:space-y-5 mb-6">
               {[
                 { icon: Phone, label: 'Phone', val: '+91 991 003 5050', href: 'tel:+919910035050' },
                 { icon: Phone, label: 'Alternate', val: '+91 991 017 4035', href: 'tel:+919910174035' },
                 { icon: Mail, label: 'Email', val: 'enquiries@claim360.in', href: 'mailto:enquiries@claim360.in' },
               ].map(c => (
-                <div key={c.label} className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-slate-50 dark:bg-white/[0.05] border border-slate-100 dark:border-white/10 flex items-center justify-center">
-                    <c.icon size={18} className="text-gold" />
+                <div key={c.label} className="flex items-center gap-3">
+                  <div className="w-10 h-10 flex-shrink-0 rounded-xl bg-slate-50 dark:bg-white/[0.05] border border-slate-100 dark:border-white/10 flex items-center justify-center">
+                    <c.icon size={16} className="text-gold" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <div className="text-xs font-semibold text-slate-400 dark:text-white/30 uppercase tracking-wider mb-0.5">{c.label}</div>
-                    <a href={c.href} className="text-navy dark:text-white font-medium hover:text-gold transition-colors">{c.val}</a>
+                    <a href={c.href} className="text-navy dark:text-white font-medium hover:text-gold transition-colors text-sm sm:text-base truncate block">{c.val}</a>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="reveal space-y-3 mb-8">
+            <div className="reveal space-y-2 mb-6">
               {[
                 { city: 'Mumbai', addr: '311, Sun Industrial Estate, Lower Parel' },
                 { city: 'New Delhi', addr: 'D-4/4035, Vasant Kunj' },
                 { city: 'London', addr: '2 Wymondham, St. Johns Wood Park, NW8 6RD' },
               ].map(o => (
-                <div key={o.city} className="flex items-center gap-3 text-sm">
-                  <MapPin size={14} className="text-gold flex-shrink-0" />
-                  <span className="font-semibold text-navy dark:text-white/80">{o.city}:</span>
-                  <span className="text-slate-500 dark:text-white/40">{o.addr}</span>
+                <div key={o.city} className="flex items-start gap-2.5 text-sm">
+                  <MapPin size={13} className="text-gold flex-shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <span className="font-semibold text-navy dark:text-white/80">{o.city}: </span>
+                    <span className="text-slate-500 dark:text-white/40 break-words">{o.addr}</span>
+                  </div>
                 </div>
               ))}
             </div>
-
           </div>
 
           {/* Right — Form */}
           <div className="reveal">
             {submitted ? (
-              <div className="bg-slate-50 dark:bg-white/[0.04] border border-slate-100 dark:border-white/10 rounded-3xl p-10 text-center">
+              <div className="bg-slate-50 dark:bg-white/[0.04] border border-slate-100 dark:border-white/10 rounded-3xl p-6 sm:p-10 text-center">
                 <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center mx-auto mb-5">
                   <CheckCircle size={36} className="text-emerald-500" />
                 </div>
@@ -140,13 +141,13 @@ export default function ContactSection({ sectionId = 'contact' }) {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-3xl p-8"
+                className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-3xl p-4 sm:p-8"
               >
                 <h3 className="font-display text-navy dark:text-white text-xl mb-1">Tell us about your case</h3>
                 <p className="text-slate-400 dark:text-white/35 text-sm mb-6">Free • Confidential • No obligation</p>
 
                 <div className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid gap-4">
                     <div>
                       <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Full Name *</label>
                       <input

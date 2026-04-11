@@ -40,7 +40,7 @@ export default function WhySection() {
 
       <div className="c relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 lg:mb-16">
           <div className="reveal inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase text-gold mb-4 justify-center">
             Why Claim360
           </div>
@@ -53,25 +53,25 @@ export default function WhySection() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Left — Comparison table */}
           <div className="reveal">
             <div className="bg-white/[0.04] border border-white/10 rounded-2xl overflow-hidden">
               {/* Table header */}
-              <div className="grid grid-cols-[1fr,auto,auto] bg-white/[0.06] px-5 py-3 border-b border-white/10">
+              <div className="grid grid-cols-[1fr,auto,auto] bg-white/[0.06] px-3 sm:px-5 py-3 border-b border-white/10">
                 <div className="text-xs font-semibold text-white/50 uppercase tracking-wider">Feature</div>
-                <div className="text-xs font-semibold text-gold uppercase tracking-wider text-center px-4">Claim360</div>
-                <div className="text-xs font-semibold text-white/30 uppercase tracking-wider text-center px-4">Others</div>
+                <div className="text-xs font-semibold text-gold uppercase tracking-wider text-center px-2 sm:px-4">Claim360</div>
+                <div className="text-xs font-semibold text-white/30 uppercase tracking-wider text-center px-2 sm:px-4">Others</div>
               </div>
 
               {/* Rows */}
               {FEATURES.map((f, i) => (
                 <div
                   key={i}
-                  className={`grid grid-cols-[1fr,auto,auto] px-5 py-3.5 items-center border-b border-white/[0.05] hover:bg-white/[0.03] transition-colors ${i === FEATURES.length - 1 ? 'border-0' : ''}`}
+                  className={`grid grid-cols-[1fr,auto,auto] px-3 sm:px-5 py-3 items-center border-b border-white/[0.05] hover:bg-white/[0.03] transition-colors ${i === FEATURES.length - 1 ? 'border-0' : ''}`}
                 >
-                  <div className="text-white/65 text-sm">{f.label}</div>
-                  <div className="flex justify-center px-4">
+                  <div className="text-white/65 text-xs sm:text-sm pr-2">{f.label}</div>
+                  <div className="flex justify-center px-2 sm:px-4">
                     {f.us ? (
                       <div className="w-6 h-6 rounded-full bg-gold/15 border border-gold/30 flex items-center justify-center">
                         <Check size={12} className="text-gold" />
@@ -82,7 +82,7 @@ export default function WhySection() {
                       </div>
                     )}
                   </div>
-                  <div className="flex justify-center px-4">
+                  <div className="flex justify-center px-2 sm:px-4">
                     {f.others ? (
                       <div className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
                         <Check size={12} className="text-white/40" />
@@ -116,15 +116,6 @@ export default function WhySection() {
               </div>
             ))}
 
-            {/* Quote */}
-            <div className="reveal bg-gold/[0.08] border border-gold/20 rounded-2xl p-5">
-              <div className="text-gold text-4xl font-display leading-none mb-2">"</div>
-              <p className="text-white/70 text-sm leading-relaxed italic mb-3">
-                I was so pleasantly surprised by the job done by Mr. Saran and his company. They recovered very valuable stocks which we did not know we owned. Their service was outstanding.
-              </p>
-              <div className="text-gold text-xs font-semibold">— KJ Alphons IAS (Rtd.)</div>
-              <div className="text-white/35 text-xs">Former MP & Minister of Tourism, New Delhi</div>
-            </div>
           </div>
         </div>
       </div>

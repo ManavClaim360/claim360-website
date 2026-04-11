@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, MapPin, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MapPin, X, Eye, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -201,6 +201,7 @@ const ALL_TESTIMONIALS = [
 export default function TestimonialsSection() {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(1)
+  const [readMore, setReadMore] = useState(null)
   const [userState, setUserState] = useState(null)
   const [showLocationPreview, setShowLocationPreview] = useState(true)
   const [filtered, setFiltered] = useState(ALL_TESTIMONIALS)
@@ -293,7 +294,7 @@ export default function TestimonialsSection() {
       <div className="absolute inset-0 bg-gold/[0.015] pointer-events-none" />
 
       <div className="c relative z-10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 lg:mb-14">
           <div>
             <div className="eyebrow reveal mb-4">Client Stories</div>
             <h2 className="reveal font-display text-navy dark:text-white tracking-tight"
@@ -357,10 +358,10 @@ export default function TestimonialsSection() {
               {visible.map((t, i) => (
                 <div
                   key={i}
-                  className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-6 flex flex-col h-full min-h-[500px] hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/40 dark:hover:shadow-black/20 transition-transform duration-300"
+                  className={`bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-5 sm:p-6 flex flex-col h-full min-h-[420px] sm:min-h-[460px] hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/40 dark:hover:shadow-black/20 transition-transform duration-300 ${i === 1 ? 'hidden md:flex' : ''} ${i === 2 ? 'hidden lg:flex' : ''}`}
                 >
                   <div className="flex justify-center mb-5">
-                    <div className="relative w-36 h-36 rounded-full overflow-hidden border-4 border-white dark:border-white/[0.08] ring-2 ring-gold/30 bg-slate-200 dark:bg-white/[0.06] shadow-xl shadow-slate-200/60 dark:shadow-black/20">
+                    <div className="relative w-24 h-24 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-white dark:border-white/[0.08] ring-2 ring-gold/30 bg-slate-200 dark:bg-white/[0.06] shadow-xl shadow-slate-200/60 dark:shadow-black/20">
                       {t.photo ? (
                         <img
                           src={t.photo}
@@ -403,6 +404,14 @@ export default function TestimonialsSection() {
                           {t.location?.split(',').slice(-1)[0]?.trim() || t.location}
                         </div>
                       </div>
+
+                      {/* Read more button */}
+                      <button
+                        onClick={() => setReadMore(t)}
+                        className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-gold hover:text-gold-dark uppercase tracking-wider transition-colors"
+                      >
+                        <Eye size={12} /> Read Story
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -427,6 +436,78 @@ export default function TestimonialsSection() {
           We're happy to provide client contact details for verification upon request.
         </div>
       </div>
+
+      {/* Read More Modal */}
+      {readMore && (
+        <div
+          className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm"
+          onClick={() => setReadMore(null)}
+        >
+          <div
+            className="bg-white dark:bg-navy-card rounded-3xl w-full max-w-md shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Gold top bar */}
+            <div className="h-1 bg-gradient-to-r from-gold to-gold-light" />
+
+            <div className="p-6 sm:p-8">
+              {/* Close */}
+              <div className="flex justify-end mb-4">
+                <button
+                  onClick={() => setReadMore(null)}
+                  className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-white/50 hover:bg-slate-200 dark:hover:bg-white/20 transition-colors"
+                >
+                  <X size={15} />
+                </button>
+              </div>
+
+              {/* Photo + identity */}
+              <div className="flex flex-col items-center text-center mb-6">
+                <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white dark:border-white/10 ring-2 ring-gold/30 shadow-xl mb-4 bg-slate-100 dark:bg-navy-mid">
+                  {readMore.photo ? (
+                    <img src={readMore.photo} alt={readMore.name} className="w-full h-full object-cover" onError={e => e.currentTarget.remove()} />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center font-display text-2xl text-gold bg-navy">
+                      {readMore.initials}
+                    </div>
+                  )}
+                </div>
+                <h3 className="font-display text-navy dark:text-white text-xl leading-tight">{readMore.name}</h3>
+                {readMore.role && <p className="text-slate-500 dark:text-white/55 text-sm mt-1">{readMore.role}</p>}
+                {readMore.state && (
+                  <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-white/35 uppercase tracking-wider mt-2">
+                    <MapPin size={10} className="text-gold" />
+                    {readMore.location}
+                  </div>
+                )}
+
+                {/* Stars */}
+                <div className="flex items-center gap-0.5 mt-3">
+                  {Array.from({ length: readMore.rating || 5 }).map((_, i) => (
+                    <Star key={i} size={14} className="text-gold fill-gold" />
+                  ))}
+                </div>
+              </div>
+
+              {/* Full quote */}
+              <div className="bg-slate-50 dark:bg-white/[0.04] rounded-2xl p-5 mb-5">
+                <div className="text-gold text-3xl font-display leading-none mb-2">"</div>
+                <p className="font-display text-slate-700 dark:text-white/75 text-[15px] leading-relaxed italic">
+                  {readMore.quote}
+                </p>
+              </div>
+
+              {/* Result badge */}
+              {readMore.result && (
+                <div className="flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-xl px-4 py-3">
+                  <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0" />
+                  <span className="text-sm font-semibold text-navy dark:text-gold">{readMore.result}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

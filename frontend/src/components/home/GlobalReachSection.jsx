@@ -4,8 +4,8 @@ export default function GlobalReachSection() {
       <div className="c">
         <div className="text-center mb-8 lg:mb-12">
           <div
-            className="inline-block text-[#2e4a88] text-[3.25rem] sm:text-[4.25rem] lg:text-[5.25rem] leading-none"
-            style={{ fontFamily: '"Lavishly Yours", cursive' }}
+            className="inline-block text-[#2e4a88] leading-none px-2"
+            style={{ fontFamily: '"Lavishly Yours", cursive', fontSize: 'clamp(1.8rem, 7vw, 5.25rem)' }}
           >
             from india to the world
           </div>

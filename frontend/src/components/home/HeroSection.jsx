@@ -22,6 +22,8 @@ const STATS = [
 
 export default function HeroSection() {
   const heroRef = useRef(null)
+  const glowRef = useRef(null)
+  const dotRef  = useRef(null)
   const [photoIdx, setPhotoIdx] = useState(0)
 
   useEffect(() => {
@@ -38,23 +40,76 @@ export default function HeroSection() {
     return () => observer.disconnect()
   }, [])
 
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    if (glowRef.current) {
+      glowRef.current.style.background =
+        `radial-gradient(circle 380px at ${x}px ${y}px, rgba(201,162,74,0.20) 0%, rgba(201,162,74,0.07) 45%, transparent 72%)`
+    }
+    if (dotRef.current) {
+      dotRef.current.style.transform = `translate(${x - 7}px, ${y - 7}px)`
+      dotRef.current.style.opacity   = '1'
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (glowRef.current) glowRef.current.style.background = 'transparent'
+    if (dotRef.current)  dotRef.current.style.opacity = '0'
+  }
+
   return (
     <section
       id="hero"
       ref={heroRef}
-      className="dot-field dot-tone-gold relative bg-navy overflow-hidden flex items-center"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative bg-navy-deep overflow-hidden flex items-center"
       style={{ minHeight: 'calc(100vh - var(--header-stack-height))' }}
     >
-      {/* BG layers */}
-      <div className="absolute inset-0 bg-navy-deep" />
+      {/* Static BG gradient */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
             'radial-gradient(ellipse 80% 70% at 70% -10%, rgba(201,162,74,0.12) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 100% 100%, rgba(10,35,71,0.8) 0%, transparent 70%)',
         }}
       />
-      <div className="c relative z-10 pt-6 pb-14 lg:pt-8 lg:pb-20">
+
+      {/* Golden dot grid (always visible, subtle) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.6' fill='%23c9a24a' fill-opacity='0.22'/%3E%3C/svg%3E")`,
+          backgroundSize: '48px 48px',
+          backgroundPosition: '20px 18px',
+        }}
+      />
+
+      {/* React-driven golden ambient glow — follows cursor instantly, no CSS delay */}
+      <div
+        ref={glowRef}
+        className="absolute inset-0 pointer-events-none z-[4]"
+        style={{ transition: 'none' }}
+      />
+
+      {/* Golden dot at cursor position */}
+      <div
+        ref={dotRef}
+        className="absolute top-0 left-0 pointer-events-none z-[4]"
+        style={{
+          width: 14,
+          height: 14,
+          borderRadius: '50%',
+          background: 'rgba(201,162,74,0.9)',
+          boxShadow: '0 0 18px 6px rgba(201,162,74,0.55), 0 0 40px 16px rgba(201,162,74,0.25)',
+          opacity: 0,
+          transition: 'opacity 150ms ease',
+          willChange: 'transform, opacity',
+        }}
+      />
+      <div className="c relative z-10 pt-4 pb-8 sm:pt-6 sm:pb-14 lg:pt-8 lg:pb-20">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left */}
           <div>
@@ -78,7 +133,7 @@ export default function HeroSection() {
               and NRI investments — so you recover what's rightfully yours.
             </p>
 
-            <div className="reveal flex flex-wrap gap-4 mb-14">
+            <div className="reveal flex flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-14">
               <a
                 href="#contact"
                 className="flex items-center gap-2 bg-gold hover:bg-gold-light text-navy-deep px-7 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-xl hover:shadow-gold/25 hover:-translate-y-0.5"

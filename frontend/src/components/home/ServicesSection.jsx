@@ -62,7 +62,7 @@ export default function ServicesSection() {
     <section id="services" ref={ref} className="section-pad bg-white dark:bg-navy">
       <div className="c">
         {/* Header */}
-        <div className="max-w-xl mb-14">
+        <div className="max-w-xl mb-8 lg:mb-14">
           <div className="eyebrow reveal mb-4">Our Services</div>
           <h2 className="reveal font-display text-navy dark:text-white tracking-tight mb-4"
             style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}>
@@ -74,11 +74,11 @@ export default function ServicesSection() {
         </div>
 
         {/* Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {SERVICES.map((s, i) => (
             <div
               key={s.title}
-              className="reveal group bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-2xl p-7 hover:bg-white dark:hover:bg-white/[0.06] hover:border-slate-200 dark:hover:border-white/15 hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              className="reveal group relative bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-2xl p-4 sm:p-7 hover:bg-white dark:hover:bg-white/[0.06] hover:border-slate-200 dark:hover:border-white/15 hover:shadow-xl hover:shadow-black/5 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               style={{ transitionDelay: `${i * 50}ms` }}
             >
               {/* Icon */}

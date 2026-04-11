@@ -61,7 +61,7 @@ export default function BlogPreviewSection() {
   return (
     <section id="blog" ref={ref} className="section-pad bg-slate-50 dark:bg-navy-deep">
       <div className="c">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 lg:mb-12">
           <div>
             <div className="eyebrow reveal mb-4">Resources & Insights</div>
             <h2 className="reveal font-display text-navy dark:text-white tracking-tight"

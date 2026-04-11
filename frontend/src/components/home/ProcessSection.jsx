@@ -43,7 +43,7 @@ export default function ProcessSection() {
     <section id="process" ref={ref} className="section-pad bg-slate-50 dark:bg-navy">
       <div className="c">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 lg:mb-16">
           <div className="eyebrow reveal mb-4 justify-center">
             <span className="w-5 h-px bg-gold block" />
             How It Works
@@ -62,7 +62,7 @@ export default function ProcessSection() {
           {/* Connecting line */}
           <div className="hidden lg:block absolute top-14 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-white/10 to-transparent" />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-8">
             {STEPS.map((step, i) => (
               <div
                 key={i}
@@ -71,7 +71,7 @@ export default function ProcessSection() {
               >
                 {/* Icon circle */}
                 <div className="relative inline-block mb-6">
-                  <div className="w-24 h-24 rounded-full bg-white dark:bg-navy-card border-2 border-slate-100 dark:border-white/10 flex items-center justify-center text-3xl mx-auto shadow-lg shadow-black/5 group-hover:border-gold group-hover:shadow-gold/20 group-hover:shadow-xl transition-all duration-400">
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-white dark:bg-navy-card border-2 border-slate-100 dark:border-white/10 flex items-center justify-center text-2xl sm:text-3xl mx-auto shadow-lg shadow-black/5 group-hover:border-gold group-hover:shadow-gold/20 group-hover:shadow-xl transition-all duration-400">
                     {step.icon}
                   </div>
                   {/* Number badge */}
@@ -81,8 +81,8 @@ export default function ProcessSection() {
                 </div>
 
                 <div className="text-xs font-semibold text-gold/70 tracking-widest uppercase mb-2">Step {step.num}</div>
-                <h3 className="font-display text-navy dark:text-white text-lg mb-3">{step.title}</h3>
-                <p className="text-slate-500 dark:text-white/40 text-sm leading-relaxed">{step.desc}</p>
+                <h3 className="font-display text-navy dark:text-white text-sm sm:text-lg mb-2 sm:mb-3">{step.title}</h3>
+                <p className="hidden sm:block text-slate-500 dark:text-white/40 text-sm leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>

@@ -47,7 +47,7 @@ export default function AuthPage({ mode = 'signin' }) {
   return (
     <div className="min-h-screen flex bg-white dark:bg-navy-deep">
       {/* Left panel */}
-      <div className="hidden lg:flex flex-col flex-1 bg-navy relative overflow-hidden p-14 justify-center">
+      <div className="hidden lg:flex flex-col flex-1 bg-navy dot-canvas dot-tone-gold overflow-hidden p-14 justify-center">
         {/* BG */}
         <div className="absolute inset-0"
           style={{ backgroundImage: 'radial-gradient(ellipse 80% 80% at 0% 50%, rgba(201,162,74,0.1) 0%, transparent 60%)' }}
@@ -92,7 +92,7 @@ export default function AuthPage({ mode = 'signin' }) {
       </div>
 
       {/* Right panel — form */}
-      <div className="flex flex-1 items-center justify-center p-6 lg:p-14 bg-slate-50 dark:bg-navy-deep overflow-y-auto">
+      <div className="flex flex-1 items-center justify-center p-6 lg:p-14 bg-slate-50 dark:bg-navy-deep overflow-y-auto dot-canvas dot-tone-gold">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <Link to="/" className="flex lg:hidden items-center gap-2 mb-8">

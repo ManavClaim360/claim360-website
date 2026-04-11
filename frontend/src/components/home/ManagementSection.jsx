@@ -55,7 +55,7 @@ export default function ManagementSection() {
 
       <div className="c relative z-10">
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-8 lg:mb-14">
           <div className="eyebrow reveal mb-4 justify-center">Our Leadership</div>
           <h2
             className="reveal font-display text-navy dark:text-white tracking-tight"
@@ -69,7 +69,7 @@ export default function ManagementSection() {
         </div>
 
         {/* Team cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {TEAM.map((member, i) => (
             <div
               key={member.name}
@@ -77,7 +77,7 @@ export default function ManagementSection() {
               style={{ transitionDelay: `${i * 80}ms` }}
             >
               {/* Photo */}
-              <div className="relative aspect-[4/5] w-full bg-slate-100 dark:bg-navy-mid overflow-hidden">
+              <div className="relative aspect-[3/4] lg:aspect-[4/5] w-full bg-slate-100 dark:bg-navy-mid overflow-hidden">
                 <img
                   src={member.photo}
                   alt={member.name}
@@ -96,12 +96,12 @@ export default function ManagementSection() {
               </div>
 
               {/* Info */}
-              <div className="p-5">
-                <div className="text-[10px] font-semibold uppercase tracking-widest text-gold mb-1">
+              <div className="p-3 sm:p-5">
+                <div className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest text-gold mb-1 leading-tight">
                   {member.role}
                 </div>
-                <h3 className="font-display text-navy dark:text-white text-lg mb-2">{member.name}</h3>
-                <p className="text-slate-500 dark:text-white/40 text-xs leading-relaxed">{member.desc}</p>
+                <h3 className="font-display text-navy dark:text-white text-sm sm:text-lg mb-1.5">{member.name}</h3>
+                <p className="hidden sm:block text-slate-500 dark:text-white/40 text-xs leading-relaxed">{member.desc}</p>
               </div>
             </div>
           ))}

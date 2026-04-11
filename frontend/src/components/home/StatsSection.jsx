@@ -56,10 +56,10 @@ export default function StatsSection() {
           {STATS.map((s, i) => (
             <div
               key={i}
-              className="bg-navy dark:bg-navy-deep p-8 text-center hover:bg-navy-light/30 transition-colors duration-300 group"
+              className="bg-navy dark:bg-navy-deep p-4 sm:p-6 lg:p-8 text-center hover:bg-navy-light/30 transition-colors duration-300 group"
             >
               <div className="font-display text-white mb-2 leading-none group-hover:text-gold transition-colors duration-300"
-                style={{ fontSize: 'clamp(40px, 5vw, 60px)' }}
+                style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
               >
                 <Counter target={s.value} suffix={s.suffix} />
               </div>
