@@ -1,7 +1,7 @@
-
 import { useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, MapPin, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const ALL_TESTIMONIALS = [
   {
@@ -200,6 +200,7 @@ const ALL_TESTIMONIALS = [
 
 export default function TestimonialsSection() {
   const [current, setCurrent] = useState(0)
+  const [direction, setDirection] = useState(1)
   const [userState, setUserState] = useState(null)
   const [showLocationPreview, setShowLocationPreview] = useState(true)
   const [filtered, setFiltered] = useState(ALL_TESTIMONIALS)
@@ -237,6 +238,7 @@ export default function TestimonialsSection() {
   useEffect(() => {
     if (filtered.length <= 1) return undefined
     const timer = window.setInterval(() => {
+      setDirection(1)
       setCurrent(c => (c + 1) % filtered.length)
     }, 4200)
     return () => window.clearInterval(timer)
@@ -260,8 +262,14 @@ export default function TestimonialsSection() {
       .catch(() => setFiltered([...custom, ...ALL_TESTIMONIALS]))
   }, [custom])
 
-  const prev = () => setCurrent(c => (c - 1 + filtered.length) % filtered.length)
-  const next = () => setCurrent(c => (c + 1) % filtered.length)
+  const prev = () => {
+    setDirection(-1)
+    setCurrent(c => (c - 1 + filtered.length) % filtered.length)
+  }
+  const next = () => {
+    setDirection(1)
+    setCurrent(c => (c + 1) % filtered.length)
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -330,61 +338,77 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {visible.map((t, i) => (
-            <div
-              key={`${current}-${i}`}
-              className="reveal visible bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-7 flex flex-col h-full min-h-[520px] transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/40 dark:hover:shadow-black/20"
-              style={{ transitionDelay: `${i * 80}ms` }}
+        <div className="overflow-hidden">
+          <AnimatePresence mode="wait" custom={direction} initial={false}>
+            <motion.div
+              key={current}
+              custom={direction}
+              variants={{
+                enter: (dir) => ({ x: dir > 0 ? '60%' : '-60%', opacity: 0 }),
+                center: { x: 0, opacity: 1 },
+                exit: (dir) => ({ x: dir > 0 ? '-60%' : '60%', opacity: 0 }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
             >
-              <div className="flex justify-center mb-6">
-                <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-white dark:border-white/[0.08] ring-1 ring-gold/30 bg-slate-200 dark:bg-white/[0.06] shadow-lg shadow-slate-200/60 dark:shadow-black/20">
-                  {t.photo ? (
-                    <img
-                      src={t.photo}
-                      alt={t.name}
-                      className="w-full h-full object-cover"
-                      onError={e => e.currentTarget.remove()}
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center font-bold font-display text-white dark:text-gold text-2xl bg-navy dark:bg-gold/20">
-                      {t.initials}
+              {visible.map((t, i) => (
+                <div
+                  key={i}
+                  className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-[28px] p-6 flex flex-col h-full min-h-[500px] hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/40 dark:hover:shadow-black/20 transition-transform duration-300"
+                >
+                  <div className="flex justify-center mb-5">
+                    <div className="relative w-36 h-36 rounded-full overflow-hidden border-4 border-white dark:border-white/[0.08] ring-2 ring-gold/30 bg-slate-200 dark:bg-white/[0.06] shadow-xl shadow-slate-200/60 dark:shadow-black/20">
+                      {t.photo ? (
+                        <img
+                          src={t.photo}
+                          alt={t.name}
+                          className="w-full h-full object-cover"
+                          onError={e => e.currentTarget.remove()}
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center font-bold font-display text-white dark:text-gold text-2xl bg-navy dark:bg-gold/20">
+                          {t.initials}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
+                  </div>
 
-              <div className="flex flex-col flex-1">
-                <p className="font-display text-slate-700 dark:text-white/74 text-[16px] leading-relaxed italic flex-1 mb-7 text-center">
-                  "{t.quote}"
-                </p>
+                  <div className="flex flex-col flex-1">
+                    <p className="font-display text-slate-600 dark:text-white/70 text-[13.5px] leading-relaxed italic flex-1 mb-6 text-center">
+                      "{t.quote}"
+                    </p>
 
-                <div className="pt-5 border-t border-slate-100 dark:border-white/[0.07] text-center">
-                  <div className="text-navy dark:text-white font-semibold text-[1.05rem] leading-tight">{t.name}</div>
-                  {t.role ? (
-                    <div className="text-slate-600 dark:text-white/62 text-sm mt-2 leading-snug min-h-[42px]">
-                      {t.role}
-                    </div>
-                  ) : (
-                    <div className="min-h-[42px]" />
-                  )}
-                  <div className="mt-3 space-y-1">
-                    {t.state ? (
-                      <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-white/34 uppercase tracking-[0.14em]">
-                        <MapPin size={10} className="text-gold" />
-                        <span>{t.state}</span>
+                    <div className="pt-4 border-t border-slate-100 dark:border-white/[0.07] text-center">
+                      <div className="text-navy dark:text-white font-semibold text-[0.95rem] leading-tight">{t.name}</div>
+                      {t.role ? (
+                        <div className="text-slate-500 dark:text-white/55 text-xs mt-1.5 leading-snug min-h-[36px]">
+                          {t.role}
+                        </div>
+                      ) : (
+                        <div className="min-h-[36px]" />
+                      )}
+                      <div className="mt-2 space-y-0.5">
+                        {t.state ? (
+                          <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400 dark:text-white/34 uppercase tracking-[0.14em]">
+                            <MapPin size={9} className="text-gold" />
+                            <span>{t.state}</span>
+                          </div>
+                        ) : (
+                          <div className="h-[16px]" />
+                        )}
+                        <div className="text-[11px] text-slate-400 dark:text-white/30 uppercase tracking-[0.14em] min-h-[14px]">
+                          {t.location?.split(',').slice(-1)[0]?.trim() || t.location}
+                        </div>
                       </div>
-                    ) : (
-                      <div className="h-[18px]" />
-                    )}
-                    <div className="text-xs text-slate-500 dark:text-white/32 uppercase tracking-[0.14em] min-h-[16px]">
-                      {t.location?.split(',').slice(-1)[0]?.trim() || t.location}
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {filtered.length > 1 ? (

@@ -117,14 +117,6 @@ export default function ContactSection({ sectionId = 'contact' }) {
               ))}
             </div>
 
-            {/* Map image */}
-            <div className="reveal rounded-2xl overflow-hidden border border-slate-100 dark:border-white/10 shadow-md">
-              <img
-                src="/assets/map_img.png"
-                alt="Our office locations"
-                className="w-full h-auto object-cover"
-              />
-            </div>
           </div>
 
           {/* Right — Form */}

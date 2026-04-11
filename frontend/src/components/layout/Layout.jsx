@@ -7,6 +7,7 @@ import AnnouncementBar from './AnnouncementBar'
 import MobileBottomNav from './MobileBottomNav'
 import CursorGlow from './CursorGlow'
 import ParallaxBackdrop from './ParallaxBackdrop'
+import ScrollToTop from './ScrollToTop'
 
 export default function Layout() {
   return (
@@ -21,6 +22,7 @@ export default function Layout() {
         </main>
         <Footer />
       </div>
+      <ScrollToTop />
       <ContactTab />
       <WhatsAppButton />
       <MobileBottomNav />

@@ -1,5 +1,17 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
+const BADGE_PHOTOS = [
+  '/assets/alphons.png',
+  '/assets/sanjay-raigaga.png',
+  '/assets/Anushka-Khanna.png',
+  '/assets/Rajiv-Kaul.jpg.jpeg',
+  '/assets/jamshed-wadia.png',
+  '/assets/Vinod-Juneja.png',
+  '/assets/Nithya-and-Santhakumar-Sundaram.jpg.jpeg',
+  '/assets/M-D-Asthana.png',
+]
 
 const STATS = [
   { value: '7+', label: 'Years Experience', sublabel: 'Since 2016' },
@@ -10,6 +22,12 @@ const STATS = [
 
 export default function HeroSection() {
   const heroRef = useRef(null)
+  const [photoIdx, setPhotoIdx] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => setPhotoIdx(i => (i + 1) % BADGE_PHOTOS.length), 2500)
+    return () => clearInterval(timer)
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -78,7 +96,7 @@ export default function HeroSection() {
 
             <div className="reveal grid grid-cols-2 sm:grid-cols-4 gap-0 pt-10 border-t border-white/[0.08]">
               {STATS.map((s, i) => (
-                <div key={i} className={`text-center sm:text-left ${i > 0 ? 'border-l border-white/[0.08] pl-6' : ''}`}>
+                <div key={i} className={`text-center sm:text-left py-2 sm:py-0 ${i > 0 ? 'sm:border-l border-white/[0.08] sm:pl-6' : ''} ${i % 2 !== 0 ? 'border-l border-white/[0.08] pl-4' : ''}`}>
                   <div className="font-display text-3xl text-white mb-1 leading-none">{s.value}</div>
                   <div className="text-xs font-semibold text-white/60 mb-0.5">{s.label}</div>
                   <div className="text-[10px] text-white/30">{s.sublabel}</div>
@@ -98,21 +116,20 @@ export default function HeroSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/60 via-transparent to-transparent" />
             </div>
 
-            {/* Floating trust badge */}
-            <div className="absolute -top-5 -right-5 bg-white dark:bg-navy-card border border-slate-100 dark:border-white/10 rounded-2xl px-4 py-3 shadow-2xl animate-float">
+            {/* Floating trust badge — cycles through client photos, links to testimonials */}
+            <Link
+              to="/testimonials"
+              className="absolute -top-5 -right-5 bg-white dark:bg-navy-card border border-slate-100 dark:border-white/10 rounded-2xl px-4 py-3 shadow-2xl animate-float hover:shadow-gold/20 hover:border-gold/30 transition-all duration-300 cursor-pointer"
+            >
               <div className="text-xs text-slate-400 mb-1">Trusted by</div>
               <div className="font-display text-navy dark:text-white text-lg">320+ Clients</div>
               <div className="flex -space-x-2 mt-2">
-                {[
-                  '/assets/alphons.png',
-                  '/assets/sanjay-raigaga.png',
-                  '/assets/Anushka-Khanna.png',
-                ].map((src, i) => (
+                {[0, 1, 2].map(offset => (
                   <img
-                    key={i}
-                    src={src}
+                    key={offset}
+                    src={BADGE_PHOTOS[(photoIdx + offset) % BADGE_PHOTOS.length]}
                     alt=""
-                    className="w-7 h-7 rounded-full object-cover border-2 border-white dark:border-navy-deep"
+                    className="w-7 h-7 rounded-full object-cover border-2 border-white dark:border-navy-deep transition-all duration-500"
                     onError={e => { e.currentTarget.style.display = 'none' }}
                   />
                 ))}
@@ -120,14 +137,7 @@ export default function HeroSection() {
                   +
                 </div>
               </div>
-            </div>
-
-            {/* Latest recovery badge */}
-            <div className="absolute -bottom-4 -left-6 bg-navy border border-gold/20 rounded-2xl px-4 py-3 shadow-2xl">
-              <div className="text-gold text-[10px] font-semibold uppercase tracking-wider mb-1">Latest Recovery</div>
-              <div className="text-white font-display text-lg">₹48 Lakhs</div>
-              <div className="text-white/40 text-xs">NRI client — Texas, USA</div>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

@@ -21,6 +21,8 @@
   html {
     scroll-behavior: smooth;
     font-size: 16px;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   body {
@@ -29,10 +31,17 @@
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     min-height: 100vh;
+    max-width: 100vw;
   }
 
   html, #root {
     min-height: 100%;
+    width: 100%;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
   }
 
   ::selection {
@@ -155,7 +164,6 @@
   .dot-field::after {
     background-image: var(--dot-hover-image);
     opacity: var(--dot-hover-opacity);
-    transition: -webkit-mask-image 120ms linear, mask-image 120ms linear, opacity 220ms ease;
     -webkit-mask-image: radial-gradient(circle 280px at var(--cursor-x) var(--cursor-y), rgba(0, 0, 0, 0.96) 0, transparent 74%);
     mask-image: radial-gradient(circle 280px at var(--cursor-x) var(--cursor-y), rgba(0, 0, 0, 0.96) 0, transparent 74%);
   }
@@ -275,6 +283,12 @@
 .dark body {
   background-color: #0A1628;
   color: #f0f4f8;
+}
+
+/* Mobile menu slide-in from top */
+@keyframes mobileMenuSlideIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Smooth page transitions */

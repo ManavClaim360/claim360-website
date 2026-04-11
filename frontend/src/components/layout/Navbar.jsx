@@ -102,7 +102,7 @@ export default function Navbar() {
                 className="h-11 w-11 rounded-full p-1 object-contain"
               />
               <span
-                className="text-white text-[1.55rem] tracking-[0.02em] group-hover:text-gold-light transition-colors duration-200"
+                className="hidden xs:inline text-white text-[1.45rem] sm:text-[1.55rem] tracking-[0.02em] group-hover:text-gold-light transition-colors duration-200"
                 style={{ fontFamily: '"Times New Roman", Georgia, serif' }}
               >
                 Claim360
@@ -143,7 +143,7 @@ export default function Navbar() {
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-2 flex-shrink-0">
+            <div className="flex items-center gap-1.5 flex-shrink-0">
               <button
                 onClick={() => user ? navigate('/search') : navigate('/login')}
                 className="w-9 h-9 rounded-xl flex items-center justify-center text-white/70 hover:bg-white/[0.06] hover:text-white transition-all duration-200"
@@ -169,7 +169,7 @@ export default function Navbar() {
 
               <Link
                 to="/signup"
-                className="px-5 py-2 rounded-xl text-sm font-semibold bg-gold hover:bg-gold-light text-navy-deep transition-all duration-200 shadow-sm"
+                className="hidden sm:inline-flex px-4 py-2 rounded-xl text-sm font-semibold bg-gold hover:bg-gold-light text-navy-deep transition-all duration-200 shadow-sm whitespace-nowrap"
               >
                 Get Started
               </Link>

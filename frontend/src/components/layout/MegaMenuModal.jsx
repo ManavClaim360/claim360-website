@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { X, ChevronRight, ChevronDown, Plus, Minus } from 'lucide-react'
+import { X, ChevronRight, ChevronLeft, Phone, Mail } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
 export default function MegaMenuModal({ isOpen, onClose, navLinks, megaCategories }) {
@@ -20,12 +20,12 @@ export default function MegaMenuModal({ isOpen, onClose, navLinks, megaCategorie
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[200] flex flex-col">
+    <div className="fixed inset-0 z-[200] flex flex-col" style={{ top: 'var(--header-stack-height)' }}>
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Panel */}
-      <div className="relative bg-white dark:bg-navy-deep w-full h-full overflow-y-auto animate-slide-in">
+      {/* Panel slides in from top */}
+      <div className="relative bg-white dark:bg-navy-deep w-full h-full overflow-y-auto" style={{ animation: 'mobileMenuSlideIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards' }}>
         {/* Top bar */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-white/10 sticky top-0 bg-white dark:bg-navy-deep z-10">
           <div className="flex items-center gap-3">
@@ -52,34 +52,44 @@ export default function MegaMenuModal({ isOpen, onClose, navLinks, megaCategorie
               <div key={item.label} className="overflow-hidden">
                 {item.mega ? (
                   <div className="bg-slate-50 dark:bg-white/5 rounded-2xl overflow-hidden mb-2">
-                    <button 
-                      onClick={() => setExpandedCat(expandedCat === item.label ? null : item.label)}
-                      className="w-full flex items-center justify-between px-4 py-4 text-navy dark:text-white font-semibold"
-                    >
-                      {item.label}
-                      {expandedCat === item.label ? <Minus size={18} /> : <Plus size={18} />}
-                    </button>
-                    {expandedCat === item.label && (
-                      <div className="px-4 pb-4 space-y-4 animate-fade-in">
-                        {megaCategories.map(cat => (
-                          <div key={cat.id} className="pt-2 first:pt-0">
-                            <div className="text-[11px] font-bold text-gold uppercase tracking-wider mb-2 px-1">{cat.label}</div>
-                            <div className="space-y-1">
-                              {cat.items.map(sub => (
-                                <a
-                                  key={sub.label}
-                                  href={sub.href}
-                                  onClick={onClose}
-                                  className="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-white/10 transition-all text-sm"
-                                >
-                                  {sub.label}
-                                  <ChevronRight size={14} className="text-slate-400" />
-                                </a>
-                              ))}
+                    {expandedCat === item.label ? (
+                      <>
+                        <button
+                          onClick={() => setExpandedCat(null)}
+                          className="w-full flex items-center gap-2 px-4 py-3 text-navy dark:text-white font-semibold border-b border-slate-100 dark:border-white/10"
+                        >
+                          <ChevronLeft size={16} className="text-gold" />
+                          <span className="text-sm">Back to Menu</span>
+                        </button>
+                        <div className="px-4 pb-4 space-y-4 animate-fade-in">
+                          {megaCategories.map(cat => (
+                            <div key={cat.id} className="pt-3 first:pt-3">
+                              <div className="text-[11px] font-bold text-gold uppercase tracking-wider mb-2 px-1">{cat.label}</div>
+                              <div className="space-y-1">
+                                {cat.items.map(sub => (
+                                  <a
+                                    key={sub.label}
+                                    href={sub.href}
+                                    onClick={onClose}
+                                    className="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-white/10 transition-all text-sm"
+                                  >
+                                    {sub.label}
+                                    <ChevronRight size={14} className="text-slate-400" />
+                                  </a>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => setExpandedCat(item.label)}
+                        className="w-full flex items-center justify-between px-4 py-4 text-navy dark:text-white font-semibold"
+                      >
+                        {item.label}
+                        <ChevronRight size={18} className="text-slate-400" />
+                      </button>
                     )}
                   </div>
                 ) : (
@@ -125,11 +135,15 @@ export default function MegaMenuModal({ isOpen, onClose, navLinks, megaCategorie
           <div className="text-white font-display text-xl mb-4">Financial Support</div>
           <div className="space-y-3 text-sm text-white/70">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">📞</div>
+              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
+                <Phone size={14} />
+              </div>
               +91 991 003 5050
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">📧</div>
+              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
+                <Mail size={14} />
+              </div>
               enquiries@claim360.in
             </div>
             <div className="mt-6">

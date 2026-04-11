@@ -34,12 +34,14 @@ const OFFICES = [
   { city: 'London', address: '2 Wymondham, St. Johns Wood Park, London NW8 6RD', flag: '🇬🇧' },
 ]
 
+import { Twitter, Linkedin, Facebook, Youtube, Instagram } from 'lucide-react'
+
 const SOCIAL = [
-  { icon: '𝕏', label: 'Twitter', href: 'https://x.com/claim360' },
-  { icon: 'in', label: 'LinkedIn', href: 'https://linkedin.com/company/claim360' },
-  { icon: 'f', label: 'Facebook', href: 'https://facebook.com/claim360' },
-  { icon: '▶', label: 'YouTube', href: 'https://youtube.com/@claim360' },
-  { icon: '📷', label: 'Instagram', href: 'https://instagram.com/claim360' },
+  { Icon: Twitter, label: 'Twitter', href: 'https://x.com/claim360' },
+  { Icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/claim360' },
+  { Icon: Facebook, label: 'Facebook', href: 'https://facebook.com/claim360' },
+  { Icon: Youtube, label: 'YouTube', href: 'https://youtube.com/@claim360' },
+  { Icon: Instagram, label: 'Instagram', href: 'https://instagram.com/claim360' },
 ]
 
 export default function Footer() {
@@ -64,9 +66,9 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   title={s.label}
-                  className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/50 text-xs font-bold hover:bg-gold hover:text-navy-deep hover:border-gold transition-all duration-200"
+                  className="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/50 hover:bg-gold hover:text-navy-deep hover:border-gold transition-all duration-200"
                 >
-                  {s.icon}
+                  <s.Icon size={14} />
                 </a>
               ))}
             </div>
