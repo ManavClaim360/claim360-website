@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Send, CheckCircle, Phone, Mail, MapPin } from 'lucide-react'
+import { Send, CheckCircle, Phone, Mail, MapPin, ChevronDown } from 'lucide-react'
 import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
@@ -69,22 +69,25 @@ export default function ContactSection({ sectionId = 'contact' }) {
   return (
     <section id={sectionId} ref={ref} className="section-pad bg-white dark:bg-navy">
       <div className="c">
+        {/* Section header */}
+        <div className="text-center mb-10 lg:mb-14 reveal">
+          <div className="eyebrow justify-center mb-3">Get In Touch</div>
+          <h2
+            className="font-display text-navy dark:text-white tracking-tight mb-3"
+            style={{ fontSize: 'clamp(28px, 3.5vw, 48px)' }}
+          >
+            Schedule a{' '}
+            <span className="italic text-gold">Free</span>{' '}
+            Consultation
+          </h2>
+          <p className="text-slate-500 dark:text-white/45 text-base leading-relaxed max-w-xl mx-auto">
+            Tell us about your investment situation, and our experts will assess your case and chart a clear recovery path — at no cost.
+          </p>
+        </div>
+
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-start">
           {/* Left — Info */}
           <div>
-            <div className="eyebrow reveal mb-3">Get In Touch</div>
-            <h2
-              className="reveal font-display text-navy dark:text-white tracking-tight mb-3"
-              style={{ fontSize: 'clamp(26px, 3.5vw, 46px)' }}
-            >
-              Schedule a{' '}
-              <span className="italic text-gold">Free</span>{' '}
-              Consultation
-            </h2>
-            <p className="reveal text-slate-500 dark:text-white/45 text-base leading-relaxed mb-6">
-              Tell us about your investment situation, and our experts will assess your case and chart a clear recovery path — at no cost.
-            </p>
-
             <div className="reveal space-y-3 sm:space-y-5 mb-6">
               {[
                 { icon: Phone, label: 'Phone', val: '+91 991 003 5050', href: 'tel:+919910035050' },
@@ -141,32 +144,36 @@ export default function ContactSection({ sectionId = 'contact' }) {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-3xl p-4 sm:p-8"
+                className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-3xl p-5 sm:p-8"
               >
                 <h3 className="font-display text-navy dark:text-white text-xl mb-1">Tell us about your case</h3>
                 <p className="text-slate-400 dark:text-white/35 text-sm mb-6">Free • Confidential • No obligation</p>
 
                 <div className="space-y-4">
-                  <div className="grid gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Full Name *</label>
-                      <input
-                        type="text"
-                        required
-                        value={form.name}
-                        onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                        placeholder="Your full name"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/25 text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Phone *</label>
-                      <div className="flex items-stretch overflow-hidden rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-colors focus-within:border-gold dark:focus-within:border-gold">
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Full Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                      placeholder="Your full name"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/25 text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Phone *</label>
+                    <div className="flex items-stretch overflow-hidden rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] transition-colors focus-within:border-gold dark:focus-within:border-gold">
+                      {/* Country code select with custom arrow */}
+                      <div className="relative flex-shrink-0 w-[100px] sm:w-[106px]">
                         <select
                           required
                           value={form.phoneCode}
                           onChange={e => setForm(p => ({ ...p, phoneCode: e.target.value }))}
-                          className="select-field w-[108px] sm:w-[96px] flex-shrink-0 border-r border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.03] px-3 pr-8 py-3 text-navy dark:text-white text-sm outline-none appearance-none"
+                          className="select-field w-full h-full border-r border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.06] pl-3 pr-8 py-3 text-navy dark:text-white text-sm outline-none appearance-none cursor-pointer"
                         >
                           {COUNTRY_CODES.map(country => (
                             <option key={`${country.label}-${country.code}`} value={country.code}>
@@ -174,18 +181,23 @@ export default function ContactSection({ sectionId = 'contact' }) {
                             </option>
                           ))}
                         </select>
-                        <input
-                          type="tel"
-                          required
-                          value={form.phoneNumber}
-                          onChange={e => setForm(p => ({ ...p, phoneNumber: e.target.value }))}
-                          placeholder="Phone number"
-                          className="min-w-0 flex-1 bg-transparent px-4 py-3 text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/25 text-sm outline-none"
+                        <ChevronDown
+                          size={13}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 dark:text-white/60"
                         />
                       </div>
+                      <input
+                        type="tel"
+                        required
+                        value={form.phoneNumber}
+                        onChange={e => setForm(p => ({ ...p, phoneNumber: e.target.value }))}
+                        placeholder="Phone number"
+                        className="min-w-0 flex-1 bg-transparent px-4 py-3 text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/25 text-sm outline-none"
+                      />
                     </div>
                   </div>
 
+                  {/* Email */}
                   <div>
                     <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Email</label>
                     <input
@@ -197,18 +209,26 @@ export default function ContactSection({ sectionId = 'contact' }) {
                     />
                   </div>
 
+                  {/* Service of Interest */}
                   <div>
                     <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Service of Interest</label>
-                    <select
-                      value={form.service}
-                      onChange={e => setForm(p => ({ ...p, service: e.target.value }))}
-                      className="select-field w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors"
-                    >
-                      <option value="">Select a service...</option>
-                      {SERVICES.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={form.service}
+                        onChange={e => setForm(p => ({ ...p, service: e.target.value }))}
+                        className="select-field w-full px-4 pr-10 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.04] text-navy dark:text-white text-sm outline-none focus:border-gold dark:focus:border-gold transition-colors appearance-none cursor-pointer"
+                      >
+                        <option value="">Select a service...</option>
+                        {SERVICES.map(s => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                      <ChevronDown
+                        size={15}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 dark:text-white/60"
+                      />
+                    </div>
                   </div>
 
+                  {/* Message */}
                   <div>
                     <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Brief Description *</label>
                     <textarea
