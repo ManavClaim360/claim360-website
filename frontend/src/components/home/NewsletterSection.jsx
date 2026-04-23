@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Send, CheckCircle } from 'lucide-react'
 import axios from 'axios'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+import { API_URL } from '../../config/api'
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState('')

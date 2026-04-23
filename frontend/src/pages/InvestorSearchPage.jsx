@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { Search, Eye, EyeOff, Lock, User, MapPin, TrendingUp } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import axios from 'axios'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+import { API_URL } from '../config/api'
 
 export default function InvestorSearchPage() {
   const [query, setQuery] = useState('')

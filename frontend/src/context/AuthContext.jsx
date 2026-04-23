@@ -1,9 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import { API_URL } from '../config/api'
 
 const AuthContext = createContext()
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('claim360-token') || null)
