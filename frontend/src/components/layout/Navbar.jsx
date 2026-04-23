@@ -97,7 +97,7 @@ export default function Navbar() {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
               <img
-                src="/assets/Logo_1.png"
+                src="/assets/main_logo_sq.jpeg"
                 alt="Claim360"
                 className="h-10 w-10 rounded-full p-1 object-contain"
               />

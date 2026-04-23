@@ -1,6 +1,6 @@
 const ANNOUNCEMENTS = [
   { text: 'Free IEPF Consultation -', highlight: 'Book Now ->', href: '/contact' },
-  { text: 'Rs105Cr+ Successfully Recovered for Clients', highlight: '7+ Years Experience' },
+  { text: 'Rs105Cr+ Successfully Recovered for Clients', highlight: '10+ years Experience' },
   { text: 'NRI Services Available - No India Visit Required', highlight: 'Learn More ->', href: '/#services' },
   { text: '99%+ Success Rate in Investment Recovery', highlight: '320+ Happy Clients' },
   { text: 'Mumbai • New Delhi • London', highlight: 'Pan-India & Global' },
