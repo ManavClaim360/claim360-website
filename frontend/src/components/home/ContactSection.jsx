@@ -69,7 +69,7 @@ export default function ContactSection({ sectionId = 'contact' }) {
     <section id={sectionId} ref={ref} className="section-pad bg-white dark:bg-navy">
       <div className="c">
         {/* Section header */}
-        <div className="text-center mb-10 lg:mb-14 reveal">
+        <div className="text-center mb-7 lg:mb-10 reveal">
           <div className="eyebrow justify-center mb-3">Get In Touch</div>
           <h2
             className="font-display text-navy dark:text-white tracking-tight mb-3"

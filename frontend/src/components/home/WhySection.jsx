@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Check, X } from 'lucide-react'
+import { Check, X, Target, Shield, Database, Globe } from 'lucide-react'
 
 const FEATURES = [
   { label: 'Proprietary Investor Database Access', us: true, others: false },
@@ -15,10 +15,10 @@ const FEATURES = [
 ]
 
 const WHY_CARDS = [
-  { icon: '🎯', title: 'Client-Centric Solutions', desc: 'Every case is unique. We tailor our approach to each client\'s specific investment situation and goals.' },
-  { icon: '🔐', title: 'Integrity & Transparency', desc: 'No hidden fees, no false promises. We give you a clear picture of your recovery prospects upfront.' },
-  { icon: '🗄️', title: 'Proprietary Data Access', desc: 'Our exclusive database helps locate investments that even registrars may fail to retrieve immediately.' },
-  { icon: '🌍', title: 'Global Expertise', desc: 'Offices in Mumbai, New Delhi, and London. We serve clients in 6+ countries with equal proficiency.' },
+  { Icon: Target, title: 'Client-Centric Solutions', desc: 'Every case is unique. We tailor our approach to each client\'s specific investment situation and goals.' },
+  { Icon: Shield, title: 'Integrity & Transparency', desc: 'No hidden fees, no false promises. We give you a clear picture of your recovery prospects upfront.' },
+  { Icon: Database, title: 'Proprietary Data Access', desc: 'Our exclusive database helps locate investments that even registrars may fail to retrieve immediately.' },
+  { Icon: Globe, title: 'Global Expertise', desc: 'Offices in Mumbai, New Delhi, and London. We serve clients in 6+ countries with equal proficiency.' },
 ]
 
 export default function WhySection() {
@@ -40,7 +40,7 @@ export default function WhySection() {
 
       <div className="c relative z-10">
         {/* Header */}
-        <div className="text-center mb-8 lg:mb-16">
+        <div className="text-center mb-8 lg:mb-12">
           <div className="reveal inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase text-gold mb-4 justify-center">
             Why Claim360
           </div>
@@ -106,8 +106,8 @@ export default function WhySection() {
                 className="reveal flex gap-4 bg-white/[0.04] border border-white/[0.07] rounded-2xl p-5 hover:bg-white/[0.07] hover:border-white/15 transition-all duration-300 group"
                 style={{ transitionDelay: `${i * 80}ms` }}
               >
-                <div className="w-11 h-11 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                  {c.icon}
+                <div className="w-11 h-11 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <c.Icon size={19} className="text-gold" strokeWidth={1.5} />
                 </div>
                 <div>
                   <h3 className="text-white font-semibold text-base mb-1.5">{c.title}</h3>
@@ -115,7 +115,6 @@ export default function WhySection() {
                 </div>
               </div>
             ))}
-
           </div>
         </div>
       </div>

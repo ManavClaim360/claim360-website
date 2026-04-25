@@ -55,7 +55,7 @@ export default function ManagementSection() {
 
       <div className="c relative z-10">
         {/* Header */}
-        <div className="text-center mb-8 lg:mb-14">
+        <div className="text-center mb-6 lg:mb-10">
           <div className="eyebrow reveal mb-4 justify-center">Our Leadership</div>
           <h2
             className="reveal font-display text-navy dark:text-white tracking-tight"

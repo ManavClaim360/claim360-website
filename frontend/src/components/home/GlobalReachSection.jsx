@@ -11,7 +11,7 @@ export default function GlobalReachSection() {
         requestAnimationFrame(() => {
           if (sectionRef.current) {
             const rect = sectionRef.current.getBoundingClientRect()
-            setParallaxY(-rect.top * 0.12)
+            setParallaxY(-rect.top * 0.18)
           }
           ticking = false
         })
@@ -24,7 +24,7 @@ export default function GlobalReachSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-[#f6f1e2] py-10 lg:py-16">
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#f6f1e2] py-10 lg:py-14">
       {/* Subtle warm parallax glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -34,24 +34,24 @@ export default function GlobalReachSection() {
         }}
       />
 
-      <div className="relative max-w-5xl mx-auto px-6 lg:px-8">
-        {/* Heading */}
-        <div className="text-center mb-6 lg:mb-8">
-          <div
-            className="inline-block text-[#2e4a88] leading-none"
-            style={{ fontFamily: '"Lavishly Yours", cursive', fontSize: 'clamp(1.8rem, 7vw, 5.25rem)' }}
-          >
-            from india to the world
-          </div>
+      {/* Heading — sits above the map via z-index */}
+      <div className="relative z-20 text-center mb-5 lg:mb-6 px-6">
+        <div
+          className="inline-block text-[#2e4a88] leading-none"
+          style={{ fontFamily: '"Lavishly Yours", cursive', fontSize: 'clamp(1.8rem, 7vw, 5.25rem)' }}
+        >
+          from india to the world
         </div>
+      </div>
 
-        {/* Map — constrained and centered, full map visible */}
+      {/* Map — full-width with parallax */}
+      <div className="relative max-w-7xl mx-auto px-2 lg:px-4">
         <img
           src="/assets/map_img.png"
           alt="Global reach map"
           className="w-full h-auto block"
           style={{
-            opacity: 0.88,
+            opacity: 0.90,
             transform: `translateY(${parallaxY}px)`,
             willChange: 'transform',
           }}

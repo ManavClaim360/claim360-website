@@ -1,44 +1,44 @@
 import { useEffect, useRef } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, FileText, Globe, ArrowRightLeft, Scale, Building2, Search } from 'lucide-react'
 
 const SERVICES = [
   {
-    icon: '📋',
+    Icon: FileText,
     title: 'IEPF Claims',
     desc: 'Expert assistance in filing IEPF-5 forms and recovering shares/dividends transferred to the Investor Education and Protection Fund.',
     tags: ['Shares', 'Dividends', 'Debentures'],
     href: '#contact',
   },
   {
-    icon: '🌏',
+    Icon: Globe,
     title: 'NRI Services',
     desc: 'Comprehensive support for OCI/NRI clients to manage Indian investments, share transfers, and legal matters — without visiting India.',
     tags: ['OCI Services', 'Remote Assistance', 'PAN Support'],
     href: '#contact',
   },
   {
-    icon: '🔄',
+    Icon: ArrowRightLeft,
     title: 'Share Transfers',
     desc: 'Seamless handling of physical share certificate transfers, transmission on death, and demat conversion with complete accuracy.',
     tags: ['Physical Shares', 'Demat', 'Transmission'],
     href: '#contact',
   },
   {
-    icon: '⚖️',
+    Icon: Scale,
     title: 'Legal Documentation',
     desc: 'Support with wills, succession certificates, legal heir certificates, and other documentation required to claim investments.',
     tags: ['Succession', 'Wills', 'Heir Certs'],
     href: '#contact',
   },
   {
-    icon: '🏦',
+    Icon: Building2,
     title: 'Corporate Actions',
     desc: 'Resolution of corporate action issues including bonus shares, rights entitlements, mergers, and name-change complications.',
     tags: ['Bonus Shares', 'Rights', 'Mergers'],
     href: '#contact',
   },
   {
-    icon: '🔍',
+    Icon: Search,
     title: 'Investment Tracing',
     desc: 'Proprietary data access to locate and verify unclaimed/unknown investments across Indian registrar and MCA databases.',
     tags: ['Unclaimed', 'Portfolio', 'Verification'],
@@ -62,7 +62,7 @@ export default function ServicesSection() {
     <section id="services" ref={ref} className="section-pad bg-white dark:bg-navy">
       <div className="c">
         {/* Header */}
-        <div className="max-w-xl mb-8 lg:mb-14">
+        <div className="max-w-xl mb-8 lg:mb-12">
           <div className="eyebrow reveal mb-4">Our Services</div>
           <h2 className="reveal font-display text-navy dark:text-white tracking-tight mb-4"
             style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}>
@@ -82,8 +82,8 @@ export default function ServicesSection() {
               style={{ transitionDelay: `${i * 50}ms` }}
             >
               {/* Icon */}
-              <div className="w-12 h-12 rounded-xl bg-navy dark:bg-gold/10 border dark:border-gold/20 flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform duration-300">
-                {s.icon}
+              <div className="w-11 h-11 rounded-xl bg-navy dark:bg-gold/10 border border-navy/10 dark:border-gold/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                <s.Icon size={18} className="text-gold" strokeWidth={1.5} />
               </div>
 
               {/* Title */}
@@ -113,7 +113,7 @@ export default function ServicesSection() {
         </div>
 
         {/* CTA */}
-        <div className="reveal text-center mt-12">
+        <div className="reveal text-center mt-10">
           <a
             href="#contact"
             className="inline-flex items-center gap-2 bg-navy dark:bg-gold hover:bg-navy-light dark:hover:bg-gold-light text-white dark:text-navy-deep px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"

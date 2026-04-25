@@ -47,10 +47,10 @@ const SOCIAL = [
 export default function Footer() {
   return (
     <footer className="bg-navy-deep border-t-4 border-gold">
-      <div className="c pt-10 sm:pt-14 pb-6 sm:pb-8">
+      <div className="c pt-8 sm:pt-10 pb-5 sm:pb-6">
 
         {/* Top grid: brand + link columns */}
-        <div className="lg:grid lg:grid-cols-6 lg:gap-10 mb-8 lg:mb-14">
+        <div className="lg:grid lg:grid-cols-6 lg:gap-10 mb-6 lg:mb-8">
 
           {/* Brand column */}
           <div className="lg:col-span-2 mb-8 lg:mb-0">
@@ -103,7 +103,7 @@ export default function Footer() {
         </div>
 
         {/* Offices */}
-        <div className="border-t border-white/[0.07] pt-6 sm:pt-10 mb-6 sm:mb-10">
+        <div className="border-t border-white/[0.07] pt-5 sm:pt-6 mb-5 sm:mb-6">
           <div className="text-[10px] font-semibold tracking-widest uppercase text-white/40 mb-4">Our Offices</div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
             {OFFICES.map(o => (

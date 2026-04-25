@@ -47,7 +47,7 @@ export default function PressSection() {
   return (
     <section id="press" ref={ref} className="section-pad bg-white dark:bg-navy-deep">
       <div className="c">
-        <div className="text-center mb-14">
+        <div className="text-center mb-8">
           <div className="eyebrow reveal mb-4 justify-center">
             <span className="w-5 h-px bg-gold inline-block" />
             In The News
@@ -59,7 +59,7 @@ export default function PressSection() {
         </div>
 
         {/* Press cards */}
-        <div className="grid md:grid-cols-3 gap-5 mb-14">
+        <div className="grid md:grid-cols-3 gap-5 mb-8">
           {PRESS_ITEMS.map((p, i) => (
             <div
               key={i}

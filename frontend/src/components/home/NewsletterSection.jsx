@@ -45,7 +45,7 @@ export default function NewsletterSection() {
     <section
       id="newsletter"
       ref={ref}
-      className="py-16 bg-gold/[0.06] dark:bg-gold/[0.04] border-y border-gold/15 overflow-hidden"
+      className="py-10 bg-gold/[0.06] dark:bg-gold/[0.04] border-y border-gold/15 overflow-hidden"
     >
       <div className="c">
         <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-center">

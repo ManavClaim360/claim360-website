@@ -38,7 +38,7 @@ function Counter({ target, suffix, duration = 2000 }) {
 
 export default function StatsSection() {
   return (
-    <section id="stats" className="dot-field dot-tone-gold py-16 bg-navy dark:bg-navy-deep relative overflow-hidden">
+    <section id="stats" className="dot-field dot-tone-gold py-10 bg-navy dark:bg-navy-deep relative overflow-hidden">
       {/* Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
