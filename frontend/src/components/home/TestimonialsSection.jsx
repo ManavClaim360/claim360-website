@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, MapPin, X, Eye, Star } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MapPin, X, Eye, Star, ChevronDown } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -182,11 +182,36 @@ const ALL_TESTIMONIALS = [
   },
 ]
 
+// Unique states for the location dropdown (sorted alphabetically)
+const STATES = ['All', ...Array.from(new Set(ALL_TESTIMONIALS.map(t => t.state))).sort()]
+
+// Deduplicates by name + role + first 60 chars of quote
+function deduplicateTestimonials(list) {
+  const seen = new Set()
+  return list.filter(t => {
+    const key = [
+      t.name.trim().toLowerCase(),
+      (t.role || '').trim().toLowerCase(),
+      t.quote.substring(0, 60).trim().toLowerCase(),
+    ].join('||')
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
 function formatLocation(loc) {
   if (!loc) return ''
   const parts = loc.split(',').map(p => p.trim()).filter(Boolean)
   if (parts.length <= 2) return parts.join(', ')
   return `${parts[0]}, ${parts[parts.length - 1]}`
+}
+
+function splitLocation(loc) {
+  if (!loc) return { city: '', country: '' }
+  const parts = loc.split(',').map(p => p.trim()).filter(Boolean)
+  if (parts.length === 1) return { city: parts[0], country: '' }
+  return { city: parts[0], country: parts[parts.length - 1] }
 }
 
 const PAGE_SIZE = 3
@@ -197,15 +222,13 @@ export default function TestimonialsSection() {
   const [readMore, setReadMore] = useState(null)
   const [userState, setUserState] = useState(null)
   const [showLocationPreview, setShowLocationPreview] = useState(true)
-  const [filtered, setFiltered] = useState(ALL_TESTIMONIALS)
-  const ref = useRef(null)
+  const [locationFilter, setLocationFilter] = useState('All')
+  const [filtered, setFiltered] = useState(() => deduplicateTestimonials(ALL_TESTIMONIALS))
   const [custom, setCustom] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('customTestimonials') || '[]')
-    } catch {
-      return []
-    }
+    try { return JSON.parse(localStorage.getItem('customTestimonials') || '[]') }
+    catch { return [] }
   })
+  const ref = useRef(null)
 
   useEffect(() => {
     const onStorage = (e) => {
@@ -218,16 +241,34 @@ export default function TestimonialsSection() {
     return () => window.removeEventListener('storage', onStorage)
   }, [])
 
+  // Fetch geolocation for auto-sort
   useEffect(() => {
-    setFiltered([...custom, ...ALL_TESTIMONIALS])
-  }, [custom])
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(data => setUserState(data.region))
+      .catch(() => {})
+  }, [])
+
+  // Recompute filtered list whenever any filter dependency changes
+  useEffect(() => {
+    const base = deduplicateTestimonials([...custom, ...ALL_TESTIMONIALS])
+    let result
+    if (locationFilter !== 'All') {
+      result = base.filter(t => t.state === locationFilter)
+    } else if (userState) {
+      const local = base.filter(t => t.state.toLowerCase() === userState.toLowerCase())
+      const rest = base.filter(t => t.state.toLowerCase() !== userState.toLowerCase())
+      result = local.length >= 1 ? [...local, ...rest] : base
+    } else {
+      result = base
+    }
+    setFiltered(result)
+    setCurrentPage(0)
+  }, [custom, locationFilter, userState])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
 
-  useEffect(() => {
-    setCurrentPage(0)
-  }, [filtered.length])
-
+  // Auto-advance carousel
   useEffect(() => {
     if (totalPages <= 1) return undefined
     const timer = window.setInterval(() => {
@@ -236,24 +277,6 @@ export default function TestimonialsSection() {
     }, 4200)
     return () => window.clearInterval(timer)
   }, [totalPages])
-
-  useEffect(() => {
-    fetch('https://ipapi.co/json/')
-      .then(r => r.json())
-      .then(data => {
-        const state = data.region
-        setUserState(state)
-        const merged = [...custom, ...ALL_TESTIMONIALS]
-        const local = merged.filter(t => t.state.toLowerCase() === state?.toLowerCase())
-        if (local.length >= 1) {
-          const rest = merged.filter(t => t.state.toLowerCase() !== state?.toLowerCase())
-          setFiltered([...local, ...rest])
-        } else {
-          setFiltered(merged)
-        }
-      })
-      .catch(() => setFiltered([...custom, ...ALL_TESTIMONIALS]))
-  }, [custom])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -274,15 +297,18 @@ export default function TestimonialsSection() {
       <div className="absolute inset-0 bg-gold/[0.015] pointer-events-none" />
 
       <div className="c relative z-10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 lg:mb-10">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-7 lg:mb-8">
           <div>
             <div className="eyebrow reveal mb-4">Client Stories</div>
-            <h2 className="reveal font-display text-navy dark:text-white tracking-tight"
-              style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}>
+            <h2
+              className="reveal font-display text-navy dark:text-white tracking-tight"
+              style={{ fontSize: 'clamp(28px, 3.5vw, 46px)' }}
+            >
               Trusted by Clients{' '}
               <span className="italic text-gold">Worldwide</span>
             </h2>
-            {userState && showLocationPreview && (
+            {locationFilter === 'All' && userState && showLocationPreview && (
               <div className="reveal mt-3 inline-flex items-center gap-2 rounded-full border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-white/[0.04] px-3 py-2 text-sm text-slate-400 dark:text-white/40">
                 <MapPin size={13} className="text-gold" />
                 <span>Showing results near {userState}</span>
@@ -296,7 +322,28 @@ export default function TestimonialsSection() {
               </div>
             )}
           </div>
+
           <div className="reveal flex flex-wrap items-center gap-2">
+            {/* Location filter dropdown */}
+            <div className="relative">
+              <MapPin size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-gold z-10" />
+              <select
+                value={locationFilter}
+                onChange={e => setLocationFilter(e.target.value)}
+                className="select-field appearance-none pl-7 pr-8 py-2.5 rounded-xl border border-slate-200 dark:border-white/15 bg-white dark:bg-white/[0.06] text-navy dark:text-white text-sm font-medium outline-none focus:border-gold dark:focus:border-gold transition-colors cursor-pointer"
+              >
+                {STATES.map(s => (
+                  <option key={s} value={s}>
+                    {s === 'All' ? 'All Locations' : s}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                size={13}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 dark:text-white/50"
+              />
+            </div>
+
             <Link
               to="/testimonials"
               className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/15 text-navy dark:text-white text-sm font-semibold hover:bg-slate-50 dark:hover:bg-white/10 transition-all duration-200"
@@ -318,10 +365,11 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
+        {/* Cards */}
         <div className="overflow-hidden">
           <AnimatePresence mode="wait" custom={direction} initial={false}>
             <motion.div
-              key={currentPage}
+              key={`${currentPage}-${locationFilter}`}
               custom={direction}
               variants={{
                 enter: (dir) => ({ x: dir > 0 ? '50%' : '-50%', opacity: 0 }),
@@ -332,65 +380,73 @@ export default function TestimonialsSection() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
+              className="grid md:grid-cols-2 xl:grid-cols-3 gap-5"
             >
-              {visible.map((t, i) => (
-                <div
-                  key={t.name}
-                  className={`bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/[0.07] rounded-2xl p-5 flex flex-col gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-200/40 dark:hover:shadow-black/20 transition-all duration-300 ${i === 1 ? 'hidden md:flex' : ''} ${i === 2 ? 'hidden lg:flex' : ''}`}
-                >
-                  {/* Stars */}
-                  <div className="flex items-center gap-0.5">
-                    {Array.from({ length: t.rating || 5 }).map((_, si) => (
-                      <Star key={si} size={12} className="text-gold fill-gold" />
-                    ))}
-                  </div>
-
-                  {/* Quote */}
-                  <p className="font-display text-slate-600 dark:text-white/70 text-[13px] leading-relaxed italic flex-1 line-clamp-5">
-                    "{t.quote}"
-                  </p>
-
-                  {/* Footer */}
-                  <div className="flex items-center gap-3 pt-3 border-t border-slate-100 dark:border-white/[0.07]">
-                    {/* Avatar */}
-                    <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-200 dark:bg-white/10 flex-shrink-0 border-2 border-white dark:border-white/10 ring-1 ring-gold/20 shadow-sm">
-                      {t.photo ? (
-                        <img
-                          src={t.photo}
-                          alt={t.name}
-                          className="w-full h-full object-cover"
-                          onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex' }}
-                        />
-                      ) : null}
-                      <div className={`${t.photo ? 'hidden' : 'flex'} w-full h-full items-center justify-center font-bold text-xs text-white bg-navy`}>
-                        {t.initials}
+              {visible.map((t, i) => {
+                const { city, country } = splitLocation(t.location)
+                return (
+                  <div
+                    key={`${t.name}|${t.quote.substring(0, 20)}`}
+                    className={`bg-gradient-to-b from-white to-slate-50 dark:from-white/[0.05] dark:to-white/[0.03] border border-slate-200/70 dark:border-white/[0.08] rounded-[28px] p-6 sm:p-7 flex flex-col min-h-[360px] sm:min-h-[400px] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/20 transition-all duration-300 ${i === 1 ? 'hidden md:flex' : ''} ${i === 2 ? 'hidden xl:flex' : ''}`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-slate-200 dark:bg-white/10 flex-shrink-0 border border-white dark:border-white/10 ring-1 ring-gold/15 shadow-sm">
+                          {t.photo ? (
+                            <img
+                              src={t.photo}
+                              alt={t.name}
+                              className="w-full h-full object-cover"
+                              onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex' }}
+                            />
+                          ) : null}
+                          <div className={`${t.photo ? 'hidden' : 'flex'} w-full h-full items-center justify-center font-bold text-sm text-white bg-navy`}>
+                            {t.initials}
+                          </div>
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-navy dark:text-white font-semibold text-base leading-tight">{t.name}</div>
+                          {t.role && (
+                            <div className="text-slate-500 dark:text-white/55 text-sm leading-tight mt-1">{t.role}</div>
+                          )}
+                          <div className="text-xs text-slate-400 dark:text-white/35 mt-1">
+                            {city}{country ? `, ${country}` : ''}
+                          </div>
+                        </div>
                       </div>
+                      <button
+                        onClick={() => setReadMore(t)}
+                        className="flex-shrink-0 w-10 h-10 rounded-xl bg-white dark:bg-white/[0.06] border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 dark:text-white/35 hover:bg-gold/10 hover:text-gold dark:hover:text-gold hover:border-gold/20 transition-colors"
+                        title="Read full story"
+                      >
+                        <Eye size={15} />
+                      </button>
                     </div>
 
-                    {/* Name / role / location */}
-                    <div className="flex-1 min-w-0">
-                      <div className="text-navy dark:text-white font-semibold text-sm leading-tight truncate">{t.name}</div>
-                      {t.role && (
-                        <div className="text-slate-500 dark:text-white/50 text-[11px] leading-tight truncate mt-0.5">{t.role}</div>
+                    <div className="flex items-center gap-0.5 pt-1">
+                      {Array.from({ length: t.rating || 5 }).map((_, si) => (
+                        <Star key={si} size={14} className="text-gold fill-gold" />
+                      ))}
+                    </div>
+
+                    <p className="font-display text-slate-700 dark:text-white/78 text-[15px] sm:text-base leading-relaxed italic flex-1 line-clamp-6">
+                      "{t.quote}"
+                    </p>
+
+                    <div className="pt-4 border-t border-slate-200/80 dark:border-white/[0.08]">
+                      <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-400 dark:text-white/30">
+                        <MapPin size={12} className="text-gold flex-shrink-0" />
+                        <span>{formatLocation(t.location)}</span>
+                      </div>
+                      {t.result && (
+                        <div className="mt-3 inline-flex max-w-full rounded-full bg-gold/10 border border-gold/20 px-3 py-1.5 text-xs font-semibold text-navy dark:text-gold">
+                          {t.result}
+                        </div>
                       )}
-                      <div className="flex items-center gap-1 mt-0.5">
-                        <MapPin size={9} className="text-gold flex-shrink-0" />
-                        <span className="text-[11px] text-slate-400 dark:text-white/35 truncate">{formatLocation(t.location)}</span>
-                      </div>
                     </div>
-
-                    {/* Eye icon only */}
-                    <button
-                      onClick={() => setReadMore(t)}
-                      className="flex-shrink-0 w-8 h-8 rounded-lg bg-white dark:bg-white/[0.06] border border-slate-100 dark:border-white/10 flex items-center justify-center text-slate-400 dark:text-white/35 hover:bg-gold/10 hover:text-gold dark:hover:text-gold hover:border-gold/20 transition-colors"
-                      title="Read full story"
-                    >
-                      <Eye size={14} />
-                    </button>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -407,10 +463,6 @@ export default function TestimonialsSection() {
             ))}
           </div>
         )}
-
-        <div className="text-center mt-6 text-slate-400 dark:text-white/25 text-xs">
-          We're happy to provide client contact details for verification upon request.
-        </div>
       </div>
 
       {/* Read More Modal */}

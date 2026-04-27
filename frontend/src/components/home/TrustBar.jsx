@@ -57,8 +57,8 @@ const ITEMS = [...SET.map((x) => ({ ...x, key: `a-${x.key}` })),
 
 export default function TrustBar() {
   return (
-    <div className="dot-field py-10 border-y border-slate-100 dark:border-white/[0.06] bg-white dark:bg-navy overflow-hidden">
-      <div className="mb-5 text-center text-xs font-semibold text-slate-400 dark:text-white/25 uppercase tracking-widest">
+    <div className="dot-field py-6 sm:py-7 border-y border-slate-100 dark:border-white/[0.06] bg-white dark:bg-navy overflow-hidden">
+      <div className="mb-3 text-center text-[11px] font-semibold text-slate-400 dark:text-white/25 uppercase tracking-[0.24em]">
         We Work With &amp; File Through
       </div>
       <div className="relative overflow-hidden">

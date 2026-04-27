@@ -93,7 +93,7 @@ export default function Navbar() {
         }}
       >
         <div className="c">
-          <div className="flex items-center justify-between h-[72px] gap-6">
+          <div className="flex items-center justify-between h-[72px] gap-3 sm:gap-4 lg:gap-6">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
               <img
@@ -143,7 +143,7 @@ export default function Navbar() {
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-1.5 flex-shrink-0">
+            <div className="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
               <button
                 onClick={() => user ? navigate('/search') : navigate('/login')}
                 className="w-9 h-9 rounded-xl flex items-center justify-center text-white/70 hover:bg-white/[0.06] hover:text-white transition-all duration-200"
@@ -169,7 +169,7 @@ export default function Navbar() {
 
               <Link
                 to="/signup"
-                className="inline-flex items-center px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-gold hover:bg-gold-light text-navy-deep transition-all duration-200 shadow-sm whitespace-nowrap"
+                className="inline-flex items-center px-2.5 sm:px-4 py-2 rounded-xl text-[11px] sm:text-sm font-semibold bg-gold hover:bg-gold-light text-navy-deep transition-all duration-200 shadow-sm whitespace-nowrap"
               >
                 Get Started
               </Link>

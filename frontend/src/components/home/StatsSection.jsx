@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 const STATS = [
-  { value: 7, suffix: '+', label: 'Years of Excellence', desc: 'Established in 2016' },
+  { value: 10, suffix: '+', label: 'Years of Excellence', desc: 'Established in 2016' },
   { value: 320, suffix: '+', label: 'Clients Served', desc: 'Across India & abroad' },
   { value: 6, suffix: '', label: 'Countries Reached', desc: 'Global client base' },
   { value: 99, suffix: '%+', label: 'Success Rate', desc: 'Proven track record' },
@@ -27,8 +27,12 @@ function Counter({ target, suffix, duration = 2000 }) {
     const step = target / (duration / 16)
     const timer = setInterval(() => {
       start += step
-      if (start >= target) { setCount(target); clearInterval(timer) }
-      else setCount(Math.floor(start))
+      if (start >= target) {
+        setCount(target)
+        clearInterval(timer)
+      } else {
+        setCount(Math.floor(start))
+      }
     }, 16)
     return () => clearInterval(timer)
   }, [started, target, duration])
@@ -38,14 +42,14 @@ function Counter({ target, suffix, duration = 2000 }) {
 
 export default function StatsSection() {
   return (
-    <section id="stats" className="dot-field dot-tone-gold py-10 bg-navy dark:bg-navy-deep relative overflow-hidden">
-      {/* Glow */}
+    <section id="stats" className="dot-field dot-tone-gold py-8 sm:py-10 bg-navy dark:bg-navy-deep relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gold/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="c relative z-10">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase text-gold mb-3">
-            <span className="w-5 h-px bg-gold block"/>By The Numbers
+            <span className="w-5 h-px bg-gold block" />
+            By The Numbers
           </div>
           <h2 className="font-display text-white text-3xl lg:text-4xl tracking-tight">
             Results That Speak For Themselves
@@ -58,7 +62,8 @@ export default function StatsSection() {
               key={i}
               className="bg-navy dark:bg-navy-deep p-4 sm:p-6 lg:p-8 text-center hover:bg-navy-light/30 transition-colors duration-300 group"
             >
-              <div className="font-display text-white mb-2 leading-none group-hover:text-gold transition-colors duration-300"
+              <div
+                className="font-display text-white mb-2 leading-none group-hover:text-gold transition-colors duration-300"
                 style={{ fontSize: 'clamp(28px, 5vw, 60px)' }}
               >
                 <Counter target={s.value} suffix={s.suffix} />
@@ -69,9 +74,8 @@ export default function StatsSection() {
           ))}
         </div>
 
-        {/* Subsidiary line */}
-        <div className="text-center mt-8 text-white/25 text-xs">
-          ₹105 Crore+ currently under active recovery management
+        <div className="text-center mt-6 text-white/25 text-xs">
+          Rs.105 Crore+ currently under active recovery management
         </div>
       </div>
     </section>

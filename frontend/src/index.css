@@ -127,7 +127,7 @@
   /* Section padding — compact on mobile, full on desktop */
   .section-pad,
   .dot-field {
-    @apply py-8 md:py-14 lg:py-20 relative isolate overflow-hidden;
+    @apply py-8 md:py-12 lg:py-16 relative isolate overflow-hidden;
     --dot-base-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.6' fill='%237a828e' fill-opacity='0.35'/%3E%3C/svg%3E");
     --dot-hover-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='8' cy='8' r='1.9' fill='%237a828e' fill-opacity='0.9'/%3E%3C/svg%3E");
     --dot-base-opacity: 0.22;
@@ -199,6 +199,12 @@
   /* Container */
   .c {
     @apply max-w-7xl mx-auto px-5 lg:px-10;
+  }
+
+  @media (max-width: 640px) {
+    .c {
+      @apply px-4;
+    }
   }
 
   /* Floating WhatsApp */
