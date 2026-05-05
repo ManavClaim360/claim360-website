@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel, Session, select
+from sqlalchemy import inspect, text
 from db.database import engine
 from api.api import api_router
 from core.config import settings
@@ -9,6 +10,15 @@ from core.config import settings
 def create_db_and_tables():
     from db import models  # Import models to ensure they are registered
     SQLModel.metadata.create_all(engine)
+    ensure_user_columns()
+
+
+def ensure_user_columns():
+    inspector = inspect(engine)
+    columns = {column["name"] for column in inspector.get_columns("user")}
+    if "phone" not in columns:
+        with engine.begin() as connection:
+            connection.execute(text("ALTER TABLE \"user\" ADD COLUMN phone VARCHAR"))
 
 
 def seed_admin():

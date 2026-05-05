@@ -1,305 +1,439 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, ArrowRight, Phone, Mail } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Eye, EyeOff, Mail, Phone, User } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+
+const otpLength = 6
+const resendDelay = 30
+
+const trustPoints = [
+  'Secure onboarding',
+  'Phone OTP access',
+  'Password fallback for admin',
+]
+
+const formatIndianPhone = (value) => {
+  const digits = value.replace(/\D/g, '').slice(0, 10)
+  if (digits.length <= 5) return digits
+  return `${digits.slice(0, 5)} ${digits.slice(5)}`
+}
+
+const normalizePhone = (value) => {
+  const digits = value.replace(/\D/g, '')
+  if (digits.length === 10) return `+91${digits}`
+  if (digits.length === 12 && digits.startsWith('91')) return `+${digits}`
+  if (value.trim().startsWith('+')) return `+${digits}`
+  return value.trim()
+}
 
 export default function AuthPage({ mode = 'signin' }) {
   const [activeMode, setActiveMode] = useState(mode)
+  const [signInMethod, setSignInMethod] = useState('otp')
   const [showPass, setShowPass] = useState(false)
   const [otpStep, setOtpStep] = useState(false)
-  const [otp, setOtp] = useState(['', '', '', '', '', ''])
-  const [loading, setLoading] = useState(false)
-  const [form, setForm] = useState({ name: '', phone: '', email: '', password: '' })
-  const { login, register } = useAuth()
+  const [otp, setOtp] = useState(Array(otpLength).fill(''))
+  const [statusMessage, setStatusMessage] = useState('')
+  const [resendCountdown, setResendCountdown] = useState(0)
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    identifier: '',
+  })
+  const { loading, login, requestOtp, verifyOtp } = useAuth()
   const navigate = useNavigate()
 
-  const handleOTPChange = (val, i) => {
-    const next = [...otp]
-    next[i] = val.slice(-1)
-    setOtp(next)
-    if (val && i < 5) {
-      document.getElementById(`otp-${i + 1}`)?.focus()
+  const otpValue = useMemo(() => otp.join(''), [otp])
+  const canResend = resendCountdown === 0 && !loading
+
+  useEffect(() => {
+    if (!resendCountdown) return undefined
+    const timer = window.setTimeout(() => setResendCountdown((prev) => prev - 1), 1000)
+    return () => window.clearTimeout(timer)
+  }, [resendCountdown])
+
+  const updateForm = (key, value) => {
+    if (key === 'phone') {
+      setForm((prev) => ({ ...prev, phone: formatIndianPhone(value) }))
+      return
+    }
+    setForm((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const resetOtpState = () => {
+    setOtpStep(false)
+    setOtp(Array(otpLength).fill(''))
+    setStatusMessage('')
+    setResendCountdown(0)
+  }
+
+  const resetView = (nextMode) => {
+    setActiveMode(nextMode)
+    setSignInMethod('otp')
+    setShowPass(false)
+    resetOtpState()
+  }
+
+  const goToDashboard = (user) => {
+    navigate(user.role === 'admin' ? '/admin' : '/dashboard')
+  }
+
+  const sendOtp = async () => {
+    const payload = activeMode === 'signup'
+      ? {
+          mode: 'signup',
+          name: form.name,
+          email: form.email,
+          phone: normalizePhone(form.phone),
+          password: form.password,
+        }
+      : {
+          mode: 'login',
+          phone: normalizePhone(form.phone),
+        }
+
+    const res = await requestOtp(payload)
+    setOtpStep(true)
+    setStatusMessage(res.detail || 'OTP sent')
+    setResendCountdown(resendDelay)
+  }
+
+  const handleSendOtp = async (e) => {
+    e.preventDefault()
+    try {
+      await sendOtp()
+    } catch (error) {
+      alert(error.response?.data?.detail || 'Unable to send OTP')
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handlePasswordLogin = async (e) => {
     e.preventDefault()
-    if (activeMode === 'signup' && !otpStep) {
-      setOtpStep(true)
-      return
-    }
-    setLoading(true)
     try {
-      let user;
-      if (activeMode === 'signup') {
-        user = await register(form)
-      } else {
-        user = await login(form)
-      }
-      setLoading(false)
-      navigate(user.role === 'admin' ? '/admin' : '/dashboard')
+      const user = await login({
+        identifier: form.identifier,
+        password: form.password,
+      })
+      goToDashboard(user)
     } catch (error) {
-      setLoading(false)
-      alert(error.response?.data?.detail || 'Authentication failed')
+      alert(error.response?.data?.detail || 'Unable to sign in')
+    }
+  }
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault()
+    try {
+      const user = await verifyOtp({
+        mode: activeMode,
+        name: form.name,
+        email: form.email,
+        phone: normalizePhone(form.phone),
+        password: form.password,
+        code: otpValue,
+      })
+      goToDashboard(user)
+    } catch (error) {
+      alert(error.response?.data?.detail || 'OTP verification failed')
+    }
+  }
+
+  const handleOtpChange = (value, index) => {
+    const next = [...otp]
+    next[index] = value.replace(/\D/g, '').slice(-1)
+    setOtp(next)
+    if (value && index < otpLength - 1) {
+      document.getElementById(`otp-${index + 1}`)?.focus()
     }
   }
 
   return (
     <div className="min-h-screen flex bg-white dark:bg-navy-deep">
-      {/* Left panel */}
       <div className="hidden lg:flex flex-col flex-1 bg-navy dot-canvas dot-tone-gold overflow-hidden p-14 justify-center">
-        {/* BG */}
-        <div className="absolute inset-0"
+        <div
+          className="absolute inset-0"
           style={{ backgroundImage: 'radial-gradient(ellipse 80% 80% at 0% 50%, rgba(201,162,74,0.1) 0%, transparent 60%)' }}
         />
-        <div className="absolute bottom-0 right-0 w-72 h-72 bg-gold/[0.04] rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-gold/[0.04] blur-3xl" />
 
-        <div className="relative z-10">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 mb-14">
-            <div className="w-10 h-10 bg-gold rounded-xl flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10 2L4 6v8l6 4 6-4V6L10 2z" fill="#0A1628"/>
-              </svg>
-            </div>
+        <div className="relative z-10 max-w-lg">
+          <Link to="/" className="mb-12 flex items-center gap-3">
+            <img src="/assets/main_logo_sq.jpeg" alt="Claim360 icon" className="h-11 w-11 rounded-2xl object-cover ring-1 ring-white/10" />
             <span className="font-display text-xl text-white">Claim<span className="text-gold">360</span></span>
           </Link>
 
-          <h1 className="font-display text-white leading-tight mb-4" style={{ fontSize: 'clamp(30px, 3.5vw, 44px)' }}>
-            Recover Your<br />
-            <span className="text-gold italic">Investments.</span><br />
-            Reclaim Your Future.
+          <p className="eyebrow mb-5">Secure Access</p>
+          <h1 className="mb-4 font-display text-white leading-tight" style={{ fontSize: 'clamp(32px, 3.6vw, 48px)' }}>
+            Phone OTP for users.
+            <br />
+            Password fallback for admin.
           </h1>
-          <p className="text-white/45 text-base leading-relaxed mb-12 max-w-xs">
-            Join 320+ clients who've successfully recovered their unclaimed shares and dividends with Claim360.
+          <p className="mb-10 max-w-sm text-base leading-relaxed text-white/55">
+            Verify a phone by SMS for day-to-day access, or use email or phone with password when you need a direct sign-in path.
           </p>
 
-          {/* Trust items */}
           <div className="space-y-3">
-            {[
-              { icon: '🔒', text: 'Bank-grade security & data privacy' },
-              { icon: '🎯', text: '99%+ success rate on filed claims' },
-              { icon: '🌍', text: 'Serving clients in 6 countries' },
-              { icon: '💼', text: 'Dedicated relationship manager' },
-            ].map(t => (
-              <div key={t.text} className="flex items-center gap-3 bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3">
-                <span className="text-base">{t.icon}</span>
-                <span className="text-white/60 text-sm">{t.text}</span>
+            {trustPoints.map((text) => (
+              <div key={text} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3">
+                <CheckCircle2 size={18} className="shrink-0 text-gold" />
+                <span className="text-sm text-white/70">{text}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Right panel — form */}
-      <div className="flex flex-1 items-center justify-center p-6 lg:p-14 bg-slate-50 dark:bg-navy-deep overflow-y-auto dot-canvas dot-tone-gold">
+      <div className="dot-canvas dot-tone-gold flex flex-1 items-center justify-center overflow-y-auto bg-slate-50 p-6 dark:bg-navy-deep lg:p-14">
         <div className="w-full max-w-md">
-          {/* Mobile logo */}
-          <Link to="/" className="flex lg:hidden items-center gap-2 mb-8">
-            <div className="w-8 h-8 bg-navy dark:bg-gold rounded-lg flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                <path d="M10 2L4 6v8l6 4 6-4V6L10 2z" fill="white"/>
-              </svg>
-            </div>
+          <Link to="/" className="mb-8 flex items-center gap-2 lg:hidden">
+            <img src="/assets/main_logo_sq.jpeg" alt="Claim360 icon" className="h-9 w-9 rounded-xl object-cover" />
             <span className="font-display text-lg text-navy dark:text-white">Claim<span className="text-gold">360</span></span>
           </Link>
 
-          <div className="bg-white dark:bg-navy-card border border-slate-100 dark:border-white/10 rounded-3xl p-8 shadow-xl shadow-black/5">
-            {/* Mode tabs */}
-            <div className="flex bg-slate-100 dark:bg-white/[0.05] rounded-xl p-1 mb-8">
-              {['signin', 'signup'].map(m => (
+          <div className="rounded-[28px] border border-slate-100 bg-white p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-navy-card">
+            <div className="mb-8 flex rounded-2xl bg-slate-100 p-1.5 dark:bg-white/[0.05]">
+              {['signin', 'signup'].map((tab) => (
                 <button
-                  key={m}
-                  onClick={() => { setActiveMode(m); setOtpStep(false) }}
-                  className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                    activeMode === m
-                      ? 'bg-white dark:bg-white/10 text-navy dark:text-white shadow-sm'
-                      : 'text-slate-500 dark:text-white/40'
+                  key={tab}
+                  type="button"
+                  onClick={() => resetView(tab)}
+                  className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-all duration-200 ${
+                    activeMode === tab ? 'bg-white text-navy shadow-sm dark:bg-white/10 dark:text-white' : 'text-slate-500 dark:text-white/40'
                   }`}
                 >
-                  {m === 'signin' ? 'Sign In' : 'Sign Up'}
+                  {tab === 'signin' ? 'Sign In' : 'Sign Up'}
                 </button>
               ))}
             </div>
 
-            {otpStep ? (
-              /* OTP verification */
-              <div>
-                <h2 className="font-display text-navy dark:text-white text-2xl mb-2">Verify Your Number</h2>
-                <p className="text-slate-400 dark:text-white/40 text-sm mb-6">
-                  We sent a 6-digit OTP to <span className="font-semibold text-navy dark:text-white">{form.phone}</span>
-                </p>
+            {!otpStep ? (
+              <>
+                <div className="mb-6">
+                  <h2 className="mb-1 font-display text-2xl text-navy dark:text-white">
+                    {activeMode === 'signin' ? 'Welcome back' : 'Create your account'}
+                  </h2>
+                  <p className="text-sm leading-relaxed text-slate-500 dark:text-white/40">
+                    {activeMode === 'signin'
+                      ? 'Choose OTP or password sign in.'
+                      : 'Create the account once, then verify the phone number by SMS.'}
+                  </p>
+                </div>
 
-                <div className="flex gap-2 mb-6">
-                  {otp.map((val, i) => (
+                {activeMode === 'signin' && (
+                  <div className="mb-6 flex rounded-2xl bg-slate-100 p-1.5 dark:bg-white/[0.05]">
+                    {['otp', 'password'].map((method) => (
+                      <button
+                        key={method}
+                        type="button"
+                        onClick={() => {
+                          setSignInMethod(method)
+                          resetOtpState()
+                        }}
+                        className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition-all duration-200 ${
+                          signInMethod === method ? 'bg-white text-navy shadow-sm dark:bg-white/10 dark:text-white' : 'text-slate-500 dark:text-white/40'
+                        }`}
+                      >
+                        {method === 'otp' ? 'Phone OTP' : 'Password'}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {activeMode === 'signin' && signInMethod === 'password' ? (
+                  <form onSubmit={handlePasswordLogin} className="space-y-4">
+                    <div>
+                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-navy dark:text-white/60">
+                        Email or Phone
+                      </label>
+                      <div className="relative">
+                        <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30" />
+                        <input
+                          type="text"
+                          required
+                          value={form.identifier}
+                          onChange={(e) => updateForm('identifier', e.target.value)}
+                          placeholder="admin@claim360.in or +91 98765 43210"
+                          className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-navy outline-none transition-colors placeholder:text-slate-300 focus:border-gold dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/20"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="mb-1.5 flex items-center justify-between">
+                        <label className="text-xs font-semibold uppercase tracking-wider text-navy dark:text-white/60">Password</label>
+                        <span className="text-xs text-slate-400 dark:text-white/30">Works for admin and migrated users</span>
+                      </div>
+                      <div className="relative">
+                        <input
+                          type={showPass ? 'text' : 'password'}
+                          required
+                          value={form.password}
+                          onChange={(e) => updateForm('password', e.target.value)}
+                          placeholder="Enter your password"
+                          className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 pr-10 text-sm text-navy outline-none transition-colors placeholder:text-slate-300 focus:border-gold dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/20"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPass((prev) => !prev)}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-navy dark:text-white/30 dark:hover:text-white"
+                        >
+                          {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gold py-3.5 text-sm font-semibold text-navy-deep transition-all duration-200 hover:bg-gold-light disabled:opacity-60"
+                    >
+                      {loading ? <div className="h-5 w-5 animate-spin rounded-full border-2 border-navy-deep/30 border-t-navy-deep" /> : 'Sign In'}
+                    </button>
+                  </form>
+                ) : (
+                  <form onSubmit={handleSendOtp} className="space-y-4">
+                    {activeMode === 'signup' && (
+                      <div>
+                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-navy dark:text-white/60">Full Name</label>
+                        <div className="relative">
+                          <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30" />
+                          <input
+                            type="text"
+                            required
+                            value={form.name}
+                            onChange={(e) => updateForm('name', e.target.value)}
+                            placeholder="Your full name"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-navy outline-none transition-colors placeholder:text-slate-300 focus:border-gold dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/20"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {activeMode === 'signup' && (
+                      <div>
+                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-navy dark:text-white/60">Email Address</label>
+                        <div className="relative">
+                          <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30" />
+                          <input
+                            type="email"
+                            required
+                            value={form.email}
+                            onChange={(e) => updateForm('email', e.target.value)}
+                            placeholder="you@example.com"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-navy outline-none transition-colors placeholder:text-slate-300 focus:border-gold dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/20"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    <div>
+                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-navy dark:text-white/60">Phone Number</label>
+                      <div className="relative">
+                        <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30" />
+                        <input
+                          type="tel"
+                          required
+                          value={form.phone}
+                          onChange={(e) => updateForm('phone', e.target.value)}
+                          placeholder="98765 43210"
+                          className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-16 text-sm text-navy outline-none transition-colors placeholder:text-slate-300 focus:border-gold dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/20"
+                        />
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400 dark:text-white/30">+91</span>
+                      </div>
+                    </div>
+
+                    {activeMode === 'signup' && (
+                      <div>
+                        <div className="mb-1.5 flex items-center justify-between">
+                          <label className="text-xs font-semibold uppercase tracking-wider text-navy dark:text-white/60">Password</label>
+                          <span className="text-xs text-slate-400 dark:text-white/30">Used for fallback sign in</span>
+                        </div>
+                        <div className="relative">
+                          <input
+                            type={showPass ? 'text' : 'password'}
+                            required
+                            value={form.password}
+                            onChange={(e) => updateForm('password', e.target.value)}
+                            placeholder="Create a password"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 pr-10 text-sm text-navy outline-none transition-colors placeholder:text-slate-300 focus:border-gold dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/20"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPass((prev) => !prev)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-navy dark:text-white/30 dark:hover:text-white"
+                          >
+                            {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-gold py-3.5 text-sm font-semibold text-navy-deep transition-all duration-200 hover:bg-gold-light disabled:opacity-60"
+                    >
+                      {loading ? <div className="h-5 w-5 animate-spin rounded-full border-2 border-navy-deep/30 border-t-navy-deep" /> : 'Send OTP'}
+                    </button>
+                  </form>
+                )}
+              </>
+            ) : (
+              <form onSubmit={handleVerifyOtp} className="space-y-5">
+                <div>
+                  <h2 className="mb-1 font-display text-2xl text-navy dark:text-white">Verify OTP</h2>
+                  <p className="text-sm leading-relaxed text-slate-500 dark:text-white/40">
+                    Enter the 6-digit code sent to <span className="font-semibold text-navy dark:text-white">{normalizePhone(form.phone)}</span>.
+                  </p>
+                  {statusMessage && <p className="mt-3 text-sm text-gold-dark">{statusMessage}</p>}
+                </div>
+
+                <div className="grid grid-cols-6 gap-2">
+                  {otp.map((digit, index) => (
                     <input
-                      key={i}
-                      id={`otp-${i}`}
+                      key={index}
+                      id={`otp-${index}`}
                       type="text"
                       inputMode="numeric"
                       maxLength={1}
-                      value={val}
-                      onChange={e => handleOTPChange(e.target.value, i)}
-                      className="flex-1 h-14 text-center text-xl font-bold font-display text-navy dark:text-white border-2 border-slate-200 dark:border-white/15 rounded-xl bg-white dark:bg-white/[0.04] outline-none focus:border-gold transition-colors"
+                      value={digit}
+                      onChange={(e) => handleOtpChange(e.target.value, index)}
+                      className="h-14 w-full rounded-xl border border-slate-200 bg-slate-50 text-center text-xl font-semibold text-navy outline-none transition-colors focus:border-gold dark:border-white/10 dark:bg-white/[0.04] dark:text-white"
                     />
                   ))}
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-3">
-                  <button
-                    type="submit"
-                    disabled={loading || otp.join('').length < 6}
-                    className="w-full flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-navy-deep py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-50"
-                  >
-                    {loading ? <div className="w-5 h-5 border-2 border-navy-deep/30 border-t-navy-deep rounded-full animate-spin" /> : 'Verify & Continue'}
-                  </button>
-                  <button type="button" onClick={() => setOtpStep(false)} className="w-full py-2.5 text-sm text-slate-400 dark:text-white/30 hover:text-navy dark:hover:text-white transition-colors">
-                    ← Go Back
-                  </button>
-                </form>
-              </div>
-            ) : (
-              /* Main form */
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <h2 className="font-display text-navy dark:text-white text-2xl mb-1">
-                    {activeMode === 'signin' ? 'Welcome back' : 'Create your account'}
-                  </h2>
-                  <p className="text-slate-400 dark:text-white/40 text-sm">
-                    {activeMode === 'signin'
-                      ? 'Sign in to access your recovery dashboard.'
-                      : 'Get started with a free Claim360 account.'}
-                  </p>
-                </div>
-
-                {activeMode === 'signup' && (
-                  <div>
-                    <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      value={form.name}
-                      onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                      placeholder="Your full name"
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/20 text-sm outline-none focus:border-gold transition-colors"
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">
-                    {activeMode === 'signup' ? 'Phone Number' : 'Email or Phone'}
-                  </label>
-                  <div className="relative">
-                    <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30" />
-                    <input
-                      type={activeMode === 'signup' ? 'tel' : 'text'}
-                      required
-                      value={form.phone}
-                      onChange={e => setForm(p => ({ ...p, phone: e.target.value }))}
-                      placeholder={activeMode === 'signup' ? '+91 XXXXX XXXXX' : 'Phone or email'}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/20 text-sm outline-none focus:border-gold transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {activeMode === 'signup' && (
-                  <div>
-                    <label className="block text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider mb-1.5">Email Address</label>
-                    <div className="relative">
-                      <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30" />
-                      <input
-                        type="email"
-                        required
-                        value={form.email}
-                        onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-                        placeholder="your@email.com"
-                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/20 text-sm outline-none focus:border-gold transition-colors"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-semibold text-navy dark:text-white/60 uppercase tracking-wider">Password</label>
-                    {activeMode === 'signin' && (
-                      <button type="button" className="text-xs text-gold hover:text-gold-dark font-medium transition-colors">Forgot?</button>
-                    )}
-                  </div>
-                  <div className="relative">
-                    <input
-                      type={showPass ? 'text' : 'password'}
-                      required
-                      value={form.password}
-                      onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-                      placeholder="••••••••"
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.04] text-navy dark:text-white placeholder-slate-300 dark:placeholder-white/20 text-sm outline-none focus:border-gold transition-colors pr-10"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPass(p => !p)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30 hover:text-navy dark:hover:text-white transition-colors"
-                    >
-                      {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
-                    </button>
-                  </div>
-                </div>
-
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="w-full flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-navy-deep py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-60 mt-2"
+                  disabled={loading || otpValue.length !== otpLength}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gold py-3.5 text-sm font-semibold text-navy-deep transition-all duration-200 hover:bg-gold-light disabled:opacity-60"
                 >
-                  {loading ? (
-                    <div className="w-5 h-5 border-2 border-navy-deep/30 border-t-navy-deep rounded-full animate-spin" />
-                  ) : (
-                    <>
-                      {activeMode === 'signin' ? 'Sign In' : 'Continue'}
-                      <ArrowRight size={15} />
-                    </>
-                  )}
+                  {loading ? <div className="h-5 w-5 animate-spin rounded-full border-2 border-navy-deep/30 border-t-navy-deep" /> : <><span>Verify & Continue</span><ArrowRight size={15} /></>}
                 </button>
 
-                {/* Divider */}
-                <div className="relative flex items-center gap-3 py-1">
-                  <div className="flex-1 h-px bg-slate-100 dark:bg-white/10" />
-                  <span className="text-xs text-slate-400 dark:text-white/25">or</span>
-                  <div className="flex-1 h-px bg-slate-100 dark:bg-white/10" />
-                </div>
-
-                {/* Quick contact CTA */}
-                <a
-                  href="https://wa.me/919910035050"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full flex items-center justify-center gap-2 border border-slate-200 dark:border-white/10 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-white/60 hover:border-[#25D366] hover:text-[#25D366] transition-all duration-200"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                  </svg>
-                  Continue with WhatsApp
-                </a>
-
-                <p className="text-center text-xs text-slate-400 dark:text-white/30 mt-2">
-                  {activeMode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
+                <div className="flex items-center justify-between text-sm">
                   <button
                     type="button"
-                    onClick={() => setActiveMode(activeMode === 'signin' ? 'signup' : 'signin')}
-                    className="text-gold font-semibold hover:text-gold-dark transition-colors"
+                    onClick={() => { if (canResend) { sendOtp().catch((error) => alert(error.response?.data?.detail || 'Unable to resend OTP')) } }}
+                    disabled={!canResend}
+                    className="text-gold transition-colors hover:text-gold-dark disabled:opacity-50"
                   >
-                    {activeMode === 'signin' ? 'Sign up free' : 'Sign in'}
+                    {canResend ? 'Resend OTP' : `Resend in ${resendCountdown}s`}
                   </button>
-                </p>
+                  <button
+                    type="button"
+                    onClick={resetOtpState}
+                    className="text-slate-500 transition-colors hover:text-navy dark:text-white/40 dark:hover:text-white"
+                  >
+                    Edit details
+                  </button>
+                </div>
               </form>
             )}
           </div>
 
-          <p className="text-center text-xs text-slate-400 dark:text-white/20 mt-5">
-            By continuing you agree to our{' '}
-            <a href="/terms" className="underline hover:text-navy dark:hover:text-white/50 transition-colors">Terms of Service</a>
-            {' '}&amp;{' '}
-            <a href="/privacy" className="underline hover:text-navy dark:hover:text-white/50 transition-colors">Privacy Policy</a>
+          <p className="mt-5 text-center text-xs text-slate-400 dark:text-white/20">
+            By continuing you agree to our <a href="/terms" className="underline transition-colors hover:text-navy dark:hover:text-white/50">Terms of Service</a> &amp; <a href="/privacy" className="underline transition-colors hover:text-navy dark:hover:text-white/50">Privacy Policy</a>
           </p>
         </div>
       </div>
