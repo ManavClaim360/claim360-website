@@ -3,13 +3,13 @@ import { ArrowLeft } from 'lucide-react'
 
 export default function NotFoundPage() {
   return (
-    <div className="min-h-screen bg-navy-deep flex items-center justify-center relative overflow-hidden px-5 py-12">
+    <div className="min-h-screen bg-navy-deep flex items-center justify-center relative overflow-hidden px-4">
       <div className="absolute inset-0 opacity-[0.035]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.9) 1px, transparent 0)', backgroundSize: '34px 34px' }} />
       <div className="absolute top-[12%] left-[8%] w-[320px] h-[320px] bg-gold/10 rounded-full blur-[110px] pointer-events-none" />
       <div className="absolute bottom-[8%] right-[10%] w-[280px] h-[280px] bg-[#284274]/35 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-md">
-        <div className="bg-white/[0.04] border border-white/10 rounded-[28px] shadow-[0_30px_120px_rgba(2,6,23,0.55)] backdrop-blur-xl p-8 sm:p-10">
+      <div className="relative z-10 w-full max-w-2xl">
+        <div className="bg-white/[0.04] border border-white/10 rounded-[28px] shadow-[0_30px_120px_rgba(2,6,23,0.55)] backdrop-blur-xl p-12 sm:p-16">
 
           <Link to="/" className="inline-flex items-center gap-2.5 mb-8">
             <img src="/assets/main_logo_sq.jpeg" alt="Claim360" className="h-9 w-9 rounded-xl object-cover" />
