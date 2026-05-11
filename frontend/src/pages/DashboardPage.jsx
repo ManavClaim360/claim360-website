@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
-  LayoutDashboard, Search, FileText, Bell, Settings,
-  TrendingUp, Users, CheckCircle, Clock, LogOut, ChevronRight
+  LayoutDashboard, FileText, Bell, Settings,
+  TrendingUp, CheckCircle, Clock, LogOut, ChevronRight
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
@@ -9,7 +9,6 @@ import { useAuth } from '../context/AuthContext'
 const SIDEBAR_ITEMS = [
   { icon: LayoutDashboard, label: 'Overview', id: 'overview' },
   { icon: FileText, label: 'My Cases', id: 'cases' },
-  { icon: Search, label: 'Investor Search', id: 'search', href: '/search' },
   { icon: Bell, label: 'Notifications', id: 'notifications', badge: 2 },
   { icon: Settings, label: 'Settings', id: 'settings' },
 ]

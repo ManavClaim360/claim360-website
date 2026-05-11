@@ -6,7 +6,6 @@ import HomePage from './pages/HomePage'
 import AuthPage from './pages/AuthPage'
 import DashboardPage from './pages/DashboardPage'
 import AdminPage from './pages/AdminPage'
-import InvestorSearchPage from './pages/InvestorSearchPage'
 import BlogPage from './pages/BlogPage'
 import BlogPostPage from './pages/BlogPostPage'
 import ContactPage from './pages/ContactPage'
@@ -31,15 +30,7 @@ export default function App() {
               <Route path="404" element={<NotFoundPage />} />
               <Route path="privacy" element={<PrivacyPage />} />
               <Route path="terms" element={<TermsPage />} />
-              <Route
-                path="search"
-                element={
-                  <ProtectedRoute>
-                    <InvestorSearchPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
+<Route
                 path="dashboard"
                 element={
                   <ProtectedRoute>

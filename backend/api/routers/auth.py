@@ -1,12 +1,14 @@
-from datetime import timedelta
+import random
+import smtplib
+from datetime import datetime, timedelta
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, model_validator
 from sqlmodel import Session, select
-from twilio.base.exceptions import TwilioRestException
-from twilio.rest import Client
 
 from api.deps import get_current_user
 from core.config import settings
@@ -15,6 +17,70 @@ from db.database import get_session
 from db.models import User
 
 router = APIRouter()
+
+# In-memory OTP store: email -> (code, expiry_datetime)
+_otp_store: dict[str, tuple[str, datetime]] = {}
+OTP_TTL_MINUTES = 10
+
+
+def generate_otp() -> str:
+    return str(random.randint(100000, 999999))
+
+
+def store_otp(email: str, code: str) -> None:
+    _otp_store[email] = (code, datetime.utcnow() + timedelta(minutes=OTP_TTL_MINUTES))
+
+
+def pop_otp(email: str, code: str) -> bool:
+    entry = _otp_store.get(email)
+    if not entry:
+        return False
+    stored_code, expiry = entry
+    if datetime.utcnow() > expiry:
+        _otp_store.pop(email, None)
+        return False
+    if stored_code != code:
+        return False
+    _otp_store.pop(email, None)
+    return True
+
+
+def send_otp_email(to_email: str, code: str, purpose: str = "verification") -> None:
+    if not settings.email_enabled:
+        raise HTTPException(status_code=503, detail="Email service is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS in .env")
+
+    subject = "Your Claim360 Password Reset Code" if purpose == "forgot" else "Your Claim360 Email Verification Code"
+    action_label = "reset your password" if purpose == "forgot" else "verify your email"
+
+    body = f"""
+    <html><body style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;color:#1e293b">
+      <div style="margin-bottom:24px">
+        <span style="font-size:22px;font-weight:700;color:#0A1628">Claim<span style="color:#C9A24A">360</span></span>
+      </div>
+      <p style="margin-bottom:8px">Use the code below to {action_label}:</p>
+      <div style="font-size:40px;font-weight:bold;letter-spacing:10px;color:#C9A24A;margin:24px 0;padding:20px;background:#f8fafc;border-radius:12px;text-align:center">{code}</div>
+      <p style="color:#64748b;font-size:13px">This code expires in {OTP_TTL_MINUTES} minutes. Do not share it with anyone.</p>
+      <p style="color:#94a3b8;font-size:12px;margin-top:32px">If you did not request this, you can safely ignore this email.</p>
+    </body></html>
+    """
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = settings.SMTP_FROM or settings.SMTP_USER
+    msg["To"] = to_email
+    msg.attach(MIMEText(body, "html"))
+
+    try:
+        with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT) as server:
+            server.ehlo()
+            if settings.SMTP_TLS:
+                server.starttls()
+                server.ehlo()
+            if settings.SMTP_USER and settings.SMTP_PASS:
+                server.login(settings.SMTP_USER, settings.SMTP_PASS)
+            server.sendmail(msg["From"], [to_email], msg.as_string())
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"Failed to send email: {exc}") from exc
 
 
 def normalize_phone(phone: str) -> str:
@@ -28,35 +94,6 @@ def normalize_phone(phone: str) -> str:
     return digits
 
 
-def get_twilio_client() -> Client:
-    if not settings.otp_enabled:
-        raise HTTPException(status_code=503, detail="OTP service is not configured")
-    return Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-
-
-def send_verification_code(phone: str) -> None:
-    client = get_twilio_client()
-    try:
-        client.verify.v2.services(settings.TWILIO_VERIFY_SERVICE_SID).verifications.create(
-            to=phone,
-            channel="sms",
-        )
-    except TwilioRestException as exc:
-        raise HTTPException(status_code=400, detail=exc.msg or "Failed to send OTP") from exc
-
-
-def verify_code(phone: str, code: str) -> bool:
-    client = get_twilio_client()
-    try:
-        result = client.verify.v2.services(settings.TWILIO_VERIFY_SERVICE_SID).verification_checks.create(
-            to=phone,
-            code=code,
-        )
-    except TwilioRestException as exc:
-        raise HTTPException(status_code=400, detail=exc.msg or "Failed to verify OTP") from exc
-    return result.status == "approved"
-
-
 def build_auth_response(user: User) -> dict[str, Any]:
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
@@ -66,19 +103,10 @@ def build_auth_response(user: User) -> dict[str, Any]:
     }
 
 
-def find_user_by_identifier(session: Session, identifier: str) -> User | None:
-    normalized_identifier = identifier.strip()
-    user = session.exec(select(User).where(User.email == normalized_identifier)).first()
-    if user:
-        return user
-    normalized_phone = normalize_phone(normalized_identifier)
-    return session.exec(select(User).where(User.phone == normalized_phone)).first()
-
-
 class UserCreate(BaseModel):
     name: str
     email: str
-    phone: str | None = None
+    phone: str
     password: str
     role: str = "user"
 
@@ -102,50 +130,52 @@ class AuthPayload(Token):
     user: UserResponse
 
 
-class OtpRequest(BaseModel):
-    mode: Literal["signup", "login"]
-    phone: str
-    name: str | None = None
-    email: str | None = None
-    password: str | None = None
-
-    @model_validator(mode="after")
-    def validate_signup_fields(self):
-        if self.mode == "signup" and not all([self.name, self.email, self.password]):
-            raise ValueError("Name, email, and password are required for signup")
-        return self
-
-
-class OtpVerifyRequest(BaseModel):
-    mode: Literal["signup", "login"]
-    phone: str
-    code: str
-    name: str | None = None
-    email: str | None = None
-    password: str | None = None
-
-    @model_validator(mode="after")
-    def validate_signup_fields(self):
-        if self.mode == "signup" and not all([self.name, self.email, self.password]):
-            raise ValueError("Name, email, and password are required for signup")
-        return self
-
-
 class OtpResponse(BaseModel):
     detail: str
 
 
+class EmailOtpRequest(BaseModel):
+    mode: Literal["signup", "forgot"]
+    email: str
+    name: str | None = None
+    phone: str | None = None
+    password: str | None = None
+
+    @model_validator(mode="after")
+    def validate_signup_fields(self):
+        if self.mode == "signup" and not all([self.name, self.phone, self.password]):
+            raise ValueError("Name, phone, and password are required for signup")
+        return self
+
+
+class EmailOtpVerifyRequest(BaseModel):
+    mode: Literal["signup", "forgot"]
+    email: str
+    code: str
+    name: str | None = None
+    phone: str | None = None
+    password: str | None = None
+    new_password: str | None = None
+
+    @model_validator(mode="after")
+    def validate_fields(self):
+        if self.mode == "signup" and not all([self.name, self.phone, self.password]):
+            raise ValueError("Name, phone, and password are required for signup")
+        if self.mode == "forgot" and not self.new_password:
+            raise ValueError("new_password is required for password reset")
+        return self
+
+
 @router.post("/register", response_model=UserResponse)
 def register_user(user_in: UserCreate, session: Session = Depends(get_session)) -> Any:
-    user = session.exec(select(User).where(User.email == user_in.email)).first()
-    if user:
-        raise HTTPException(status_code=400, detail="The user with this username already exists in the system.")
+    existing = session.exec(select(User).where(User.email == user_in.email)).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="This email is already registered.")
 
-    normalized_phone = normalize_phone(user_in.phone) if user_in.phone else None
-    if normalized_phone:
-        existing_phone = session.exec(select(User).where(User.phone == normalized_phone)).first()
-        if existing_phone:
-            raise HTTPException(status_code=400, detail="This phone number is already linked to an account.")
+    normalized_phone = normalize_phone(user_in.phone)
+    existing_phone = session.exec(select(User).where(User.phone == normalized_phone)).first()
+    if existing_phone:
+        raise HTTPException(status_code=400, detail="This phone number is already linked to an account.")
 
     user_data = user_in.model_dump()
     password = user_data.pop("password")
@@ -164,9 +194,9 @@ def login_access_token(
     session: Session = Depends(get_session),
     form_data: OAuth2PasswordRequestForm = Depends(),
 ) -> Any:
-    user = find_user_by_identifier(session, form_data.username)
+    user = session.exec(select(User).where(User.email == form_data.username)).first()
     if not user or not verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(status_code=400, detail="Incorrect email, phone, or password")
+        raise HTTPException(status_code=400, detail="Incorrect email or password")
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
@@ -176,44 +206,46 @@ def login_access_token(
 
 
 @router.post("/otp/request", response_model=OtpResponse)
-def request_otp(payload: OtpRequest, session: Session = Depends(get_session)) -> OtpResponse:
-    phone = normalize_phone(payload.phone)
-
+def request_email_otp(payload: EmailOtpRequest, session: Session = Depends(get_session)) -> OtpResponse:
     if payload.mode == "signup":
-        existing_email = session.exec(select(User).where(User.email == payload.email)).first()
-        if existing_email:
+        existing = session.exec(select(User).where(User.email == payload.email)).first()
+        if existing:
             raise HTTPException(status_code=400, detail="This email is already registered.")
-        existing_phone = session.exec(select(User).where(User.phone == phone)).first()
-        if existing_phone:
-            raise HTTPException(status_code=400, detail="This phone number is already registered.")
+        if payload.phone:
+            normalized_phone = normalize_phone(payload.phone)
+            existing_phone = session.exec(select(User).where(User.phone == normalized_phone)).first()
+            if existing_phone:
+                raise HTTPException(status_code=400, detail="This phone number is already registered.")
     else:
-        user = session.exec(select(User).where(User.phone == phone)).first()
+        user = session.exec(select(User).where(User.email == payload.email)).first()
         if not user:
-            raise HTTPException(status_code=404, detail="No account found for this phone number.")
+            raise HTTPException(status_code=404, detail="No account found with this email.")
 
-    send_verification_code(phone)
-    return OtpResponse(detail="OTP sent successfully")
+    code = generate_otp()
+    store_otp(payload.email, code)
+    send_otp_email(payload.email, code, purpose="forgot" if payload.mode == "forgot" else "verification")
+    return OtpResponse(detail="OTP sent to your email")
 
 
 @router.post("/otp/verify", response_model=AuthPayload)
-def verify_otp(payload: OtpVerifyRequest, session: Session = Depends(get_session)) -> AuthPayload:
-    phone = normalize_phone(payload.phone)
-
-    if not verify_code(phone, payload.code):
+def verify_email_otp(payload: EmailOtpVerifyRequest, session: Session = Depends(get_session)) -> AuthPayload:
+    if not pop_otp(payload.email, payload.code):
         raise HTTPException(status_code=400, detail="Invalid or expired OTP")
 
     if payload.mode == "signup":
-        existing_email = session.exec(select(User).where(User.email == payload.email)).first()
-        if existing_email:
+        existing = session.exec(select(User).where(User.email == payload.email)).first()
+        if existing:
             raise HTTPException(status_code=400, detail="This email is already registered.")
-        existing_phone = session.exec(select(User).where(User.phone == phone)).first()
+
+        normalized_phone = normalize_phone(payload.phone)
+        existing_phone = session.exec(select(User).where(User.phone == normalized_phone)).first()
         if existing_phone:
             raise HTTPException(status_code=400, detail="This phone number is already registered.")
 
         user = User(
             name=payload.name,
             email=payload.email,
-            phone=phone,
+            phone=normalized_phone,
             hashed_password=get_password_hash(payload.password),
             role="user",
         )
@@ -221,9 +253,13 @@ def verify_otp(payload: OtpVerifyRequest, session: Session = Depends(get_session
         session.commit()
         session.refresh(user)
     else:
-        user = session.exec(select(User).where(User.phone == phone)).first()
+        user = session.exec(select(User).where(User.email == payload.email)).first()
         if not user:
-            raise HTTPException(status_code=404, detail="No account found for this phone number.")
+            raise HTTPException(status_code=404, detail="No account found with this email.")
+        user.hashed_password = get_password_hash(payload.new_password)
+        session.add(user)
+        session.commit()
+        session.refresh(user)
 
     return AuthPayload(**build_auth_response(user))
 
