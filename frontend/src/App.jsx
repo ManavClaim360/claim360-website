@@ -27,10 +27,9 @@ export default function App() {
               <Route path="blog/:slug" element={<BlogPostPage />} />
               <Route path="contact" element={<ContactPage />} />
               <Route path="testimonials" element={<TestimonialsPage />} />
-              <Route path="404" element={<NotFoundPage />} />
               <Route path="privacy" element={<PrivacyPage />} />
               <Route path="terms" element={<TermsPage />} />
-<Route
+              <Route
                 path="dashboard"
                 element={
                   <ProtectedRoute>
@@ -46,10 +45,11 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="*" element={<NotFoundPage />} />
             </Route>
             <Route path="/login" element={<AuthPage mode="signin" />} />
             <Route path="/signup" element={<AuthPage mode="signup" />} />
+            <Route path="/404" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
